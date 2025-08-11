@@ -1,0 +1,47 @@
+{
+	"name": "giolt",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "concurrently --names TURSO,ASTRO \"bun run db:dev\" \"astro dev\"",
+		"db:dev": "turso dev -f .local.db",
+		"build:local": "astro check && astro build",
+		"build": "bun run migrate:remote && bun run build:local",
+		"preview": "wrangler pages dev ./dist",
+		"studio": "drizzle-kit studio --config drizzle.local.config.ts",
+		"migrate:local": "drizzle-kit push --config drizzle.local.config.ts",
+		"migrate:remote": "drizzle-kit push --config drizzle.remote.config.ts",
+		"seed": "bun run ./src/db/seed.ts",
+		"preseed": "rm -f .local.db* && bun migrate:local",
+		"astro": "astro",
+		"check": "biome check .",
+		"check:ci": "biome ci .",
+		"check:fix": "biome check --write ."
+	},
+	"dependencies": {
+		"@astrojs/react": "^4.3.0",
+		"@astrojs/sitemap": "^3.4.2",
+		"@astrojs/vercel": "^8.2.5",
+		"@biomejs/biome": "^1.9.4",
+		"@clerk/astro": "^2.10.15",
+		"@libsql/client": "^0.15.10",
+		"@tailwindcss/vite": "^4.1.11",
+		"astro": "^5.12.9",
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"concurrently": "^9.2.0",
+		"drizzle-orm": "^0.44.4",
+		"lucide-react": "^0.539.0",
+		"react": "^19.1.1",
+		"react-dom": "^19.1.1",
+		"tailwind-merge": "^3.3.1",
+		"tailwindcss": "^4.1.11"
+	},
+	"devDependencies": {
+		"@types/react": "^19.1.9",
+		"@types/react-dom": "^19.1.7",
+		"drizzle-kit": "^0.31.4",
+		"drizzle-seed": "^0.3.1",
+		"tw-animate-css": "^1.3.6"
+	}
+}
