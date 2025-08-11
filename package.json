@@ -19,6 +19,7 @@
 		"check:fix": "biome check --write ."
 	},
 	"dependencies": {
+		"@astrojs/check": "^0.9.4",
 		"@astrojs/react": "^4.3.0",
 		"@astrojs/sitemap": "^3.4.2",
 		"@astrojs/vercel": "^8.2.5",
@@ -36,7 +37,8 @@
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1",
 		"tailwind-merge": "^3.3.1",
-		"tailwindcss": "^4.1.11"
+		"tailwindcss": "^4.1.11",
+		"typescript": "^5.9.2"
 	},
 	"devDependencies": {
 		"@types/react": "^19.1.9",
