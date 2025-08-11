@@ -10,6 +10,7 @@
         "@clerk/astro": "^2.10.15",
         "@libsql/client": "^0.15.10",
         "@tailwindcss/vite": "^4.1.11",
+        "@vercel/analytics": "^1.5.0",
         "astro": "^5.12.9",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
