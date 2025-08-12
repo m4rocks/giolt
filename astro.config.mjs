@@ -11,6 +11,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
 	output: "server",
 	integrations: [clerk(), react(), sitemap()],
+	site: "https://giolt.com",
 	adapter: vercel({
 		webAnalytics: {
 			enabled: true
