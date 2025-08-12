@@ -1,10 +1,129 @@
 ---
-import Layout from "@/layout/base-layout.astro";
+import Layout from "@/layouts/base-layout.astro";
+import GioltIcon from "@/assets/logo-light.svg"
+import Wave from "@/assets/wave.svg"
+import { ClipboardListIcon } from "@lucide/astro";
 
 ---
 
 <Layout>
-	<h1>
-		Giolt
-	</h1>
+	<div
+		class="container min-h-[512px] flex flex-col justify-center"
+	>
+		<div class="flex flex-row gap-1 mb-2">
+			<span class="badge badge-primary">
+				<GioltIcon class="size-[1.25em]" />
+				Giolt
+			</span>
+			<span class="badge">
+				Alpha
+			</span>
+		</div>
+		<h1
+			class="font-black text-5xl md:text-7xl"
+		>
+			Where volunteers find everything, and organizations save time.
+		</h1>
+		<p
+			class="text-base-content/50 mb-4"
+		>
+			The everything-tool for volunteering NGOs to achieve their goals, quicker and more efficiently.
+		</p>
+		<div class="flex flex-row items-center gap-2">
+			<a
+				href="https://accounts.giolt.com/waitlist"
+				target="_blank"
+				class="btn btn-primary"
+			>
+				<ClipboardListIcon/>
+				Join the waitlist
+			</a>
+			<a href="/updates" class="btn">
+				Updates
+			</a>
+		</div>
+	</div>
+
+	<Wave
+		class="*:fill-base-content w-full h-48"
+	/>
+	<div class="bg-base-content text-base-300">
+		<div class="container">
+			<div class="card bg-base-200 shadow text-base-content">
+				<div class="card-body">
+					<h2
+						class="text-3xl md:text-5xl font-bold"
+						id="pricing"
+					>
+						The universal tool your NGO needs.
+					</h2>
+					<p>
+						Giolt will support a wide range of tools and apps to assist NGOs in their journey to achieve their goals.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<Wave
+		class="*:fill-base-content w-full h-48 rotate-180"
+	/>
+
+	<div class="container">
+		<h2
+			class="text-3xl md:text-5xl font-bold"
+			id="pricing"
+		>
+			Pricing
+		</h2>
+		<p class="mb-2">
+			Giolt is still in very early development and everything you see is subject to change.
+			Here is a preview of what the pricing will look at.
+		</p>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+			<div class="card glass">
+				<div class="card-body">
+					<h3 class="card-title">
+						Basic &middot; Free forever
+					</h3>
+					<ul class="list-disc list-inside">
+						<li>Limited to 1 organization</li>
+						<li>Customizable organization page hosted at giolt.org</li>
+						<li>1 member</li>
+						<li>Volunteer Code of Conduct</li>
+						<li>Polls</li>
+						<li>Project posts and announcements</li>
+						<li>Project dashboard for volunteers</li>
+					</ul>
+					<button
+						disabled
+						class="btn mt-auto"
+					>
+						Coming soon
+					</button>
+				</div>
+			</div>
+
+			<div class="card glass">
+				<div class="card-body">
+					<h3 class="card-title">
+						Plus &middot; 10&euro;/month/organization
+					</h3>
+					<ul class="list-disc list-inside">
+						<li>Everything in Basic</li>
+						<li>5 members</li>
+						<li>Custom domain</li>
+						<li>Remove Giolt branding</li>
+						<li>AI Helper</li>
+						<li>Photos and Videos share</li>
+					</ul>
+					<button
+						disabled
+						class="btn mt-auto"
+					>
+						Coming soon
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </Layout>

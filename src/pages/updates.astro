@@ -1,0 +1,47 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "@/layouts/base-layout.astro";
+
+const updates = await getCollection("updates").then((collection) =>
+	collection.sort((a, b) => {
+		const aTime = a.data.date.getTime();
+		const bTime = b.data.date.getTime();
+
+		if (aTime && bTime) {
+			return bTime - aTime;
+		}
+
+		return 0;
+	}),
+);
+---
+
+<Layout
+	title="Updates"
+	class="container"
+>
+	<h1
+		class="font-black text-5xl md:text-7xl mt-8"
+	>
+		Updates
+	</h1>
+	{updates.map(async (update) => (
+		<div class="mt-8">
+			<p class="text-sm text-base-content/50">
+				{new Date(update.data.date).toLocaleDateString("en-GB", {
+					year: "numeric",
+					month: "short",
+					day: "numeric",
+				})}
+			</p>
+			<h2 class="text-2xl font-bold">
+				{update.data.title}
+			</h2>
+			<div class="prose prose-stone">
+				{await render(update).then(({ Content }) => (
+					<Content />
+				))}
+			</div>
+		</div>
+	))}
+</Layout>

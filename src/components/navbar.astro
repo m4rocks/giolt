@@ -1,0 +1,83 @@
+---
+import LogoTransparent from "@/assets/logo-transparent.svg"
+import { OrganizationSwitcher, UserButton } from "@clerk/astro/components";
+import { ArrowLeftIcon } from "lucide-react";
+
+interface Props {
+	logo?: boolean;
+	logoHref?: string;
+	buttons?: {
+		text: string;
+		href: string;
+		external?: boolean;
+	}[];
+	returnButton?: string;
+	enableAccountButton?: boolean;
+}
+
+const {
+	logo = true,
+	logoHref = "/",
+	buttons = [],
+	enableAccountButton = false,
+	returnButton = undefined,
+} = Astro.props;
+---
+
+<div class="navbar"></div>
+
+<nav
+	class="navbar fixed glass bg-base-100/50 shadow-sm z-50 px-4"
+>
+	<div class="flex-1 flex flex-row items-center gap-1">
+		{returnButton ?
+			<a
+				href={returnButton}
+				class="btn btn-ghost btn-circle"
+				aria-label="Return"
+			>
+				<ArrowLeftIcon/>
+			</a>
+		: null}
+		{logo ?
+			<a
+				href={logoHref}
+				aria-label="Logo"
+				class="btn btn-ghost btn-circle"
+			>
+				<LogoTransparent
+					class="*:fill-base-content"
+				/>
+			</a>
+		: null}
+	</div>
+	<div class="flex-none flex flex-row items-center gap-2">
+		{buttons.map((b) => (
+			<a
+				href={b.href}
+				target={b.external ? "_blank" : "_self"}
+				class="btn btn-ghost"
+			>
+				{b.text}
+			</a>
+		))}
+		{enableAccountButton ? (
+			<>
+				<OrganizationSwitcher
+					hidePersonal
+					afterCreateOrganizationUrl="/dashboard/:slug"
+					afterSelectOrganizationUrl="/dashboard/:slug"
+					afterLeaveOrganizationUrl="/dashboard"
+				/>
+				<UserButton/>
+			</>
+		) : null}
+	</div>
+</nav>
+
+<style is:global>
+	.cl-organizationSwitcher-root {
+		background: white;
+		border-radius: 2rem;
+	}
+</style>

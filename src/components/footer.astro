@@ -1,0 +1,59 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="container overflow-hidden">
+	<h1 class="mb-[-15%] select-none text-center font-black text-[min(40vw,500px)] leading-none bg-clip-text bg-gradient-to-t to-base-content/25 text-transparent">
+		Giolt
+	</h1>
+	<div class="card glass mb-4">
+		<div class="card-body gap-0">
+			<p>
+				Giolt &copy; {currentYear} Functional Source License (FSL) &middot; Giolt contributors
+			</p>
+			<a
+				href="https://m4.rocks"
+				class="hover:underline text-muted-foreground"
+				target="_blank"
+			>
+				Made with &hearts; by @m4rocks
+			</a>
+			<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+				<div>
+					<h3 class="mt-3 text-xl font-bold">
+						About
+					</h3>
+					<div
+						class="text-muted-foreground *:hover:underline *:block"
+					>
+						<a
+							href="/updates"
+						>
+							Updates
+						</a>
+					</div>
+				</div>
+				<div>
+					<h3 class="mt-3 text-xl font-bold">
+						Contribute
+					</h3>
+					<div
+						class="text-muted-foreground *:hover:underline *:block"
+					>
+						<a
+							href="https://github.com/m4rocks/giolt"
+							target="_blank"
+						>
+							GitHub
+						</a>
+						<a
+							href="/licence"
+						>
+							Licence
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>

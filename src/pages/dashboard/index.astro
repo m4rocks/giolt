@@ -1,0 +1,22 @@
+---
+import Layout from "@/layouts/dashboard-layout.astro";
+import { OrganizationList } from "@clerk/astro/components";
+
+const { orgSlug, userId, redirectToSignIn } = Astro.locals.auth();
+
+if (!userId) {
+	return redirectToSignIn();
+}
+
+if (!!orgSlug) {
+	return Astro.redirect(`/dashboard/${orgSlug}`);
+}
+---
+
+<Layout title="Select organization" class="flex flex-col justify-center items-center">
+	<OrganizationList
+		hidePersonal
+		afterSelectOrganizationUrl="/dashboard/:slug"
+		afterCreateOrganizationUrl="/dashboard/:slug"
+	/>
+</Layout>

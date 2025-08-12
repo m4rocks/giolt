@@ -1,0 +1,58 @@
+---
+import "@/styles/global.css";
+import "@fontsource-variable/bricolage-grotesque";
+import Analytics from "@vercel/analytics/astro";
+import Footer from "@/components/footer.astro";
+import logoDark from "@/assets/logo-dark.svg";
+import logoLight from "@/assets/logo-light.svg";
+
+const faviconDark = await getImage({ src: logoDark, format: "svg", width: 32, height: 32 });
+const faviconLight = await getImage({ src: logoLight, format: "svg", width: 32, height: 32 });
+import { getImage } from "astro:assets";
+import { mdClassName } from "@/lib/markdown";
+import Navbar from "@/components/navbar.astro";
+
+interface Props {
+	class?: string;
+	title?: string;
+	frontmatter?: Omit<Props, "frontmatter">
+}
+
+const props = Astro.props.frontmatter ?? Astro.props;
+const isMarkdown = !!Astro.props.frontmatter;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			media="(prefers-color-scheme: dark)"
+			href={faviconLight.src}
+		/>
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			media="(prefers-color-scheme: light)"
+			href={faviconDark.src}
+		/>
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>
+			{Astro.props.title ? `${Astro.props.title} - Giolt` : "Giolt - Where volunteers find everything, and organizations save time."}
+		</title>
+		<Analytics />
+	</head>
+	<body>
+		<body class="flex flex-col min-h-svh">
+			<Navbar />
+			<main class:list={["flex-1", Astro.props.class]}>
+				<main class={`flex-1 mb-4 ${props.class} ${isMarkdown ? `${mdClassName} !container my-4` : ""}`}>
+					<slot/>
+				</main>
+			</main>
+			<Footer/>
+		</body>
+	</body>
+</html>
