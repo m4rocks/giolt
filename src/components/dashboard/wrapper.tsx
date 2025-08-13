@@ -1,4 +1,4 @@
-import { ClerkProvider, OrganizationProfile } from "@clerk/clerk-react";
+import { ClerkProvider, OrganizationProfile, ClerkLoaded } from "@clerk/clerk-react";
 import { AlignLeftIcon, ArrowLeftRightIcon, HeartHandshakeIcon, HomeIcon, SquareKanbanIcon, VoteIcon } from "lucide-react";
 import Details from "./details";
 import type { SelectOrganizations } from "@/db/schema";
@@ -6,6 +6,7 @@ import { PUBLIC_CLERK_PUBLISHABLE_KEY } from "astro:env/client";
 import { clerkTheme } from "@/lib/clerk";
 import Home from "./home";
 import ComingSoon from "./coming-soon";
+import { useEffect, useState } from "react";
 
 export interface DashboardWrapperProps {
 	org: SelectOrganizations;
@@ -17,6 +18,26 @@ export default function DashboardWrapper(props: DashboardWrapperProps) {
 			publishableKey={PUBLIC_CLERK_PUBLISHABLE_KEY}
 			appearance={clerkTheme}
 		>
+			<OrgProfileComp {...props} />
+		</ClerkProvider>
+	)
+}
+
+
+const OrgProfileComp = (props: DashboardWrapperProps) => {
+	// This hack is required only here as we are doing some heavy customization
+	// of OrganizationProfile using @clerk/clerk-react instead of @clerk/astro/react
+	// To prevent timing mismatch we are forcing the components to render only when the DOM
+	// is explicitly ready to.
+	const [domReady, setDomReady] = useState(false);
+	useEffect(() => {
+		// Avoid race: only mount after DOM is fully ready
+		setDomReady(true);
+	}, []);
+
+	if (!domReady) return null;
+	return (
+		<ClerkLoaded>
 			<OrganizationProfile
 				afterLeaveOrganizationUrl="/select"
 				routing="hash"
@@ -27,7 +48,7 @@ export default function DashboardWrapper(props: DashboardWrapperProps) {
 					labelIcon={<HomeIcon className="size-4"/>}
 				>
 					<Home
-						org={props.org}
+					org={props.org}
 					/>
 				</OrganizationProfile.Page>
 				<OrganizationProfile.Page
@@ -50,7 +71,7 @@ export default function DashboardWrapper(props: DashboardWrapperProps) {
 					labelIcon={<AlignLeftIcon className="size-4"/>}
 				>
 					<Details
-						org={props.org}
+					org={props.org}
 					/>
 				</OrganizationProfile.Page>
 				<OrganizationProfile.Page
@@ -69,6 +90,6 @@ export default function DashboardWrapper(props: DashboardWrapperProps) {
 				>
 				</OrganizationProfile.Link>
 			</OrganizationProfile>
-		</ClerkProvider>
+		</ClerkLoaded>
 	)
 }
