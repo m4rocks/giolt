@@ -2,6 +2,8 @@
 import { getCollection, render } from "astro:content";
 import Layout from "@/layouts/base-layout.astro";
 
+export const prerender = true;
+
 const updates = await getCollection("updates").then((collection) =>
 	collection.sort((a, b) => {
 		const aTime = a.data.date.getTime();

@@ -1,0 +1,25 @@
+---
+import Home from "@/components/org/home";
+import { organizations } from "@/db/schema";
+import { db } from "@/lib/db";
+import { eq } from "drizzle-orm";
+
+const { slug } = Astro.params;
+
+if (!slug) {
+	throw new Error("Slug is required");
+}
+
+const org = await db.select()
+	.from(organizations)
+	.where(eq(organizations.slug, slug))
+	.get();
+
+if (!org) {
+	throw new Error("Organization not found");
+}
+---
+
+<Home
+	organization={org}
+/>

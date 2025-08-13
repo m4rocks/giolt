@@ -46,7 +46,7 @@ const {
 				class="btn btn-ghost btn-circle"
 			>
 				<LogoTransparent
-					class="*:fill-base-content"
+					class="*:fill-base-content size-8"
 				/>
 			</a>
 		: null}
@@ -65,19 +65,14 @@ const {
 			<>
 				<OrganizationSwitcher
 					hidePersonal
-					afterCreateOrganizationUrl="/dashboard/:slug"
-					afterSelectOrganizationUrl="/dashboard/:slug"
+					afterCreateOrganizationUrl="/dashboard"
+					afterSelectOrganizationUrl="/dashboard"
 					afterLeaveOrganizationUrl="/dashboard"
+					organizationProfileMode="navigation"
+					organizationProfileUrl="/dashboard"
 				/>
 				<UserButton/>
 			</>
 		) : null}
 	</div>
 </nav>
-
-<style is:global>
-	.cl-organizationSwitcher-root {
-		background: white;
-		border-radius: 2rem;
-	}
-</style>

@@ -1,0 +1,33 @@
+---
+import Layout from "@/layouts/base-layout.astro";
+import PendingApproval from "@/assets/pending-approval.svg";
+
+export const prerender = true;
+---
+
+<Layout
+	title="Disabled page"
+	class="flex flex-col justify-center items-center text-center gap-2 container"
+>
+	<PendingApproval
+		class="h-64"
+	/>
+	<h1
+		class="font-bold text-5xl"
+	>
+		Pending approval
+	</h1>
+	<p>
+		Your organization has not been enabled yet. If you haven't submitted your proof of organization yet
+		contact us at <a class="text-primary underline" href="mailto:hello@giolt.com">hello@giolt.com</a>.
+	</p>
+	<p>
+		In the meanwhile, you can switch to another organization you own.
+	</p>
+	<a
+		class="btn btn-primary"
+		href="/select"
+	>
+		Switch organization
+	</a>
+</Layout>

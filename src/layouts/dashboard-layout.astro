@@ -2,7 +2,7 @@
 import "@/styles/global.css";
 import "@fontsource-variable/bricolage-grotesque";
 import Analytics from "@vercel/analytics/astro";
-import Footer from "@/components/footer.astro";
+import { Toaster } from "@/components/toaster";
 import logoDark from "@/assets/logo-dark.svg";
 import logoLight from "@/assets/logo-light.svg";
 
@@ -49,12 +49,10 @@ const isMarkdown = !!Astro.props.frontmatter;
 			<Navbar
 				enableAccountButton
 			/>
-			<main class:list={["flex-1", Astro.props.class]}>
-				<main class={`flex-1 mb-4 ${props.class} ${isMarkdown ? `${mdClassName} !container my-4` : ""}`}>
-					<slot/>
-				</main>
+			<main class={`flex-1 ${props.class ?? ""} ${isMarkdown ? `${mdClassName} !container my-4` : ""}`}>
+				<slot/>
 			</main>
-			<Footer/>
+			<Toaster client:load/>
 		</body>
 	</body>
 </html>

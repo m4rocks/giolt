@@ -1,0 +1,95 @@
+---
+import DashboardWrapper from "@/components/dashboard/wrapper";
+import { organizations } from "@/db/schema";
+import Layout from "@/layouts/dashboard-layout.astro";
+import { db } from "@/lib/db";
+import { clerkClient } from "@clerk/astro/server";
+import { eq } from "drizzle-orm";
+
+const { orgId, userId, redirectToSignIn } = Astro.locals.auth();
+
+if (!userId) {
+	return redirectToSignIn();
+}
+
+if (!orgId) {
+	return Astro.redirect("/select");
+}
+
+const org = await db
+	.select()
+	.from(organizations)
+	.where(eq(organizations.id, orgId))
+	.get();
+
+if (orgId && !org) {
+	const orgData = await clerkClient(Astro).organizations.getOrganization({
+		organizationId: orgId
+	});
+
+	await db
+		.insert(organizations)
+		.values({
+			id: orgData.id,
+			name: orgData.name,
+			slug: orgData.slug
+		})
+}
+
+if (!org) {
+	return Astro.redirect("/select");
+}
+
+if (!org.enabled) {
+	return Astro.redirect("/disabled");
+}
+---
+
+<Layout
+	title={org.name}
+	class="flex flex-col"
+>
+	<DashboardWrapper
+		org={org}
+		client:load
+	/>
+</Layout>
+
+<style is:global>
+	.cl-organizationProfile-root {
+		flex: 1;
+		width: 100%;
+		height: 100%;
+	}
+
+	.cl-organizationProfile-root > .cl-cardBox {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		box-shadow: none;
+		border: none;
+		border-radius: 0;
+	}
+
+	.cl-organizationProfile-root .cl-navbar {
+		z-index: 99;
+		width: 100%;
+	}
+
+	.cl-organizationProfile-root .cl-scrollBox {
+		height: calc(100vh - 4rem);
+	}
+
+	@media (min-width: 768px) {
+		.cl-organizationProfile-root .cl-scrollBox {
+			margin-left: calc(var(--clerk-spacing, 1rem) * 17);
+			width: calc(100vw - var(--clerk-spacing, 1rem) * 17);
+		}
+
+		.cl-organizationProfile-root .cl-navbar {
+			position: fixed;
+			height: calc(100% - 4rem);
+			max-width: calc(var(--clerk-spacing, 1rem) * 17);
+		}
+	}
+</style>

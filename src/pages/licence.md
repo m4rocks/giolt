@@ -1,6 +1,7 @@
 ---
 layout: "@/layouts/base-layout.astro"
 title: Licence
+prerender: true
 ---
 
 # Functional Source License, Version 1.1, ALv2 Future License

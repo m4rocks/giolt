@@ -88,3 +88,8 @@
 a {
 	@apply underline-offset-4;
 }
+
+@utility highlight {
+	border-radius: 85% 15% 81% 19% / 19% 86% 14% 81%;
+	@apply bg-primary text-base-100;
+}
