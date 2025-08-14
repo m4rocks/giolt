@@ -23,7 +23,7 @@ export default defineConfig({
 		webAnalytics: {
 			enabled: true,
 		},
-		isr: false
+		isr: false,
 	}),
 	security: {
 		checkOrigin: false,
