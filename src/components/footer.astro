@@ -1,4 +1,5 @@
 ---
+import CarbonBadge from "./carbon-badge.astro";
 const currentYear = new Date().getFullYear();
 ---
 
@@ -13,11 +14,14 @@ const currentYear = new Date().getFullYear();
 			</p>
 			<a
 				href="https://m4.rocks"
-				class="hover:underline text-muted-foreground"
+				class="hover:underline text-muted-foreground mb-2"
 				target="_blank"
 			>
 				Made with &hearts; by @m4rocks
 			</a>
+
+			<CarbonBadge/>
+
 			<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
 				<div>
 					<h3 class="mt-3 text-xl font-bold">
