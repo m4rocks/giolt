@@ -24,6 +24,7 @@ export default defineConfig({
 			enabled: true,
 		},
 		isr: false,
+		edgeMiddleware: true
 	}),
 	security: {
 		checkOrigin: false,

@@ -1,11 +1,10 @@
-import { VERCEL_ENV } from "astro:env/server";
 import { sequence, defineMiddleware } from "astro:middleware";
 import { clerkMiddleware } from "@clerk/astro/server";
 
 const BASE_TENANT_HOST =
-	VERCEL_ENV === "production"
+	import.meta.env.VERCEL_ENV === "production"
 		? "giolt.org"
-		: VERCEL_ENV === "preview"
+		: import.meta.env.VERCEL_ENV === "preview"
 			? "dev.giolt.org"
 			: "localhost";
 const RESERVED = new Set(["www"]);
