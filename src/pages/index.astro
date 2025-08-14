@@ -5,6 +5,8 @@ import { FaGithub as GitHubIcon } from "react-icons/fa";
 import Wave from "@/assets/wave.svg";
 import Layout from "@/layouts/base-layout.astro";
 import {
+	ClipboardIcon,
+	SproutIcon,
 	ClipboardListIcon,
 	LayoutGridIcon,
 	NotebookPenIcon,
@@ -131,6 +133,35 @@ import {
 			<GitHubIcon/>
 			See GitHub repo
 		</a>
+	</div>
+
+	<div class="container mb-16">
+		<div class="card bg-success text-success-content overflow-hidden">
+			<SproutIcon
+				class="absolute w-64 h-64 -bottom-8 -right-16 opacity-25"
+			/>
+			<div class="card-body">
+				<h2 class="card-title">
+					Environment friendly
+				</h2>
+				<p>
+					Giolt is built with sustainability in mind. We use open-source technologies and prioritize energy efficiency.
+					Our website is built to be energy-efficient and uses minimal resources, making it more than 90%
+					cleaner than all websites. Giolt generates the average amount of carbon that 1 tree would absorb
+					in a year.
+				</p>
+				<div class="card-actions">
+					<a
+						href="https://www.websitecarbon.com/website/giolt-com/"
+						target="_blank"
+						class="btn btn-outline"
+					>
+						<ClipboardIcon/>
+						See report
+					</a>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div class="container">
