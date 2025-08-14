@@ -3,6 +3,7 @@
 	"include": [".astro/types.d.ts", "**/*"],
 	"exclude": ["dist"],
 	"compilerOptions": {
+		"module": "esnext",
 		"jsx": "react-jsx",
 		"jsxImportSource": "react",
 		"baseUrl": ".",
