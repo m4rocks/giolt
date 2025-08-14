@@ -1,6 +1,7 @@
 ---
 import GioltIcon from "@/assets/logo-light.svg";
 import RosetoLogo from "@/assets/roseto.svg";
+import { FaGithub as GitHubIcon } from "react-icons/fa";
 import Wave from "@/assets/wave.svg";
 import Layout from "@/layouts/base-layout.astro";
 import {
@@ -105,6 +106,32 @@ import {
 	<Wave
 		class="*:fill-base-content w-full h-48 rotate-180"
 	/>
+
+	<div
+		style={{
+			backgroundSize: "40px 40px",
+			backgroundImage: "radial-gradient(circle, var(--color-base-content) 1px, rgba(0, 0, 0, 0) 1px)"
+		}}
+		class="container py-16 px-8 mb-16"
+	>
+		<h2
+			class="text-5xl font-bold"
+		>
+			Open-source
+		</h2>
+		<p class="mb-4">
+			Giolt is open-source and always open to contributions.
+			We welcome contributions from anyone who wants to help make Giolt better.
+		</p>
+		<a
+			href="https://github.com/m4rocks/giolt"
+			target="_blank"
+			class="btn btn-primary"
+		>
+			<GitHubIcon/>
+			See GitHub repo
+		</a>
+	</div>
 
 	<div class="container">
 		<h2
