@@ -23,7 +23,6 @@ export default defineConfig({
 		webAnalytics: {
 			enabled: true,
 		},
-		edgeMiddleware: true,
 		isr: false,
 	}),
 	security: {
@@ -61,10 +60,6 @@ export default defineConfig({
 	},
 
 	vite: {
-		build: {
-			target: 'esnext',
-			modulePreload: false
-		},
 		plugins: [tailwindcss()],
 	},
 });
