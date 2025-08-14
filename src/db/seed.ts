@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/libsql";
-import { seed, reset } from "drizzle-seed";
+import { reset, seed } from "drizzle-seed";
 import * as schema from "./schema";
 
 // interface Refine {

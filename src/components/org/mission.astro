@@ -1,0 +1,19 @@
+---
+interface Props {
+	mission: string | null;
+}
+
+const { mission } = Astro.props;
+---
+
+{mission ?
+	<div>
+		<h2 class="text-xl font-bold text-base-content/75">
+			Mission
+		</h2>
+		<div class="divider mt-0"></div>
+		<p>
+			{mission}
+		</p>
+	</div>
+: null}

@@ -1,0 +1,19 @@
+---
+interface Props {
+	about: string | null;
+}
+
+const { about } = Astro.props;
+---
+
+{about ?
+	<div>
+		<h2 class="text-xl font-bold text-base-content/75">
+			About
+		</h2>
+		<div class="divider mt-0"></div>
+		<p>
+			{about}
+		</p>
+	</div>
+: null}

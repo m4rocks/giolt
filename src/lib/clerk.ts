@@ -11,5 +11,5 @@ export const clerkTheme = {
 		colorForeground: "var(--color-base-content)",
 		colorInputBackground: "var(--color-base-200)",
 		colorInputForeground: "var(--color-base-content)",
-	}
+	},
 } satisfies Appearance;

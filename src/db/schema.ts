@@ -1,3 +1,4 @@
+import { THEMES } from "@/lib/data";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const organizations = sqliteTable("organizations", {
@@ -9,9 +10,15 @@ export const organizations = sqliteTable("organizations", {
 	about: text("about"),
 	contact: text("contact"),
 	location: text("location"),
+	theme: text("theme", { enum: THEMES }).notNull().default("light"),
 	volunteerCodeOfConduct: text("volunteer_code_of_conduct"),
-	hideGioltBranding: int("hide_giolt_branding", { mode: "boolean" }).notNull().default(false),
-	enabled: int("enabled", { mode: "boolean" }).notNull().default(false)
+	teamSectionEnabled: int("team_section_enabled", { mode: "boolean" })
+		.notNull()
+		.default(true),
+	hideGioltBranding: int("hide_giolt_branding", { mode: "boolean" })
+		.notNull()
+		.default(false),
+	enabled: int("enabled", { mode: "boolean" }).notNull().default(false),
 });
 
 export type SelectOrganizations = typeof organizations.$inferSelect;

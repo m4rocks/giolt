@@ -24,16 +24,14 @@ const org = await db
 
 if (orgId && !org) {
 	const orgData = await clerkClient(Astro).organizations.getOrganization({
-		organizationId: orgId
+		organizationId: orgId,
 	});
 
-	await db
-		.insert(organizations)
-		.values({
-			id: orgData.id,
-			name: orgData.name,
-			slug: orgData.slug
-		})
+	await db.insert(organizations).values({
+		id: orgData.id,
+		name: orgData.name,
+		slug: orgData.slug,
+	});
 }
 
 if (!org) {

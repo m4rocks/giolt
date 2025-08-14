@@ -1,0 +1,52 @@
+---
+import "@/styles/tenant.css";
+import Footer from "@/components/org/footer.astro";
+
+interface Props {
+	title: string;
+	class?: string;
+	theme: string;
+	favicon?: string;
+}
+
+// Function to determine favicon MIME type based on file extension
+function getFaviconType(faviconUrl?: string): string {
+	if (!faviconUrl) return "image/svg+xml";
+
+	const extension = faviconUrl.split(".").pop()?.toLowerCase();
+	switch (extension) {
+		case "png":
+			return "image/png";
+		case "jpg":
+		case "jpeg":
+			return "image/jpeg";
+		case "gif":
+			return "image/gif";
+		case "ico":
+			return "image/x-icon";
+		case "svg":
+			return "image/svg+xml";
+		default:
+			return "image/svg+xml";
+	}
+}
+
+const faviconUrl = Astro.props.favicon || "/favicon.svg";
+const faviconType = getFaviconType(Astro.props.favicon);
+---
+
+<html lang="en" data-theme={Astro.props.theme}>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type={faviconType} href={faviconUrl} />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{Astro.props.title}</title>
+	</head>
+	<body class="flex flex-col min-h-svh">
+		<main class="flex-1">
+			<slot/>
+		</main>
+		<Footer/>
+	</body>
+</html>

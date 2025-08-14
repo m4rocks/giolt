@@ -1,0 +1,16 @@
+---
+import { MapPinIcon } from "@lucide/astro";
+
+interface Props {
+	location: string | null;
+}
+
+const { location } = Astro.props;
+---
+
+{location ?
+	<p class="flex flex-row gap-1 justify-center">
+		<MapPinIcon/>
+		{location}
+	</p>
+: null}

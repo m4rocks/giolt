@@ -12,9 +12,9 @@
 			"**/node_modules/*",
 			"**/.astro/*",
 			"**/.wrangler/*",
+			"**/.vercel/*",
 			"**/dist/*",
-			"**/build/*",
-			"**/worker-configuration.d.ts"
+			"**/build/*"
 		]
 	},
 	"formatter": {

@@ -1,12 +1,23 @@
-import { ClerkProvider, OrganizationProfile, ClerkLoaded } from "@clerk/clerk-react";
-import { AlignLeftIcon, ArrowLeftRightIcon, HeartHandshakeIcon, HomeIcon, SquareKanbanIcon, VoteIcon } from "lucide-react";
-import Details from "./details";
-import type { SelectOrganizations } from "@/db/schema";
 import { PUBLIC_CLERK_PUBLISHABLE_KEY } from "astro:env/client";
+import type { SelectOrganizations } from "@/db/schema";
 import { clerkTheme } from "@/lib/clerk";
-import Home from "./home";
-import ComingSoon from "./coming-soon";
+import {
+	ClerkLoaded,
+	ClerkProvider,
+	OrganizationProfile,
+} from "@clerk/clerk-react";
+import {
+	ArrowLeftRightIcon,
+	HeartHandshakeIcon,
+	HomeIcon,
+	SettingsIcon,
+	SquareKanbanIcon,
+	VoteIcon,
+} from "lucide-react";
 import { useEffect, useState } from "react";
+import ComingSoon from "./coming-soon";
+import Home from "./home";
+import Settings from "./settings";
 
 export interface DashboardWrapperProps {
 	org: SelectOrganizations;
@@ -16,13 +27,11 @@ export default function DashboardWrapper(props: DashboardWrapperProps) {
 	return (
 		<ClerkProvider
 			publishableKey={PUBLIC_CLERK_PUBLISHABLE_KEY}
-			appearance={clerkTheme}
-		>
+			appearance={clerkTheme}>
 			<OrgProfileComp {...props} />
 		</ClerkProvider>
-	)
+	);
 }
-
 
 const OrgProfileComp = (props: DashboardWrapperProps) => {
 	// This hack is required only here as we are doing some heavy customization
@@ -40,45 +49,35 @@ const OrgProfileComp = (props: DashboardWrapperProps) => {
 		<ClerkLoaded>
 			<OrganizationProfile
 				afterLeaveOrganizationUrl="/select"
-				routing="hash"
-			>
+				routing="hash">
 				<OrganizationProfile.Page
 					label="Home"
 					url="/"
-					labelIcon={<HomeIcon className="size-4"/>}
-				>
-					<Home
-					org={props.org}
-					/>
+					labelIcon={<HomeIcon className="size-4" />}>
+					<Home org={props.org} />
 				</OrganizationProfile.Page>
 				<OrganizationProfile.Page
 					label="Projects"
 					url="/projects"
-					labelIcon={<SquareKanbanIcon className="size-4"/>}
-				>
+					labelIcon={<SquareKanbanIcon className="size-4" />}>
 					<ComingSoon />
 				</OrganizationProfile.Page>
 				<OrganizationProfile.Page
 					label="Polls"
 					url="/polls"
-					labelIcon={<VoteIcon className="size-4"/>}
-				>
+					labelIcon={<VoteIcon className="size-4" />}>
 					<ComingSoon />
 				</OrganizationProfile.Page>
 				<OrganizationProfile.Page
-					label="Details"
-					url="/details"
-					labelIcon={<AlignLeftIcon className="size-4"/>}
-				>
-					<Details
-					org={props.org}
-					/>
+					label="Settings"
+					url="/settings"
+					labelIcon={<SettingsIcon className="size-4" />}>
+					<Settings org={props.org} />
 				</OrganizationProfile.Page>
 				<OrganizationProfile.Page
 					label="Volunteer Code of Conduct"
 					url="/volunteer-code-of-conduct"
-					labelIcon={<HeartHandshakeIcon className="size-4"/>}
-				>
+					labelIcon={<HeartHandshakeIcon className="size-4" />}>
 					<ComingSoon />
 				</OrganizationProfile.Page>
 				<OrganizationProfile.Page label="general" />
@@ -87,9 +86,8 @@ const OrgProfileComp = (props: DashboardWrapperProps) => {
 					label="Switch organization"
 					url="/select"
 					labelIcon={<ArrowLeftRightIcon className="size-4" />}
-				>
-				</OrganizationProfile.Link>
+				/>
 			</OrganizationProfile>
 		</ClerkLoaded>
-	)
-}
+	);
+};
