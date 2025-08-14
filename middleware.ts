@@ -1,15 +1,15 @@
-import { rewrite, next } from "@vercel/functions";
+import { rewrite, next, getEnv } from "@vercel/functions";
 
 export const config = {
 	runtime: 'edge'
 };
 
-const BASE_TENANT_HOST =
-	process.env.VERCEL_ENV === "production"
-		? "giolt.org"
-		: process.env.VERCEL_ENV === "preview"
-			? "dev.giolt.org"
-			: "localhost";
+const env = getEnv();
+const BASE_TENANT_HOST = env.VERCEL_ENV === "production"
+	? "giolt.org"
+	: env.VERCEL_ENV === "preview"
+		? "dev.giolt.org"
+		: "localhost";
 const RESERVED = new Set(["www"]);
 const EXCLUDED_PATHS = ["/_image", "/_astro"];
 
