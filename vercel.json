@@ -1,4 +1,9 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
-	"trailingSlash": false
+	"trailingSlash": false,
+	"functions": {
+		"middleware.js": {
+			"runtime": "edge"
+		}
+	}
 }

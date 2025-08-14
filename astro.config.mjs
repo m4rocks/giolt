@@ -61,6 +61,10 @@ export default defineConfig({
 	},
 
 	vite: {
+		build: {
+			target: 'esnext',
+			modulePreload: false
+		},
 		plugins: [tailwindcss()],
 	},
 });

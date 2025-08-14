@@ -1,7 +1,6 @@
 import { VERCEL_ENV } from "astro:env/server";
-import { sequence } from "astro:middleware";
+import { sequence, defineMiddleware } from "astro:middleware";
 import { clerkMiddleware } from "@clerk/astro/server";
-import type { MiddlewareHandler } from "astro";
 
 const BASE_TENANT_HOST =
 	VERCEL_ENV === "production"
@@ -12,7 +11,7 @@ const BASE_TENANT_HOST =
 const RESERVED = new Set(["www"]);
 const EXCLUDED_PATHS = new Set(["/_image"]);
 
-const tenantMiddleware: MiddlewareHandler = async (ctx, next) => {
+const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 	const url = new URL(ctx.request.url);
 	const host = url.hostname;
 
@@ -44,6 +43,6 @@ const tenantMiddleware: MiddlewareHandler = async (ctx, next) => {
 	// }
 
 	return next();
-};
+});
 
 export const onRequest = sequence(tenantMiddleware, clerkMiddleware());
