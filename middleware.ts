@@ -11,7 +11,7 @@ const BASE_TENANT_HOST =
 			? "dev.giolt.org"
 			: "localhost";
 const RESERVED = new Set(["www"]);
-const EXCLUDED_PATHS = new Set(["/_image"]);
+const EXCLUDED_PATHS = ["/_image", "/_astro"];
 
 export default function middleware(request: Request) {
 	const url = new URL(request.url);
@@ -23,7 +23,7 @@ export default function middleware(request: Request) {
 		if (sub && !RESERVED.has(sub)) {
 			const alreadyMapped = url.pathname.startsWith(`/org/${sub}`);
 			if (!alreadyMapped) {
-				if (EXCLUDED_PATHS.has(url.pathname)) {
+				if (EXCLUDED_PATHS.some(path => url.pathname.startsWith(path))) {
 					return next();
 				}
 				const target = new URL(
