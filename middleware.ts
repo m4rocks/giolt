@@ -21,17 +21,14 @@ export default function middleware(request: Request) {
 		const sub = host.slice(0, -`.${BASE_TENANT_HOST}`.length);
 
 		if (sub && !RESERVED.has(sub)) {
-			const alreadyMapped = url.pathname.startsWith(`/org/${sub}`);
-			if (!alreadyMapped) {
-				if (EXCLUDED_PATHS.some(path => url.pathname.startsWith(path))) {
-					return next();
-				}
-				const target = new URL(
-					`/org/${sub}${url.pathname}${url.search}`,
-					url,
-				);
-				return rewrite(target);
+			if (EXCLUDED_PATHS.some(path => url.pathname.startsWith(path))) {
+				return next();
 			}
+			const target = new URL(
+				`/org/${sub}${url.pathname}${url.search}`,
+				url,
+			);
+			return rewrite(target);
 		}
 	}
 
