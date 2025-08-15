@@ -15,6 +15,7 @@ import {
 	SmartphoneIcon,
 	SquareKanbanIcon,
 	VoteIcon,
+Notebook,
 } from "@lucide/astro";
 ---
 
@@ -90,17 +91,86 @@ import {
 					<p>
 						Giolt will support a wide range of tools and apps to assist NGOs in their journey to achieve their goals.
 					</p>
-					<ul
-						class="space-y-1 *:flex *:flex-row *:items-center *:gap-2"
-					>
-						<li><PanelsTopLeftIcon/>Public organization page with free domain</li>
-						<li><RssIcon/>Blog posts</li>
-						<li><SquareKanbanIcon/>Project pages</li>
-						<li><SmartphoneIcon/>Hosted app for volunteers</li>
-						<li><VoteIcon/>Polls</li>
-						<li><NotebookPenIcon/>Shared team private notes</li>
-						<li><LayoutGridIcon/>and more...</li>
-					</ul>
+				</div>
+			</div>
+
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mt-8">
+				<div class="card bg-base-200 text-base-content">
+					<div class="card-body">
+						<PanelsTopLeftIcon/>
+						<h2 class="card-title">Public organization page</h2>
+						<p>
+							A customizable public page with +30 themes for your organization hosting
+							your organization's projects, blog, posts and more.
+						</p>
+					</div>
+				</div>
+				<div class="card bg-base-200 text-base-content">
+					<div class="card-body">
+						<RssIcon/>
+						<h2 class="card-title">Blog posts</h2>
+						<p>
+							Blog posts are a great way to share your organization's news, updates, and
+							announcements with your audience.
+						</p>
+					</div>
+				</div>
+				<div class="card bg-base-200 text-base-content">
+					<div class="card-body">
+						<SquareKanbanIcon/>
+						<h2 class="card-title">Project pages</h2>
+						<p>
+							Project pages are a great way to share your organization's projects with your audience.
+							Projects will be displayed on your organization's public page and volunteers track
+							your newest projects.
+						</p>
+					</div>
+				</div>
+				<div class="card bg-base-200 text-base-content">
+					<div class="card-body">
+						<NotebookPenIcon/>
+						<h2 class="card-title">Private team notes</h2>
+						<span
+							class="badge badge-outline"
+						>
+							Coming soon
+						</span>
+						<p>
+							Keep track of your organization's private notes and share
+							them across your team.
+						</p>
+					</div>
+				</div>
+				<div class="card bg-base-200 text-base-content">
+					<div class="card-body">
+						<SmartphoneIcon/>
+						<h2 class="card-title">Volunteer app</h2>
+						<span
+							class="badge badge-outline"
+						>
+							Coming soon
+						</span>
+						<p>
+							Offer your volunteers an app to see their schedule, notes, rules, location
+							travel information and more.
+						</p>
+					</div>
+				</div>
+				<div class="card bg-base-200 text-base-content">
+					<div class="card-body">
+						<VoteIcon/>
+						<h2 class="card-title">Polls</h2>
+						<span
+							class="badge badge-outline"
+						>
+							Coming soon
+						</span>
+						<p>
+							Polls are a great way to gather feedback from your volunteers and members.
+							You can create polls for various topics, such as feedback on a project or
+							suggestions for a new feature.
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -173,7 +243,7 @@ import {
 		</h2>
 		<p class="mb-2">
 			Giolt is still in very early development and everything you see is subject to change.
-			Here is a preview of what the pricing will look at.
+			Here is a preview of what the pricing will look like.
 		</p>
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 			<div class="card glass">
@@ -187,8 +257,9 @@ import {
 						<li>1 member</li>
 						<li>Volunteer Code of Conduct</li>
 						<li>Polls</li>
-						<li>Project posts and announcements</li>
-						<li>Project dashboard for volunteers</li>
+						<li>Project pages</li>
+						<li>Blog posts</li>
+						<li>Project app for volunteers</li>
 					</ul>
 					<button
 						disabled
