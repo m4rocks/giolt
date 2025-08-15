@@ -57,6 +57,18 @@ if (!post) {
 				name="title"
 				placeholder="Blog title"
 				value={post.title}
+				required
+			/>
+
+			<label for="description" class="label">
+				Description
+			</label>
+			<input
+				class="input w-full max-w-128"
+				name="description"
+				placeholder="Blog description"
+				value={post.description}
+				required
 			/>
 
 			<label for="draft" class="label">

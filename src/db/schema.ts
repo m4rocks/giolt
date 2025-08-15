@@ -27,6 +27,7 @@ export type InsertOrganizations = typeof organizations.$inferInsert;
 export const blogPosts = sqliteTable("blog_posts", {
 	id: int("id").primaryKey().unique(),
 	title: text("title").notNull(),
+	description: text("description").notNull(),
 	content: text("content").notNull().default(""),
 	draft: int("draft", { mode: "boolean" }).notNull().default(true),
 	organizationId: text("organization_id")

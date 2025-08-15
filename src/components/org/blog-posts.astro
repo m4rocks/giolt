@@ -30,7 +30,18 @@ const posts = await db
 					href={`/blog/${post.id}`}
 					class="list-row bg-base-100 hover:brightness-110 transition-all"
 				>
-					{post.title}
+					<div>
+						<p
+							class="font-bold"
+						>
+							{post.title}
+						</p>
+						<p
+							class="text-base-content/75"
+						>
+							{post.description}
+						</p>
+					</div>
 				</a>
 			))}
 		</div>

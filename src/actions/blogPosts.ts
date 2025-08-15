@@ -9,6 +9,7 @@ export const blog = {
 		accept: "form",
 		input: z.object({
 			title: z.string(),
+			description: z.string(),
 		}),
 		handler: async (input, ctx) => {
 			const { orgId, userId } = ctx.locals.auth();
@@ -32,6 +33,7 @@ export const blog = {
 					.insert(blogPosts)
 					.values({
 						title: input.title,
+						description: input.description,
 						organizationId: orgId,
 					})
 					.returning()
@@ -49,6 +51,7 @@ export const blog = {
 		input: z.object({
 			id: z.string(),
 			title: z.string(),
+			description: z.string(),
 			content: z.string(),
 			draft: z.enum(["on"]).optional(),
 		}),
@@ -74,6 +77,7 @@ export const blog = {
 					.update(blogPosts)
 					.set({
 						title: input.title,
+						description: input.description,
 						content: input.content,
 						draft: input.draft === "on",
 					})

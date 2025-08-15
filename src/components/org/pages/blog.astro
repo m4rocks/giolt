@@ -15,6 +15,11 @@ const { post } = Astro.props;
 	>
 		{post.title}
 	</h1>
+	<p
+		class="text-base-content/75 mb-4"
+	>
+		{post.description}
+	</p>
 	<div
 		set:html={post.content}
 		class={mdClassName}
