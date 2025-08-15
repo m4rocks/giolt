@@ -18,7 +18,10 @@ export default defineConfig({
 		react(),
 		sitemap(),
 	],
-	site: "https://giolt.com",
+	site:
+		process.env.VERCEL_ENV === "production"
+			? "https://giolt.com"
+			: "https://next.giolt.com",
 	adapter: vercel({
 		webAnalytics: {
 			enabled: true,
