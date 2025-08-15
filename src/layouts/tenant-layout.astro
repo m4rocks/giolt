@@ -1,12 +1,14 @@
 ---
 import "@/styles/tenant.css";
 import Footer from "@/components/org/footer.astro";
+import Navbar from "@/components/org/navbar.astro";
 
 interface Props {
 	title: string;
 	class?: string;
 	theme: string;
 	favicon?: string;
+	navbar?: boolean;
 }
 
 // Function to determine favicon MIME type based on file extension
@@ -44,6 +46,12 @@ const faviconType = getFaviconType(Astro.props.favicon);
 		<title>{Astro.props.title}</title>
 	</head>
 	<body class="flex flex-col min-h-svh">
+		{Astro.props.navbar ?
+			<Navbar
+				logoUrl={Astro.props.favicon}
+				name={Astro.props.title}
+			/>
+		: null}
 		<main class="flex-1">
 			<slot/>
 		</main>

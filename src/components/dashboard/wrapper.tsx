@@ -1,5 +1,5 @@
 import { PUBLIC_CLERK_PUBLISHABLE_KEY } from "astro:env/client";
-import type { SelectOrganizations } from "@/db/schema";
+import type { SelectBlogPosts, SelectOrganizations } from "@/db/schema";
 import { clerkTheme } from "@/lib/clerk";
 import {
 	ClerkLoaded,
@@ -10,17 +10,20 @@ import {
 	ArrowLeftRightIcon,
 	HeartHandshakeIcon,
 	HomeIcon,
+	RssIcon,
 	SettingsIcon,
 	SquareKanbanIcon,
 	VoteIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import Blog from "./blog";
 import ComingSoon from "./coming-soon";
 import Home from "./home";
 import Settings from "./settings";
 
 export interface DashboardWrapperProps {
 	org: SelectOrganizations;
+	blog: SelectBlogPosts[];
 }
 
 export default function DashboardWrapper(props: DashboardWrapperProps) {
@@ -61,6 +64,12 @@ const OrgProfileComp = (props: DashboardWrapperProps) => {
 					url="/projects"
 					labelIcon={<SquareKanbanIcon className="size-4" />}>
 					<ComingSoon />
+				</OrganizationProfile.Page>
+				<OrganizationProfile.Page
+					label="Blog"
+					url="/blog"
+					labelIcon={<RssIcon className="size-4" />}>
+					<Blog orgId={props.org.id} blog={props.blog} />
 				</OrganizationProfile.Page>
 				<OrganizationProfile.Page
 					label="Polls"

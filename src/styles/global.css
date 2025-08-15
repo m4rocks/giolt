@@ -93,3 +93,12 @@ a {
 	border-radius: 85% 15% 81% 19% / 19% 86% 14% 81%;
 	@apply bg-primary text-base-100;
 }
+
+/* Quill Editor */
+.quill > .ql-container > .ql-editor:not(.ql-blank) {
+	@apply prose dark:prose-invert prose-neutral prose-headings:font-black prose-h1:text-5xl prose-headings:mb-4 prose-li:my-0;
+}
+
+.ql-editor.ql-blank::before {
+	@apply text-base-content/75;
+}

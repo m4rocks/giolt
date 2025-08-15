@@ -5,10 +5,9 @@ import { THEMES } from "@/lib/data";
 import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 
-export const orgs = {
+export const currentOrg = {
 	update: defineAction({
 		input: z.object({
-			orgId: z.string(),
 			about: z.string().optional(),
 			mission: z.string().optional(),
 			location: z.string().optional(),
@@ -25,10 +24,10 @@ export const orgs = {
 				});
 			}
 
-			if (!orgId || input.orgId !== orgId) {
+			if (!orgId) {
 				throw new ActionError({
 					code: "BAD_REQUEST",
-					message: "Organization ID is required or is not selected",
+					message: "Organization ID is not selected",
 				});
 			}
 

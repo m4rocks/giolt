@@ -25,6 +25,8 @@ import { mdClassName } from "@/lib/markdown";
 interface Props {
 	class?: string;
 	title?: string;
+	returnButton?: string;
+	returnText?: string;
 	frontmatter?: Omit<Props, "frontmatter">;
 }
 
@@ -58,6 +60,8 @@ const isMarkdown = !!Astro.props.frontmatter;
 		<body class="flex flex-col min-h-svh">
 			<Navbar
 				enableAccountButton
+				returnButton={props.returnButton}
+				returnText={props.returnText}
 			/>
 			<main class={`flex-1 ${props.class ?? ""} ${isMarkdown ? `${mdClassName} !container my-4` : ""}`}>
 				<slot/>

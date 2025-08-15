@@ -1,6 +1,6 @@
 ---
 import DashboardWrapper from "@/components/dashboard/wrapper";
-import { organizations } from "@/db/schema";
+import { blogPosts, organizations } from "@/db/schema";
 import Layout from "@/layouts/dashboard-layout.astro";
 import { db } from "@/lib/db";
 import { clerkClient } from "@clerk/astro/server";
@@ -16,7 +16,7 @@ if (!orgId) {
 	return Astro.redirect("/select");
 }
 
-const org = await db
+let org = await db
 	.select()
 	.from(organizations)
 	.where(eq(organizations.id, orgId))
@@ -27,12 +27,22 @@ if (orgId && !org) {
 		organizationId: orgId,
 	});
 
-	await db.insert(organizations).values({
-		id: orgData.id,
-		name: orgData.name,
-		slug: orgData.slug,
-	});
+	org = await db
+		.insert(organizations)
+		.values({
+			id: orgData.id,
+			name: orgData.name,
+			slug: orgData.slug,
+		})
+		.returning()
+		.then((data) => data[0]);
 }
+
+const blog = await db
+	.select()
+	.from(blogPosts)
+	.where(eq(blogPosts.organizationId, orgId))
+	.all();
 
 if (!org) {
 	return Astro.redirect("/select");
@@ -49,6 +59,7 @@ if (!org.enabled) {
 >
 	<DashboardWrapper
 		org={org}
+		blog={blog}
 		client:only="react"
 	/>
 </Layout>

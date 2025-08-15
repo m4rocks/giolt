@@ -1,0 +1,45 @@
+---
+interface Props {
+	logoUrl?: string;
+	name: string;
+	buttons?: {
+		text: string;
+		href: string;
+		external?: boolean;
+	}[];
+}
+
+const { logoUrl, name, buttons = [] } = Astro.props;
+---
+
+<div class="navbar"></div>
+
+<nav
+	class="navbar fixed bg-base-100 shadow-sm z-50 px-4"
+>
+	<div class="flex-1 flex flex-row items-center gap-1">
+		<a
+			href="/"
+			aria-label="Logo"
+			class="btn btn-ghost"
+		>
+			<img
+				class="size-8 rounded-box"
+				src={logoUrl}
+				alt="Logo"
+			/>
+			{name}
+		</a>
+	</div>
+	<div class="flex-none flex flex-row items-center gap-2">
+		{buttons.map((b) => (
+			<a
+				href={b.href}
+				target={b.external ? "_blank" : "_self"}
+				class="btn btn-ghost"
+			>
+				{b.text}
+			</a>
+		))}
+	</div>
+</nav>

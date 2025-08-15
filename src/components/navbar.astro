@@ -12,6 +12,7 @@ interface Props {
 		external?: boolean;
 	}[];
 	returnButton?: string;
+	returnText?: string;
 	enableAccountButton?: boolean;
 }
 
@@ -21,6 +22,7 @@ const {
 	buttons = [],
 	enableAccountButton = false,
 	returnButton = undefined,
+	returnText = "Back home",
 } = Astro.props;
 ---
 
@@ -33,13 +35,14 @@ const {
 		{returnButton ?
 			<a
 				href={returnButton}
-				class="btn btn-ghost btn-circle"
+				class="btn btn-ghost"
 				aria-label="Return"
 			>
 				<ArrowLeftIcon/>
+				{returnText}
 			</a>
 		: null}
-		{logo ?
+		{logo && !returnButton ?
 			<a
 				href={logoHref}
 				aria-label="Logo"

@@ -1,0 +1,99 @@
+---
+import { actions } from "astro:actions";
+import Editor from "@/components/blog/editor";
+import { blogPosts } from "@/db/schema";
+import Layout from "@/layouts/dashboard-layout.astro";
+import { db } from "@/lib/db";
+import { and, eq } from "drizzle-orm";
+
+const { orgId, orgSlug, userId, redirectToSignIn } = Astro.locals.auth();
+const { id } = Astro.params;
+
+if (!userId) {
+	return redirectToSignIn();
+}
+
+if (!orgId) {
+	return Astro.redirect("/select");
+}
+
+if (!id) {
+	return Astro.redirect("/dashboard#/blog");
+}
+
+const post = await db
+	.select()
+	.from(blogPosts)
+	.where(
+		and(
+			eq(blogPosts.id, Number.parseInt(id)),
+			eq(blogPosts.organizationId, orgId),
+		),
+	)
+	.get();
+
+if (!post) {
+	return Astro.redirect("/dashboard#/blog");
+}
+---
+
+<Layout
+	title="Blog"
+	returnButton="/dashboard#/blog"
+	returnText="Back to dashboard"
+	class="container"
+>
+	<form
+		method="POST"
+		action={actions.blog.update}
+	>
+		<fieldset class="fieldset">
+			<input name="id" value={id} type="hidden" />
+			<label for="title" class="label">
+				Title
+			</label>
+			<input
+				class="input w-full max-w-128"
+				name="title"
+				placeholder="Blog title"
+				value={post.title}
+			/>
+
+			<label for="draft" class="label">
+				<input
+					class="toggle"
+					name="draft"
+					type="checkbox"
+					checked={post.draft}
+				/>
+				Draft
+			</label>
+
+			<div
+				class="flex flex-row gap-2"
+			>
+				<button
+					class="btn btn-primary w-max"
+					type="submit"
+				>
+					Update
+				</button>
+				<a
+					class={"btn btn-soft w-max" + (post.draft ? " btn-disabled" : "")}
+					href={post.draft ? undefined : `https://${orgSlug}.giolt.org/blog/${id}`}
+					target="_blank"
+					aria-disabled={post.draft}
+				>
+					Preview
+				</a>
+			</div>
+		</fieldset>
+
+		<div class="divider mb-0"></div>
+
+		<Editor
+			client:only
+			content={post.content}
+		/>
+	</form>
+</Layout>

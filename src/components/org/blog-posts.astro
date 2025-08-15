@@ -1,0 +1,38 @@
+---
+import { blogPosts } from "@/db/schema";
+import { db } from "@/lib/db";
+import { and, eq } from "drizzle-orm";
+
+interface Props {
+	orgId: string;
+}
+
+const { orgId } = Astro.props;
+
+const posts = await db
+	.select()
+	.from(blogPosts)
+	.where(and(eq(blogPosts.organizationId, orgId), eq(blogPosts.draft, false)))
+	.limit(3);
+---
+
+{posts.length > 0 ?
+	<div>
+		<h2 class="text-xl font-bold text-base-content/75">
+			Blog posts
+		</h2>
+		<div class="divider my-0"></div>
+		<ul
+			class="list"
+		>
+			{posts.map((post) => (
+				<a
+					href={`/blog/${post.id}`}
+					class="list-row bg-base-100 hover:brightness-110 transition-all"
+				>
+					{post.title}
+				</a>
+			))}
+		</div>
+	</ul>
+: null}

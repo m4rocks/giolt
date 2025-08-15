@@ -1,0 +1,22 @@
+---
+import type { SelectBlogPosts, SelectOrganizations } from "@/db/schema";
+import { mdClassName } from "@/lib/markdown";
+
+interface Props {
+	post: SelectBlogPosts;
+}
+
+const { post } = Astro.props;
+---
+
+<div class="container">
+	<h1
+		class="text-5xl md:text-7xl font:bold"
+	>
+		{post.title}
+	</h1>
+	<div
+		set:html={post.content}
+		class={mdClassName}
+	></div>
+</div>

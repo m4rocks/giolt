@@ -23,3 +23,16 @@ export const organizations = sqliteTable("organizations", {
 
 export type SelectOrganizations = typeof organizations.$inferSelect;
 export type InsertOrganizations = typeof organizations.$inferInsert;
+
+export const blogPosts = sqliteTable("blog_posts", {
+	id: int("id").primaryKey().unique(),
+	title: text("title").notNull(),
+	content: text("content").notNull().default(""),
+	draft: int("draft", { mode: "boolean" }).notNull().default(true),
+	organizationId: text("organization_id")
+		.notNull()
+		.references(() => organizations.id),
+});
+
+export type SelectBlogPosts = typeof blogPosts.$inferSelect;
+export type InsertBlogPosts = typeof blogPosts.$inferInsert;

@@ -1,6 +1,7 @@
 ---
 import type { SelectOrganizations } from "@/db/schema";
 import About from "../about.astro";
+import BlogPosts from "../blog-posts.astro";
 import Location from "../location.astro";
 import Mission from "../mission.astro";
 import Team from "../team.astro";
@@ -33,6 +34,10 @@ const { organization } = Astro.props;
 </div>
 
 <div class="container space-y-8">
+	<BlogPosts
+		orgId={organization.id}
+	/>
+
 	<About
 		about={organization.about}
 	/>

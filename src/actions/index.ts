@@ -1,5 +1,7 @@
-import { orgs } from "./organizations";
+import { blog } from "./blogPosts";
+import { currentOrg } from "./organizations";
 
 export const server = {
-	orgs,
+	blog,
+	currentOrg,
 };

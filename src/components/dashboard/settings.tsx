@@ -23,9 +23,8 @@ export default function Details(props: DetailsProps) {
 
 		setLoading(true);
 
-		await actions.orgs
+		await actions.currentOrg
 			.update({
-				orgId: props.org.id,
 				about,
 				mission,
 				location,

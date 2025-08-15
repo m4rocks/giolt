@@ -1,0 +1,54 @@
+---
+import { actions } from "astro:actions";
+import Layout from "@/layouts/dashboard-layout.astro";
+
+const { orgId, userId, redirectToSignIn } = Astro.locals.auth();
+
+if (!userId) {
+	return redirectToSignIn();
+}
+
+if (!orgId) {
+	return Astro.redirect("/select");
+}
+
+const result = Astro.getActionResult(actions.blog.create);
+if (result && !result.error) {
+	return Astro.redirect(`/blog/${result.data.id}`);
+}
+---
+
+<Layout
+	title="Blog"
+	returnButton="/dashboard#/blog"
+	returnText="Back to dashboard"
+	class="container"
+>
+	<h1
+		class="text-5xl md:text-7xl font-bold"
+	>
+		Create blog
+	</h1>
+	<form
+		action={actions.blog.create}
+		method="POST"
+	>
+		<fieldset class="fieldset max-w-128">
+			<label for="title" class="label">
+				Title
+			</label>
+			<input
+				class="input w-full"
+				name="title"
+				placeholder="Blog title"
+			/>
+
+			<button
+				class="btn btn-primary w-max"
+				type="submit"
+			>
+				Create
+			</button>
+		</fieldset>
+	</form>
+</Layout>
