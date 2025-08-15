@@ -1,0 +1,29 @@
+---
+import { THEMES } from "@/lib/data";
+import "@/styles/daisyui-themes.css";
+import { BuildingIcon, MapPinIcon } from "@lucide/astro";
+---
+
+<div class="flex flex-row flex-wrap items-center justify-center gap-4">
+	{THEMES.map((theme) => (
+		<div
+			data-theme={theme}
+			class="bg-base-100 rounded-md border shadow"
+		>
+			<div class="bg-gradient-to-br from-accent/25 via-transparent pl-4 pr-16 py-4 rounded-md">
+				<div class="w-8 h-8 rounded-box bg-gray-500 flex justify-center items-center text-white border">
+					<BuildingIcon/>
+				</div>
+				<p
+					class="font-bold"
+				>
+					Your NGO
+				</p>
+				<p class="flex flex-row items-center gap-1 text-sm">
+					<MapPinIcon class="w-4 h-4"/>
+					Europe
+				</p>
+			</div>
+		</div>
+	))}
+</div>
