@@ -31,7 +31,7 @@ export const blogPosts = sqliteTable("blog_posts", {
 	description: text("description").notNull().default(""),
 	content: text("content").notNull().default(""),
 	writerId: text("writer_id"),
-	readingTime: int("reading_time").notNull().default(0),
+	readingTime: int("reading_time").notNull().default(1),
 	date: int("date", { mode: "timestamp" })
 		.notNull()
 		.default(sql`(current_timestamp)`),
