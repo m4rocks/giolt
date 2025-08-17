@@ -57,8 +57,8 @@ export const blog = {
 			description: z.string(),
 			writer_id: z.string().optional(),
 			date: z.string(),
-			content: z.string(),
 			draft: z.enum(["on"]).optional(),
+			content: z.string(),
 		}),
 		handler: async (input, ctx) => {
 			const { orgId, userId } = ctx.locals.auth();
@@ -95,6 +95,7 @@ export const blog = {
 
 			const readingTime = calculateReadingTimeFromHTML(input.content);
 			const date = new Date(input.date);
+
 
 			try {
 				await db
