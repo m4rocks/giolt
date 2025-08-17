@@ -1,9 +1,12 @@
 ---
 import "@/styles/global.css";
 import "@fontsource-variable/bricolage-grotesque";
+import { getImage } from "astro:assets";
 import logoDark from "@/assets/logo-dark.svg";
 import logoLight from "@/assets/logo-light.svg";
 import Footer from "@/components/footer.astro";
+import Navbar from "@/components/navbar.astro";
+import { mdClassName } from "@/lib/content";
 import Analytics from "@vercel/analytics/astro";
 
 const faviconDark = await getImage({
@@ -18,9 +21,6 @@ const faviconLight = await getImage({
 	width: 32,
 	height: 32,
 });
-import { getImage } from "astro:assets";
-import Navbar from "@/components/navbar.astro";
-import { mdClassName } from "@/lib/markdown";
 
 interface Props {
 	class?: string;

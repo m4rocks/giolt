@@ -1,7 +1,7 @@
 ---
 import type { SelectBlogPosts, SelectOrganizations } from "@/db/schema";
-import { mdClassName } from "@/lib/markdown";
-import BlogWriter from "../blog-writer.astro";
+import { mdClassName } from "@/lib/content";
+import BlogDetails from "../blog-details.astro";
 
 interface Props {
 	orgId: string;
@@ -22,9 +22,11 @@ const { post, orgId } = Astro.props;
 	>
 		{post.description}
 	</p>
-	<BlogWriter
+	<BlogDetails
 		orgId={orgId}
+		readingTime={post.readingTime}
 		writerId={post.writerId}
+		date={post.date}
 	/>
 	<div
 		set:html={post.content}

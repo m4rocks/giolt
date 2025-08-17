@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro:schema";
 import { blogPosts } from "@/db/schema";
+import { calculateReadingTimeFromHTML } from "@/lib/content";
 import { db } from "@/lib/db";
 import { clerkClient } from "@clerk/astro/server";
 import type { APIContext } from "astro";
@@ -55,6 +56,7 @@ export const blog = {
 			title: z.string(),
 			description: z.string(),
 			writer_id: z.string().optional(),
+			date: z.string(),
 			content: z.string(),
 			draft: z.enum(["on"]).optional(),
 		}),
@@ -91,6 +93,9 @@ export const blog = {
 				}
 			}
 
+			const readingTime = calculateReadingTimeFromHTML(input.content);
+			const date = new Date(input.date);
+
 			try {
 				await db
 					.update(blogPosts)
@@ -100,6 +105,8 @@ export const blog = {
 						content: input.content,
 						writerId: input.writer_id ?? null,
 						draft: input.draft === "on",
+						date,
+						readingTime,
 					})
 					.where(
 						and(

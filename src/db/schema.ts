@@ -1,4 +1,5 @@
 import { THEMES } from "@/lib/data";
+import { sql } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const organizations = sqliteTable("organizations", {
@@ -30,6 +31,10 @@ export const blogPosts = sqliteTable("blog_posts", {
 	description: text("description").notNull().default(""),
 	content: text("content").notNull().default(""),
 	writerId: text("writer_id"),
+	readingTime: int("reading_time").notNull().default(0),
+	date: int("date", { mode: "timestamp" })
+		.notNull()
+		.default(sql`(current_timestamp)`),
 	draft: int("draft", { mode: "boolean" }).notNull().default(true),
 	organizationId: text("organization_id")
 		.notNull()

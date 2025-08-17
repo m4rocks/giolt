@@ -2,6 +2,7 @@
 import { blogPosts } from "@/db/schema";
 import { db } from "@/lib/db";
 import { and, eq } from "drizzle-orm";
+import BlogDetails from "./blog-details.astro";
 
 interface Props {
 	orgId: string;
@@ -32,15 +33,21 @@ const posts = await db
 				>
 					<div>
 						<p
-							class="font-bold"
+							class="text-xl font-bold"
 						>
 							{post.title}
 						</p>
 						<p
-							class="text-base-content/75"
+							class="text-base-content/75 mb-2"
 						>
 							{post.description}
 						</p>
+						<BlogDetails
+							orgId={orgId}
+							writerId={post.writerId}
+							readingTime={post.readingTime}
+							date={post.date}
+						/>
 					</div>
 				</a>
 			))}

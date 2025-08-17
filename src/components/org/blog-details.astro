@@ -4,6 +4,8 @@ import { type OrganizationMembership, clerkClient } from "@clerk/astro/server";
 interface Props {
 	orgId: string;
 	writerId: string | null;
+	readingTime: number;
+	date: Date;
 }
 
 let teamMember: OrganizationMembership | null = null;
@@ -28,16 +30,30 @@ if (Astro.props.writerId) {
 }
 ---
 
-{teamMember ?
-	<div
-		class="flex items-center gap-2"
-	>
+<div
+	class="flex items-center gap-2"
+>
+
+	{teamMember ?
 		<img
 			src={teamMember.publicUserData?.imageUrl}
 			class="w-6 h-6 rounded-full"
 		/>
-		<p>
-			{`${teamMember.publicUserData?.firstName} ${teamMember.publicUserData?.lastName}`}
+	: null}
+	<div>
+		{teamMember ?
+			<p>
+				{`${teamMember.publicUserData?.firstName} ${teamMember.publicUserData?.lastName}`}
+			</p>
+		: null}
+		<p class="text-sm text-base-content/75">
+			{new Date(Astro.props.date).toLocaleDateString("en-US", {
+				month: "short",
+				day: "numeric",
+				year: "numeric",
+			})}
+			&middot;
+			{Astro.props.readingTime} min read
 		</p>
 	</div>
-: null}
+</div>

@@ -96,6 +96,18 @@ if (!post) {
 				))}
 			</select>
 
+			<label for="date" class="label">
+				Date
+			</label>
+			<input
+				class="input w-full max-w-128"
+				name="date"
+				placeholder="Date"
+				type="date"
+				value={new Date(post.date).toISOString().slice(0, 10)}
+				required
+			/>
+
 			<label for="draft" class="label">
 				<input
 					class="toggle"
