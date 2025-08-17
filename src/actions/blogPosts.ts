@@ -2,9 +2,9 @@ import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro:schema";
 import { blogPosts } from "@/db/schema";
 import { db } from "@/lib/db";
-import { and, eq } from "drizzle-orm";
 import { clerkClient } from "@clerk/astro/server";
 import type { APIContext } from "astro";
+import { and, eq } from "drizzle-orm";
 
 export const blog = {
 	create: defineAction({
@@ -77,8 +77,10 @@ export const blog = {
 
 			const teamMembers = await clerkClient(ctx as APIContext)
 				.organizations.getOrganizationMembershipList({
-					organizationId: orgId
-				}).then((data) => data.data).then((data) => data.map(d => d.id));
+					organizationId: orgId,
+				})
+				.then((data) => data.data)
+				.then((data) => data.map((d) => d.id));
 
 			if (input.writer_id) {
 				if (!teamMembers.includes(input.writer_id)) {

@@ -4,8 +4,8 @@ import Editor from "@/components/blog/editor";
 import { blogPosts } from "@/db/schema";
 import Layout from "@/layouts/dashboard-layout.astro";
 import { db } from "@/lib/db";
-import { and, eq } from "drizzle-orm";
 import { clerkClient } from "@clerk/astro/server";
+import { and, eq } from "drizzle-orm";
 
 const { orgId, orgSlug, userId, redirectToSignIn } = Astro.locals.auth();
 const { id } = Astro.params;
@@ -33,10 +33,11 @@ const post = await db
 	)
 	.get();
 
-const teamMembers = await clerkClient(Astro)
-	.organizations.getOrganizationMembershipList({
-		organizationId: orgId
-	});
+const teamMembers = await clerkClient(
+	Astro,
+).organizations.getOrganizationMembershipList({
+	organizationId: orgId,
+});
 
 if (!post) {
 	return Astro.redirect("/dashboard#/blog");

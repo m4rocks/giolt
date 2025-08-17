@@ -1,5 +1,5 @@
 ---
-import { clerkClient, type OrganizationMembership } from '@clerk/astro/server';
+import { type OrganizationMembership, clerkClient } from "@clerk/astro/server";
 
 interface Props {
 	orgId: string;
@@ -11,14 +11,16 @@ let teamMember: OrganizationMembership | null = null;
 if (Astro.props.writerId) {
 	teamMember = await clerkClient(Astro)
 		.organizations.getOrganizationMembershipList({
-			organizationId: Astro.props.orgId
+			organizationId: Astro.props.orgId,
 		})
 		.then((memberships) => {
-			return memberships.data.find((membership) => membership.id === Astro.props.writerId);
+			return memberships.data.find(
+				(membership) => membership.id === Astro.props.writerId,
+			);
 		})
 		.then((teamMember) => {
 			if (!teamMember) {
-				console.error('Team member not found');
+				console.error("Team member not found");
 				return null;
 			}
 			return teamMember;

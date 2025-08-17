@@ -19,8 +19,12 @@ export default function Blog(props: BlogProps) {
 					? props.blog.map((blog) => (
 							<li className="list-row" key={blog.id}>
 								<div className="list-col-grow">
-									<p className="text-lg font-bold">{blog.title}</p>
-									<p className="text-base-content/75">{blog.description}</p>
+									<p className="text-lg font-bold">
+										{blog.title}
+									</p>
+									<p className="text-base-content/75">
+										{blog.description}
+									</p>
 								</div>
 								<a
 									className="btn btn-primary"
