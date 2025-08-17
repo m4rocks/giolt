@@ -5,6 +5,7 @@ import { blogPosts } from "@/db/schema";
 import Layout from "@/layouts/dashboard-layout.astro";
 import { db } from "@/lib/db";
 import { and, eq } from "drizzle-orm";
+import { clerkClient } from "@clerk/astro/server";
 
 const { orgId, orgSlug, userId, redirectToSignIn } = Astro.locals.auth();
 const { id } = Astro.params;
@@ -31,6 +32,11 @@ const post = await db
 		),
 	)
 	.get();
+
+const teamMembers = await clerkClient(Astro)
+	.organizations.getOrganizationMembershipList({
+		organizationId: orgId
+	});
 
 if (!post) {
 	return Astro.redirect("/dashboard#/blog");
@@ -70,6 +76,24 @@ if (!post) {
 				value={post.description}
 				required
 			/>
+
+			<label for="writer_id" class="label">
+				Writer
+			</label>
+			<select
+				name="writer_id"
+				class="select w-full max-w-128"
+			>
+				<option value="">None</option>
+				{teamMembers.data.map((t) => (
+					<option
+						value={t.id}
+						selected={t.id === post.writerId}
+					>
+						{`${t.publicUserData?.firstName} ${t.publicUserData?.lastName}`}
+					</option>
+				))}
+			</select>
 
 			<label for="draft" class="label">
 				<input

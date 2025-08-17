@@ -1,12 +1,14 @@
 ---
 import type { SelectBlogPosts, SelectOrganizations } from "@/db/schema";
 import { mdClassName } from "@/lib/markdown";
+import BlogWriter from "../blog-writer.astro";
 
 interface Props {
+	orgId: string;
 	post: SelectBlogPosts;
 }
 
-const { post } = Astro.props;
+const { post, orgId } = Astro.props;
 ---
 
 <div class="container">
@@ -16,12 +18,16 @@ const { post } = Astro.props;
 		{post.title}
 	</h1>
 	<p
-		class="text-base-content/75 mb-4"
+		class="text-base-content/75 mb-2"
 	>
 		{post.description}
 	</p>
+	<BlogWriter
+		orgId={orgId}
+		writerId={post.writerId}
+	/>
 	<div
 		set:html={post.content}
-		class={mdClassName}
+		class={`${mdClassName} mt-4`}
 	></div>
 </div>

@@ -1,0 +1,41 @@
+---
+import { clerkClient, type OrganizationMembership } from '@clerk/astro/server';
+
+interface Props {
+	orgId: string;
+	writerId: string | null;
+}
+
+let teamMember: OrganizationMembership | null = null;
+
+if (Astro.props.writerId) {
+	teamMember = await clerkClient(Astro)
+		.organizations.getOrganizationMembershipList({
+			organizationId: Astro.props.orgId
+		})
+		.then((memberships) => {
+			return memberships.data.find((membership) => membership.id === Astro.props.writerId);
+		})
+		.then((teamMember) => {
+			if (!teamMember) {
+				console.error('Team member not found');
+				return null;
+			}
+			return teamMember;
+		});
+}
+---
+
+{teamMember ?
+	<div
+		class="flex items-center gap-2"
+	>
+		<img
+			src={teamMember.publicUserData?.imageUrl}
+			class="w-6 h-6 rounded-full"
+		/>
+		<p>
+			{`${teamMember.publicUserData?.firstName} ${teamMember.publicUserData?.lastName}`}
+		</p>
+	</div>
+: null}

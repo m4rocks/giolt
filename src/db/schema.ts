@@ -29,6 +29,7 @@ export const blogPosts = sqliteTable("blog_posts", {
 	title: text("title").notNull(),
 	description: text("description").notNull(),
 	content: text("content").notNull().default(""),
+	writerId: text("writer_id"),
 	draft: int("draft", { mode: "boolean" }).notNull().default(true),
 	organizationId: text("organization_id")
 		.notNull()

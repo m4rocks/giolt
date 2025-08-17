@@ -3,6 +3,8 @@ import { z } from "astro:schema";
 import { blogPosts } from "@/db/schema";
 import { db } from "@/lib/db";
 import { and, eq } from "drizzle-orm";
+import { clerkClient } from "@clerk/astro/server";
+import type { APIContext } from "astro";
 
 export const blog = {
 	create: defineAction({
@@ -52,6 +54,7 @@ export const blog = {
 			id: z.string(),
 			title: z.string(),
 			description: z.string(),
+			writer_id: z.string().optional(),
 			content: z.string(),
 			draft: z.enum(["on"]).optional(),
 		}),
@@ -72,6 +75,20 @@ export const blog = {
 				});
 			}
 
+			const teamMembers = await clerkClient(ctx as APIContext)
+				.organizations.getOrganizationMembershipList({
+					organizationId: orgId
+				}).then((data) => data.data).then((data) => data.map(d => d.id));
+
+			if (input.writer_id) {
+				if (!teamMembers.includes(input.writer_id)) {
+					throw new ActionError({
+						code: "FORBIDDEN",
+						message: "User is not a member of the organization",
+					});
+				}
+			}
+
 			try {
 				await db
 					.update(blogPosts)
@@ -79,6 +96,7 @@ export const blog = {
 						title: input.title,
 						description: input.description,
 						content: input.content,
+						writerId: input.writer_id ?? null,
 						draft: input.draft === "on",
 					})
 					.where(
