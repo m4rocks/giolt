@@ -10,6 +10,7 @@ import {
 	ArrowLeftRightIcon,
 	HeartHandshakeIcon,
 	HomeIcon,
+	ReceiptTextIcon,
 	RssIcon,
 	SettingsIcon,
 	SquareKanbanIcon,
@@ -91,6 +92,11 @@ const OrgProfileComp = (props: DashboardWrapperProps) => {
 				</OrganizationProfile.Page>
 				<OrganizationProfile.Page label="general" />
 				<OrganizationProfile.Page label="members" />
+				<OrganizationProfile.Link
+					label="Billing"
+					url="/billing"
+					labelIcon={<ReceiptTextIcon className="size-4" />}
+				/>
 				<OrganizationProfile.Link
 					label="Switch organization"
 					url="/select"

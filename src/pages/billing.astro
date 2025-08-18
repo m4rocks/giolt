@@ -1,0 +1,104 @@
+---
+import { organizations } from "@/db/schema";
+import Layout from "@/layouts/dashboard-layout.astro";
+import { protectRoute } from "@/lib/clerk";
+import { db } from "@/lib/db";
+import { polar } from "@/lib/polar";
+import { eq } from "drizzle-orm";
+
+const { orgId } = Astro.locals.auth();
+
+const res = await protectRoute(Astro, {
+	needsSubscription: false,
+});
+if (res) return res;
+
+const org = await db
+	.select()
+	.from(organizations)
+	.where(eq(organizations.id, orgId as string))
+	.get();
+
+if (!org) return Astro.redirect("/dashboard");
+
+const subscription = await polar.subscriptions
+	.get({
+		id: org.subscriptionId || "",
+	})
+	.catch(() => null);
+---
+
+<Layout
+	title="Blog"
+	returnButton="/dashboard"
+	returnText="Back to dashboard"
+	class="container"
+>
+	<h1
+		class="text-5xl md:text-7xl font-bold mb-2"
+	>
+		Billing
+	</h1>
+	<div class="card glass">
+		<div class="card-body">
+			<span
+				class:list={["badge", org.subscriptionStatus === "active" ? "bagde-success" : "badge-soft"]}
+			>
+				{org.subscriptionStatus === "active" ? "Active" : "Inactive"}
+			</span>
+			{subscription?.customer.email ?
+				<p>
+					Payed for by {subscription?.customer.email}
+				</p>
+			: null}
+			{org.subscriptionStatus === "inactive" && subscription?.endedAt ?
+				<p>
+					Ended at {new Date(subscription?.endedAt).toLocaleDateString("en-US", {
+						month: "short",
+						day: "numeric",
+						year: "numeric"
+					})}
+				</p>
+			: null}
+			{org.subscriptionStatus === "active" && subscription?.startedAt ?
+				<p>
+					Started at {new Date(subscription?.startedAt).toLocaleDateString("en-US", {
+						month: "short",
+						day: "numeric",
+						year: "numeric"
+					})}
+				</p>
+			: null}
+			{subscription?.recurringInterval ?
+				<p>
+					Recuring interval by {subscription.recurringInterval}
+				</p>
+			: null}
+			{org.subscriptionStatus === "active" && subscription?.endsAt ?
+				<p>
+					Valid until {new Date(subscription?.endsAt).toLocaleDateString("en-US", {
+						month: "short",
+						day: "numeric",
+						year: "numeric"
+					})}
+				</p>
+			: null}
+			<div class="card-actions">
+				<a
+					href="/personal-billing"
+					class="btn btn-primary"
+				>
+					Manage billing
+				</a>
+				{org.subscriptionStatus === "inactive" ?
+					<a
+						href="/subscribe"
+						class="btn btn-outline"
+					>
+						Subscribe
+					</a>
+				: null}
+			</div>
+		</div>
+	</div>
+</Layout>

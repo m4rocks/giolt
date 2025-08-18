@@ -1,6 +1,6 @@
-import { subscriptions } from "@/db/schema";
+import { organizations } from "@/db/schema";
 import type { APIContext } from "astro";
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNotNull } from "drizzle-orm";
 import { db } from "./db";
 
 interface ProtectRouteProps {
@@ -32,11 +32,12 @@ export const protectRoute = async (
 	if (needsSubscription) {
 		const sub = await db
 			.select()
-			.from(subscriptions)
+			.from(organizations)
 			.where(
 				and(
-					eq(subscriptions.userId, userId as string),
-					eq(subscriptions.status, "active"),
+					eq(organizations.id, orgId as string),
+					eq(organizations.subscriptionStatus, "active"),
+					isNotNull(organizations.subscriptionId),
 				),
 			)
 			.get();

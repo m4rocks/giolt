@@ -1,9 +1,5 @@
-import {
-	POLAR_ACCESS_TOKEN,
-	POLAR_MONTHLY_PRODUCT,
-	VERCEL_ENV,
-} from "astro:env/server";
-import { organizations, subscriptions } from "@/db/schema";
+import { POLAR_MONTHLY_PRODUCT, POLAR_YEARLY_PRODUCT } from "astro:env/server";
+import { organizations } from "@/db/schema";
 import { db } from "@/lib/db";
 import { polar } from "@/lib/polar";
 import type { User } from "@clerk/astro/server";
@@ -11,31 +7,44 @@ import type { APIRoute } from "astro";
 import { and, eq } from "drizzle-orm";
 
 export const GET: APIRoute = async (ctx) => {
-	const { orgId, userId, orgSlug } = ctx.locals.auth();
+	const { orgId, userId } = ctx.locals.auth();
+	const type = ctx.url.searchParams.get("type") as
+		| "monthly"
+		| "yearly"
+		| null;
 
-	if (!userId) {
+	if (!userId || !orgId) {
 		return new Response("Unauthorized", { status: 401 });
 	}
 
-	const sub = await db
+	if (!type || !["monthly", "yearly"].includes(type)) {
+		return new Response("Invalid type", { status: 400 });
+	}
+
+	const org = await db
 		.select()
-		.from(subscriptions)
-		.where(eq(subscriptions.userId, userId))
+		.from(organizations)
+		.where(and(eq(organizations.id, orgId)))
 		.get();
 
-	if (sub && sub?.status === "active") {
+	if (org && org.subscriptionStatus === "active") {
 		return ctx.redirect("/dashboard");
 	}
 
 	const user = (await ctx.locals.currentUser()) as User;
 
 	const checkout = await polar.checkouts.create({
-		products: [POLAR_MONTHLY_PRODUCT],
+		products: [
+			type === "monthly" ? POLAR_MONTHLY_PRODUCT : POLAR_YEARLY_PRODUCT,
+		],
 		externalCustomerId: userId,
 		allowDiscountCodes: false,
 		customerName: user.fullName,
 		customerEmail: user.primaryEmailAddress?.emailAddress,
 		successUrl: `${ctx.url.origin}/dashboard`,
+		metadata: {
+			orgId,
+		},
 	});
 
 	return ctx.redirect(checkout.url);

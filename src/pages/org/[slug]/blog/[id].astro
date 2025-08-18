@@ -9,7 +9,7 @@ import { and, eq } from "drizzle-orm";
 const { id, slug } = Astro.params;
 
 if (!slug) {
-	throw new Error("Slug is required");
+	return Astro.redirect("/");
 }
 
 if (!id) {
@@ -19,11 +19,16 @@ if (!id) {
 const org = await db
 	.select()
 	.from(organizations)
-	.where(eq(organizations.slug, slug))
+	.where(
+		and(
+			eq(organizations.slug, slug),
+			eq(organizations.subscriptionStatus, "active"),
+		),
+	)
 	.get();
 
 if (!org) {
-	throw new Error("Organization not found");
+	return Astro.redirect(import.meta.env.SITE);
 }
 
 const post = await db

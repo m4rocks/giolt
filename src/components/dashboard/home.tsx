@@ -1,4 +1,5 @@
 import type { SelectOrganizations } from "@/db/schema";
+import { getTenantUrl } from "@/lib/tenant";
 import { GlobeIcon, SquareKanbanIcon, VoteIcon } from "lucide-react";
 
 export interface HomeProps {
@@ -36,9 +37,7 @@ export default function Home(props: HomeProps) {
 			</a>
 
 			<div className="flex col-span-2 lg:col-span-4 flex-col md:flex-row md:flex-wrap gap-2">
-				<a
-					className="btn btn-soft"
-					href={`https://${props.org.slug}.giolt.org`}>
+				<a className="btn btn-soft" href={getTenantUrl(props.org.slug)}>
 					<GlobeIcon />
 					Visit organization page
 				</a>

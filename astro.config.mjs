@@ -21,7 +21,7 @@ export default defineConfig({
 	site:
 		process.env.VERCEL_ENV === "production"
 			? "https://giolt.com"
-			: "https://next.giolt.com",
+			: "http://localhost:3000",
 	adapter: vercel({
 		webAnalytics: {
 			enabled: true,
@@ -53,8 +53,8 @@ export default defineConfig({
 			VERCEL_ENV: envField.enum({
 				values: ["development", "preview", "production"],
 				default: "development",
-				access: "secret",
-				context: "server",
+				access: "public",
+				context: "client",
 			}),
 			POLAR_ACCESS_TOKEN: envField.string({
 				access: "secret",
@@ -67,6 +67,11 @@ export default defineConfig({
 				optional: false,
 			}),
 			POLAR_MONTHLY_PRODUCT: envField.string({
+				access: "secret",
+				context: "server",
+				optional: false,
+			}),
+			POLAR_YEARLY_PRODUCT: envField.string({
 				access: "secret",
 				context: "server",
 				optional: false,

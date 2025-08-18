@@ -1,6 +1,6 @@
 import { THEMES } from "@/lib/data";
 import { sql } from "drizzle-orm";
-import { customType, int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const organizations = sqliteTable("organizations", {
 	id: text("id").primaryKey().unique(),
@@ -19,7 +19,10 @@ export const organizations = sqliteTable("organizations", {
 	hideGioltBranding: int("hide_giolt_branding", { mode: "boolean" })
 		.notNull()
 		.default(false),
-	subscriptionId: int("subscription_id").references(() => subscriptions.id),
+	subscriptionId: text("subscription_id"),
+	subscriptionStatus: text("status", { enum: ["inactive", "active"] })
+		.notNull()
+		.default("inactive"),
 });
 
 export type SelectOrganizations = typeof organizations.$inferSelect;
@@ -43,11 +46,3 @@ export const blogPosts = sqliteTable("blog_posts", {
 
 export type SelectBlogPosts = typeof blogPosts.$inferSelect;
 export type InsertBlogPosts = typeof blogPosts.$inferInsert;
-
-export const subscriptions = sqliteTable("subscriptions", {
-	id: int("id").primaryKey().unique(),
-	userId: text("user_id").notNull().unique(),
-	status: text("status", { enum: ["inactive", "active"] })
-		.notNull()
-		.default("inactive"),
-});

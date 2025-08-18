@@ -1,7 +1,7 @@
 import { CLERK_WEBHOOK_SIGNING_SECRET } from "astro:env/server";
-import { organizations, subscriptions } from "@/db/schema";
+import { organizations } from "@/db/schema";
 import { db } from "@/lib/db";
-import { countOrganizationsForUser, polar } from "@/lib/polar";
+import { polar } from "@/lib/polar";
 import { verifyWebhook } from "@clerk/astro/webhooks";
 import type {
 	DeletedObjectJSON,
@@ -9,7 +9,7 @@ import type {
 	UserJSON,
 } from "@clerk/backend";
 import type { APIContext, APIRoute } from "astro";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export const POST: APIRoute = async (ctx) => {
 	try {
@@ -28,7 +28,7 @@ export const POST: APIRoute = async (ctx) => {
 				await updateOrganization(evt.data);
 				break;
 			case "organization.deleted":
-				await deleteOrganization(evt.data);
+				await deleteOrganization(ctx, evt.data);
 				break;
 		}
 
@@ -40,49 +40,18 @@ export const POST: APIRoute = async (ctx) => {
 };
 
 async function createUser(data: UserJSON) {
-	await db
-		.insert(subscriptions)
-		.values({
-			userId: data.id,
-			status: "inactive",
-		})
-		.onConflictDoNothing();
+	await polar.customers.create({
+		email: data.email_addresses[0].email_address,
+		externalId: data.id,
+	});
 }
 
 async function createOrganization(data: OrganizationJSON) {
-	const subscription = await db
-		.select()
-		.from(subscriptions)
-		.where(eq(subscriptions.userId, data.created_by as string))
-		.get();
-
-	if (!subscription) {
-		throw new Error("Subscription not found");
-	}
-
-	await db
-		.insert(organizations)
-		.values({
-			id: data.id,
-			logoUrl: data.image_url,
-			name: data.name,
-			slug: data.slug,
-			subscriptionId: subscription.id,
-		})
-		.onConflictDoNothing();
-
-	const count = await countOrganizationsForUser(data.created_by as string);
-
-	await polar.events.ingest({
-		events: [
-			{
-				name: "org_count",
-				externalCustomerId: data.created_by as string,
-				metadata: {
-					current_count: count,
-				},
-			},
-		],
+	await db.insert(organizations).values({
+		id: data.id,
+		logoUrl: data.image_url,
+		name: data.name,
+		slug: data.slug,
 	});
 }
 
@@ -106,7 +75,19 @@ async function updateOrganization(data: OrganizationJSON) {
 		});
 }
 
-async function deleteOrganization(data: DeletedObjectJSON) {
+async function deleteOrganization(ctx: APIContext, data: DeletedObjectJSON) {
+	const org = await db
+		.select()
+		.from(organizations)
+		.where(eq(organizations.id, data.id as string))
+		.get();
+
+	if (org?.subscriptionId) {
+		await polar.subscriptions.revoke({
+			id: org.subscriptionId,
+		});
+	}
+
 	await db
 		.delete(organizations)
 		.where(eq(organizations.id, data.id as string));

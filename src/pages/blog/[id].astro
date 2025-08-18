@@ -3,20 +3,17 @@ import { actions } from "astro:actions";
 import Editor from "@/components/blog/editor";
 import { blogPosts } from "@/db/schema";
 import Layout from "@/layouts/dashboard-layout.astro";
+import { protectRoute } from "@/lib/clerk";
 import { db } from "@/lib/db";
+import { getTenantUrl } from "@/lib/tenant";
 import { clerkClient } from "@clerk/astro/server";
 import { and, eq } from "drizzle-orm";
 
-const { orgId, orgSlug, userId, redirectToSignIn } = Astro.locals.auth();
+const { orgId, orgSlug } = Astro.locals.auth();
 const { id } = Astro.params;
 
-if (!userId) {
-	return redirectToSignIn();
-}
-
-if (!orgId) {
-	return Astro.redirect("/select");
-}
+const res = await protectRoute(Astro);
+if (res) return res;
 
 if (!id) {
 	return Astro.redirect("/dashboard#/blog");
@@ -28,7 +25,7 @@ const post = await db
 	.where(
 		and(
 			eq(blogPosts.id, Number.parseInt(id)),
-			eq(blogPosts.organizationId, orgId),
+			eq(blogPosts.organizationId, orgId as string),
 		),
 	)
 	.get();
@@ -36,7 +33,7 @@ const post = await db
 const teamMembers = await clerkClient(
 	Astro,
 ).organizations.getOrganizationMembershipList({
-	organizationId: orgId,
+	organizationId: orgId as string,
 });
 
 if (!post) {
@@ -129,7 +126,7 @@ if (!post) {
 				</button>
 				<a
 					class={"btn btn-soft w-max" + (post.draft ? " btn-disabled" : "")}
-					href={post.draft ? undefined : `https://${orgSlug}.giolt.org/blog/${id}`}
+					href={post.draft ? undefined : `${getTenantUrl(orgSlug as string)}/blog/${id}`}
 					target="_blank"
 					aria-disabled={post.draft}
 				>

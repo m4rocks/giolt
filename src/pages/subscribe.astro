@@ -1,37 +1,40 @@
 ---
 // import PendingApproval from "@/assets/pending-approval.svg";
-import { subscriptions } from "@/db/schema";
+import { organizations } from "@/db/schema";
 import Layout from "@/layouts/dashboard-layout.astro";
 import { protectRoute } from "@/lib/clerk";
 import { db } from "@/lib/db";
-import { and, eq } from "drizzle-orm";
+import { clerkClient } from "@clerk/astro/server";
+import { and, eq, isNotNull } from "drizzle-orm";
 
-const { userId } = Astro.locals.auth();
+const { orgId } = Astro.locals.auth();
 const res = await protectRoute(Astro, {
 	needsSelectedOrg: false,
 	needsSubscription: false,
 });
 if (res) return res;
 
-const sub = await db
+const orgSubscribed = await db
 	.select()
-	.from(subscriptions)
+	.from(organizations)
 	.where(
 		and(
-			eq(subscriptions.userId, userId as string),
-			eq(subscriptions.status, "active"),
+			eq(organizations.id, orgId as string),
+			eq(organizations.subscriptionStatus, "active"),
+			isNotNull(organizations.subscriptionId),
 		),
 	)
 	.get();
 
-if (sub) {
+if (orgSubscribed) {
 	return Astro.redirect("/dashboard");
 }
 ---
 
 <Layout
-	title="Disabled page"
+	title="Subscribe"
 	class="flex flex-col justify-center items-center text-center gap-2 container"
+	organizationPopup
 >
 	<!-- <PendingApproval
 		class="h-64"
@@ -44,10 +47,61 @@ if (sub) {
 	<p>
 		Please select a subscription plan to continue.
 	</p>
-	<a
-		class="btn btn-primary"
-		href="/checkout"
-	>
-		Subscribe
-	</a>
+	<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+		<div class="card glass">
+			<div class="card-body text-center">
+				<h3 class="text-lg">
+					 Monthly Deal
+				</h3>
+				<p class="text-3xl font-bold">
+					10&euro;
+					<span class="text-xs text-base-content/75">+taxes</span>
+				</p>
+				<p
+					class="text-base-content/75"
+				>
+					Billed per organization
+				</p>
+				<a
+					class="btn mt-4"
+					href="/checkout?type=monthly"
+				>
+					Subscribe
+				</a>
+			</div>
+		</div>
+
+		<div class="card glass">
+			<div class="card-body text-center">
+				<h3 class="text-lg">
+					 Yearly Deal
+				</h3>
+				<p class="text-3xl font-bold">
+					100&euro;
+					<span class="text-xs text-base-content/75">+taxes</span>
+				</p>
+				<span class="badge badge-sm badge-success mx-auto">
+					16% off
+				</span>
+				<p
+					class="text-base-content/75"
+				>
+					Billed per organization
+				</p>
+				<a
+					class="btn mt-4"
+					href="/checkout?type=yearly"
+				>
+					Subscribe
+				</a>
+			</div>
+		</div>
+	</div>
+	<p class="text-base-content/75">
+		or
+		<a
+			class="link"
+			href="/billing"
+		>manage billing</a>
+	</p>
 </Layout>

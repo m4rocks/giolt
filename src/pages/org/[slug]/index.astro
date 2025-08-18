@@ -3,22 +3,27 @@ import Home from "@/components/org/pages/home.astro";
 import { organizations } from "@/db/schema";
 import Layout from "@/layouts/tenant-layout.astro";
 import { db } from "@/lib/db";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 const { slug } = Astro.params;
 
 if (!slug) {
-	throw new Error("Slug is required");
+	return Astro.redirect(import.meta.env.SITE);
 }
 
 const org = await db
 	.select()
 	.from(organizations)
-	.where(eq(organizations.slug, slug))
+	.where(
+		and(
+			eq(organizations.slug, slug),
+			eq(organizations.subscriptionStatus, "active"),
+		),
+	)
 	.get();
 
 if (!org) {
-	throw new Error("Organization not found");
+	return Astro.redirect(import.meta.env.SITE);
 }
 ---
 

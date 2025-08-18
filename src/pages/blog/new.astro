@@ -1,16 +1,10 @@
 ---
 import { actions } from "astro:actions";
 import Layout from "@/layouts/dashboard-layout.astro";
+import { protectRoute } from "@/lib/clerk";
 
-const { orgId, userId, redirectToSignIn } = Astro.locals.auth();
-
-if (!userId) {
-	return redirectToSignIn();
-}
-
-if (!orgId) {
-	return Astro.redirect("/select");
-}
+const res = await protectRoute(Astro);
+if (res) return res;
 
 const result = Astro.getActionResult(actions.blog.create);
 if (result && !result.error) {

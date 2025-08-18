@@ -1,7 +1,7 @@
 ---
 import LogoTransparent from "@/assets/logo-transparent.svg";
 import { OrganizationSwitcher, UserButton } from "@clerk/astro/components";
-import { ArrowLeftIcon } from "lucide-react";
+import { ArrowLeftIcon, ReceiptTextIcon } from "@lucide/astro";
 
 interface Props {
 	logo?: boolean;
@@ -11,6 +11,7 @@ interface Props {
 		href: string;
 		external?: boolean;
 	}[];
+	organizationPopup?: boolean;
 	returnButton?: string;
 	returnText?: string;
 	enableAccountButton?: boolean;
@@ -20,6 +21,7 @@ const {
 	logo = true,
 	logoHref = "/",
 	buttons = [],
+	organizationPopup = false,
 	enableAccountButton = false,
 	returnButton = undefined,
 	returnText = "Back home",
@@ -39,7 +41,7 @@ const {
 				aria-label="Return"
 			>
 				<ArrowLeftIcon/>
-				{returnText}
+				<span class="hidden md:inline">{returnText}</span>
 			</a>
 		: null}
 		{logo && !returnButton ?
@@ -53,6 +55,9 @@ const {
 				/>
 			</a>
 		: null}
+		<span class="badge badge-sm badge-outline">
+			Alpha
+		</span>
 	</div>
 	<div class="flex-none flex flex-row items-center gap-2">
 		{buttons.map((b) => (
@@ -66,16 +71,35 @@ const {
 		))}
 		{enableAccountButton ? (
 			<>
-				<OrganizationSwitcher
-					hidePersonal
-					afterCreateOrganizationUrl="/dashboard"
-					afterSelectOrganizationUrl="/dashboard"
-					afterLeaveOrganizationUrl="/dashboard"
-					organizationProfileMode="navigation"
-					organizationProfileUrl="/dashboard"
-				/>
-				<UserButton/>
-			</>
+				{!organizationPopup ?
+					<OrganizationSwitcher
+						hidePersonal
+						afterCreateOrganizationUrl="/subscribe"
+						afterSelectOrganizationUrl="/dashboard"
+						afterLeaveOrganizationUrl="/select"
+						organizationProfileMode="navigation"
+						organizationProfileUrl="/dashboard#/organization-general"
+					/>
+					:
+					<OrganizationSwitcher
+						hidePersonal
+						afterCreateOrganizationUrl="/subscribe"
+						afterSelectOrganizationUrl="/dashboard"
+						afterLeaveOrganizationUrl="/select"
+						organizationProfileMode="modal"
+					/>
+				}
+				<UserButton>
+					<UserButton.MenuItems>
+						<UserButton.Link
+							label="Billing"
+							href="/personal-billing"
+						>
+							<ReceiptTextIcon slot="label-icon" class="size-4" />
+						</UserButton.Link>
+					</UserButton.MenuItems>
+				</UserButton>
+			</O>
 		) : null}
 	</div>
 </nav>

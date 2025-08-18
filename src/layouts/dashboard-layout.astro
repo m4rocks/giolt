@@ -28,6 +28,7 @@ interface Props {
 	returnButton?: string;
 	returnText?: string;
 	frontmatter?: Omit<Props, "frontmatter">;
+	organizationPopup?: boolean;
 }
 
 const props = Astro.props.frontmatter ?? Astro.props;
@@ -60,6 +61,7 @@ const isMarkdown = !!Astro.props.frontmatter;
 		<body class="flex flex-col min-h-svh">
 			<Navbar
 				enableAccountButton
+				organizationPopup={props.organizationPopup}
 				returnButton={props.returnButton}
 				returnText={props.returnText}
 			/>

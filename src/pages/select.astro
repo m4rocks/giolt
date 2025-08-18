@@ -5,6 +5,7 @@ import { OrganizationList } from "@clerk/astro/components";
 
 const res = await protectRoute(Astro, {
 	needsSelectedOrg: false,
+	needsSubscription: false,
 });
 if (res) return res;
 ---
@@ -13,6 +14,6 @@ if (res) return res;
 	<OrganizationList
 		hidePersonal
 		afterSelectOrganizationUrl="/dashboard"
-		afterCreateOrganizationUrl="/dashboard"
+		afterCreateOrganizationUrl="/subscribe"
 	/>
 </Layout>
