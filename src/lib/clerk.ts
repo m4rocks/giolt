@@ -1,15 +1,48 @@
-import type { Appearance } from "@clerk/types";
+import { subscriptions } from "@/db/schema";
+import type { APIContext } from "astro";
+import { and, eq } from "drizzle-orm";
+import { db } from "./db";
 
-export const clerkTheme = {
-	variables: {
-		colorPrimary: "var(--color-primary)",
-		colorPrimaryForeground: "var(--color-primary-content)",
-		colorTextSecondary: "var(--color-secondary)",
-		colorNeutral: "var(--color-secondary)",
-		fontFamily: "var(--font-sans)",
-		colorBackground: "var(--color-base-100)",
-		colorForeground: "var(--color-base-content)",
-		colorInputBackground: "var(--color-base-200)",
-		colorInputForeground: "var(--color-base-content)",
-	},
-} satisfies Appearance;
+interface ProtectRouteProps {
+	needsAccount?: boolean;
+	needsSubscription?: boolean;
+	needsSelectedOrg?: boolean;
+}
+
+export const protectRoute = async (
+	ctx: APIContext,
+	props?: ProtectRouteProps,
+) => {
+	const {
+		needsAccount = true,
+		needsSubscription = true,
+		needsSelectedOrg = true,
+	} = props ?? {};
+
+	const { userId, orgId, redirectToSignIn } = ctx.locals.auth();
+
+	if (needsAccount && !userId) {
+		return redirectToSignIn();
+	}
+
+	if (needsSelectedOrg && !orgId) {
+		return ctx.redirect("/select");
+	}
+
+	if (needsSubscription) {
+		const sub = await db
+			.select()
+			.from(subscriptions)
+			.where(
+				and(
+					eq(subscriptions.userId, userId as string),
+					eq(subscriptions.status, "active"),
+				),
+			)
+			.get();
+
+		if (!sub) {
+			return ctx.redirect("/subscribe");
+		}
+	}
+};

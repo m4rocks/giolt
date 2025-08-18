@@ -1,6 +1,6 @@
 import { PUBLIC_CLERK_PUBLISHABLE_KEY } from "astro:env/client";
 import type { SelectBlogPosts, SelectOrganizations } from "@/db/schema";
-import { clerkTheme } from "@/lib/clerk";
+import { clerkTheme } from "@/lib/clerk-theme";
 import {
 	ClerkLoaded,
 	ClerkProvider,

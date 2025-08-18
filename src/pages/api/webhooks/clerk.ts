@@ -1,18 +1,26 @@
 import { CLERK_WEBHOOK_SIGNING_SECRET } from "astro:env/server";
-import { organizations } from "@/db/schema";
+import { organizations, subscriptions } from "@/db/schema";
 import { db } from "@/lib/db";
+import { countOrganizationsForUser, polar } from "@/lib/polar";
 import { verifyWebhook } from "@clerk/astro/webhooks";
-import type { DeletedObjectJSON, OrganizationJSON } from "@clerk/backend";
-import type { APIRoute } from "astro";
-import { eq } from "drizzle-orm";
+import type {
+	DeletedObjectJSON,
+	OrganizationJSON,
+	UserJSON,
+} from "@clerk/backend";
+import type { APIContext, APIRoute } from "astro";
+import { and, eq } from "drizzle-orm";
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async (ctx) => {
 	try {
-		const evt = await verifyWebhook(request, {
+		const evt = await verifyWebhook(ctx.request, {
 			signingSecret: CLERK_WEBHOOK_SIGNING_SECRET,
 		});
 
 		switch (evt.type) {
+			case "user.created":
+				await createUser(evt.data);
+				break;
 			case "organization.created":
 				await createOrganization(evt.data);
 				break;
@@ -31,12 +39,50 @@ export const POST: APIRoute = async ({ request }) => {
 	}
 };
 
+async function createUser(data: UserJSON) {
+	await db
+		.insert(subscriptions)
+		.values({
+			userId: data.id,
+			status: "inactive",
+		})
+		.onConflictDoNothing();
+}
+
 async function createOrganization(data: OrganizationJSON) {
-	await db.insert(organizations).values({
-		id: data.id,
-		logoUrl: data.image_url,
-		name: data.name,
-		slug: data.slug,
+	const subscription = await db
+		.select()
+		.from(subscriptions)
+		.where(eq(subscriptions.userId, data.created_by as string))
+		.get();
+
+	if (!subscription) {
+		throw new Error("Subscription not found");
+	}
+
+	await db
+		.insert(organizations)
+		.values({
+			id: data.id,
+			logoUrl: data.image_url,
+			name: data.name,
+			slug: data.slug,
+			subscriptionId: subscription.id,
+		})
+		.onConflictDoNothing();
+
+	const count = await countOrganizationsForUser(data.created_by as string);
+
+	await polar.events.ingest({
+		events: [
+			{
+				name: "org_count",
+				externalCustomerId: data.created_by as string,
+				metadata: {
+					current_count: count,
+				},
+			},
+		],
 	});
 }
 

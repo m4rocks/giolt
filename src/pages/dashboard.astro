@@ -1,56 +1,33 @@
 ---
 import DashboardWrapper from "@/components/dashboard/wrapper";
-import { blogPosts, organizations } from "@/db/schema";
+import { blogPosts, organizations, subscriptions } from "@/db/schema";
 import Layout from "@/layouts/dashboard-layout.astro";
+import { protectRoute } from "@/lib/clerk";
 import { db } from "@/lib/db";
-import { clerkClient } from "@clerk/astro/server";
 import { eq } from "drizzle-orm";
 
-const { orgId, userId, redirectToSignIn } = Astro.locals.auth();
+const { orgId } = Astro.locals.auth();
 
-if (!userId) {
-	return redirectToSignIn();
-}
+const res = await protectRoute(Astro, {
+	needsSelectedOrg: true,
+});
+if (res) return res;
 
-if (!orgId) {
-	return Astro.redirect("/select");
-}
-
-let org = await db
+const org = await db
 	.select()
 	.from(organizations)
-	.where(eq(organizations.id, orgId))
+	.where(eq(organizations.id, orgId as string))
 	.get();
-
-if (orgId && !org) {
-	const orgData = await clerkClient(Astro).organizations.getOrganization({
-		organizationId: orgId,
-	});
-
-	org = await db
-		.insert(organizations)
-		.values({
-			id: orgData.id,
-			name: orgData.name,
-			slug: orgData.slug,
-		})
-		.returning()
-		.then((data) => data[0]);
-}
-
-const blog = await db
-	.select()
-	.from(blogPosts)
-	.where(eq(blogPosts.organizationId, orgId))
-	.all();
 
 if (!org) {
 	return Astro.redirect("/select");
 }
 
-if (!org.enabled) {
-	return Astro.redirect("/disabled");
-}
+const blog = await db
+	.select()
+	.from(blogPosts)
+	.where(eq(blogPosts.organizationId, orgId as string))
+	.all();
 ---
 
 <Layout

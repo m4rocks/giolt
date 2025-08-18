@@ -1,0 +1,53 @@
+---
+// import PendingApproval from "@/assets/pending-approval.svg";
+import { subscriptions } from "@/db/schema";
+import Layout from "@/layouts/dashboard-layout.astro";
+import { protectRoute } from "@/lib/clerk";
+import { db } from "@/lib/db";
+import { and, eq } from "drizzle-orm";
+
+const { userId } = Astro.locals.auth();
+const res = await protectRoute(Astro, {
+	needsSelectedOrg: false,
+	needsSubscription: false,
+});
+if (res) return res;
+
+const sub = await db
+	.select()
+	.from(subscriptions)
+	.where(
+		and(
+			eq(subscriptions.userId, userId as string),
+			eq(subscriptions.status, "active"),
+		),
+	)
+	.get();
+
+if (sub) {
+	return Astro.redirect("/dashboard");
+}
+---
+
+<Layout
+	title="Disabled page"
+	class="flex flex-col justify-center items-center text-center gap-2 container"
+>
+	<!-- <PendingApproval
+		class="h-64"
+	/> -->
+	<h1
+		class="font-bold text-5xl"
+	>
+		Subscribe
+	</h1>
+	<p>
+		Please select a subscription plan to continue.
+	</p>
+	<a
+		class="btn btn-primary"
+		href="/checkout"
+	>
+		Subscribe
+	</a>
+</Layout>

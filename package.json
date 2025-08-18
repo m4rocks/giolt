@@ -3,7 +3,7 @@
 	"type": "module",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "concurrently --names TURSO,ASTRO \"bun run db:dev\" \"astro dev\"",
+		"dev": "concurrently --names TURSO,ASTRO \"bun run db:dev\" \"astro dev --host\"",
 		"db:dev": "turso dev -f .local.db",
 		"build:local": "astro check && astro build",
 		"build": "bun run migrate:remote && bun run build:local",
@@ -30,6 +30,8 @@
 		"@fontsource-variable/bricolage-grotesque": "^5.2.8",
 		"@libsql/client": "^0.15.10",
 		"@lucide/astro": "^0.539.0",
+		"@polar-sh/astro": "^0.4.4",
+		"@polar-sh/sdk": "^0.34.11",
 		"@tailwindcss/typography": "^0.5.16",
 		"@tailwindcss/vite": "^4.1.11",
 		"@vercel/analytics": "^1.5.0",

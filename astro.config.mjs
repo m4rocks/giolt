@@ -6,7 +6,7 @@ import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
 import clerk from "@clerk/astro";
 import tailwindcss from "@tailwindcss/vite";
-import { clerkTheme } from "./src/lib/clerk";
+import { clerkTheme } from "./src/lib/clerk-theme";
 
 // https://astro.build/config
 export default defineConfig({
@@ -56,6 +56,21 @@ export default defineConfig({
 				access: "secret",
 				context: "server",
 			}),
+			POLAR_ACCESS_TOKEN: envField.string({
+				access: "secret",
+				context: "server",
+				optional: false,
+			}),
+			POLAR_WEBHOOK_SECRET: envField.string({
+				access: "secret",
+				context: "server",
+				optional: false,
+			}),
+			POLAR_MONTHLY_PRODUCT: envField.string({
+				access: "secret",
+				context: "server",
+				optional: false,
+			}),
 		},
 	},
 	server: {
@@ -63,6 +78,9 @@ export default defineConfig({
 	},
 
 	vite: {
+		server: {
+			allowedHosts: ["saved-macaque-eagerly.ngrok-free.app"],
+		},
 		plugins: [tailwindcss()],
 	},
 });

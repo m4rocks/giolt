@@ -96,7 +96,6 @@ export const blog = {
 			const readingTime = calculateReadingTimeFromHTML(input.content);
 			const date = new Date(input.date);
 
-
 			try {
 				await db
 					.update(blogPosts)

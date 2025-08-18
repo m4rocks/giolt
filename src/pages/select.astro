@@ -1,12 +1,12 @@
 ---
 import Layout from "@/layouts/dashboard-layout.astro";
+import { protectRoute } from "@/lib/clerk";
 import { OrganizationList } from "@clerk/astro/components";
 
-const { userId } = Astro.locals.auth();
-
-if (!userId) {
-	return redirectToSignIn();
-}
+const res = await protectRoute(Astro, {
+	needsSelectedOrg: false,
+});
+if (res) return res;
 ---
 
 <Layout title="Select organization" class="flex flex-col justify-center items-center">
