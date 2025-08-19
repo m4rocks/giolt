@@ -21,15 +21,15 @@ const org = await db
 if (!org) return Astro.redirect("/select");
 ---
 
-<FormNotice
-	action={actions.currentOrg.update}
-	successMessage="Organization updated successfully"
-	errorMessage="Failed to update organization"
-/>
 
 <Layout
 	title="Settings"
 >
+	<FormNotice
+		action={actions.currentOrg.update}
+		successMessage="Organization updated successfully"
+		errorMessage="Failed to update organization"
+	/>
 	<h1 class="font-bold">Settings</h1>
 	<form method="post" action={actions.currentOrg.update}>
 		<fieldset class="fieldset max-w-128">

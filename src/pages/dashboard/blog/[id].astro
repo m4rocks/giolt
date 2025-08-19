@@ -42,15 +42,15 @@ if (!post) {
 }
 ---
 
-<FormNotice
-	action={actions.blog.update}
-	successMessage="Blog updated successfully"
-	errorMessage="Failed to update blog"
-/>
 
 <Layout
 	title="Blog"
 >
+	<FormNotice
+		action={actions.blog.update}
+		successMessage="Blog updated successfully"
+		errorMessage="Failed to update blog"
+	/>
 	<form
 		method="POST"
 		action={actions.blog.update}
