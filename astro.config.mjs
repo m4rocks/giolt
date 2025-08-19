@@ -11,6 +11,7 @@ import { clerkTheme } from "./src/lib/clerk-theme";
 // https://astro.build/config
 export default defineConfig({
 	output: "server",
+
 	integrations: [
 		clerk({
 			appearance: clerkTheme,
@@ -18,10 +19,12 @@ export default defineConfig({
 		react(),
 		sitemap(),
 	],
+
 	site:
-		process.env.VERCEL_ENV === "production"
-			? "https://giolt.com"
-			: "http://localhost:3000",
+	process.env.VERCEL_ENV === "production"
+	? "https://giolt.com"
+	: "http://localhost:3000",
+
 	adapter: vercel({
 		webAnalytics: {
 			enabled: true,
@@ -31,6 +34,7 @@ export default defineConfig({
 	security: {
 		checkOrigin: false,
 	},
+
 	env: {
 		schema: {
 			TURSO_DATABASE_URL: envField.string({
@@ -79,6 +83,7 @@ export default defineConfig({
 		},
 		validateSecrets: true
 	},
+
 	server: {
 		port: 3000,
 	},
