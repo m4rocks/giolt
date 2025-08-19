@@ -50,8 +50,7 @@ if (!org) return Astro.redirect("/select");
 				class="textarea w-full"
 				name="about"
 				placeholder="About your NGO"
-				value={org.about || undefined}
-			/>
+			>{org.about}</textarea>
 
 			<label for="mission" class="label">
 				Mission
@@ -60,8 +59,7 @@ if (!org) return Astro.redirect("/select");
 				class="textarea w-full"
 				name="mission"
 				placeholder="Write about the mission of your NGO"
-				value={org.mission || undefined}
-			/>
+			>{org.mission}</textarea>
 
 			<label for="location" class="label">
 				Location
