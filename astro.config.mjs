@@ -77,6 +77,7 @@ export default defineConfig({
 				optional: false,
 			}),
 		},
+		validateSecrets: true
 	},
 	server: {
 		port: 3000,
