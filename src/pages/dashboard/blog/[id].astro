@@ -1,6 +1,7 @@
 ---
 import { actions } from "astro:actions";
 import Editor from "@/components/blog/editor";
+import FormNotice from "@/components/form-notice.astro";
 import { blogPosts } from "@/db/schema";
 import Layout from "@/layouts/dashboard-layout.astro";
 import { protectRoute } from "@/lib/clerk";
@@ -16,7 +17,7 @@ const res = await protectRoute(Astro);
 if (res) return res;
 
 if (!id) {
-	return Astro.redirect("/dashboard#/blog");
+	return Astro.redirect("/dashboard/blog");
 }
 
 const post = await db
@@ -37,15 +38,18 @@ const teamMembers = await clerkClient(
 });
 
 if (!post) {
-	return Astro.redirect("/dashboard#/blog");
+	return Astro.redirect("/dashboard/blog");
 }
 ---
 
+<FormNotice
+	action={actions.blog.update}
+	successMessage="Blog updated successfully"
+	errorMessage="Failed to update blog"
+/>
+
 <Layout
 	title="Blog"
-	returnButton="/dashboard#/blog"
-	returnText="Back to dashboard"
-	class="container"
 >
 	<form
 		method="POST"

@@ -31,7 +31,9 @@ export const protectRoute = async (
 
 	if (needsSubscription) {
 		const sub = await db
-			.select()
+			.select({
+				active: eq(organizations.subscriptionStatus, "active"),
+			})
 			.from(organizations)
 			.where(
 				and(

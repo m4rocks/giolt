@@ -8,7 +8,7 @@ import type {
 	OrganizationJSON,
 	UserJSON,
 } from "@clerk/backend";
-import type { APIContext, APIRoute } from "astro";
+import type { APIRoute } from "astro";
 import { eq } from "drizzle-orm";
 
 export const POST: APIRoute = async (ctx) => {
@@ -28,7 +28,7 @@ export const POST: APIRoute = async (ctx) => {
 				await updateOrganization(evt.data);
 				break;
 			case "organization.deleted":
-				await deleteOrganization(ctx, evt.data);
+				await deleteOrganization(evt.data);
 				break;
 		}
 
@@ -75,7 +75,7 @@ async function updateOrganization(data: OrganizationJSON) {
 		});
 }
 
-async function deleteOrganization(ctx: APIContext, data: DeletedObjectJSON) {
+async function deleteOrganization(data: DeletedObjectJSON) {
 	const org = await db
 		.select()
 		.from(organizations)

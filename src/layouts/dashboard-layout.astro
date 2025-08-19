@@ -1,8 +1,13 @@
 ---
 import "@/styles/global.css";
+import "sonner/dist/styles.css";
 import "@fontsource-variable/bricolage-grotesque";
+import { getImage } from "astro:assets";
+import { ClientRouter } from "astro:transitions";
 import logoDark from "@/assets/logo-dark.svg";
 import logoLight from "@/assets/logo-light.svg";
+import DrawerItems from "@/components/dashboard/drawer-items.astro";
+import Navbar from "@/components/navbar.astro";
 import { Toaster } from "@/components/toaster";
 import Analytics from "@vercel/analytics/astro";
 
@@ -18,21 +23,17 @@ const faviconLight = await getImage({
 	width: 32,
 	height: 32,
 });
-import { getImage } from "astro:assets";
-import Navbar from "@/components/navbar.astro";
-import { mdClassName } from "@/lib/content";
 
 interface Props {
 	class?: string;
 	title?: string;
 	returnButton?: string;
 	returnText?: string;
-	frontmatter?: Omit<Props, "frontmatter">;
+	hideDrawer?: boolean;
 	organizationPopup?: boolean;
 }
 
-const props = Astro.props.frontmatter ?? Astro.props;
-const isMarkdown = !!Astro.props.frontmatter;
+const props = Astro.props;
 ---
 
 <html lang="en">
@@ -55,20 +56,34 @@ const isMarkdown = !!Astro.props.frontmatter;
 		<title>
 			{Astro.props.title ? `${Astro.props.title} - Giolt` : "Giolt - Where volunteers find everything, and organizations save time."}
 		</title>
+		<ClientRouter/>
 		<Analytics />
 	</head>
 	<body>
 		<body class="flex flex-col min-h-svh">
-			<Navbar
-				enableAccountButton
-				organizationPopup={props.organizationPopup}
-				returnButton={props.returnButton}
-				returnText={props.returnText}
+			<div class="drawer lg:drawer-open">
+				<input id="drawer" type="checkbox" class="drawer-toggle" />
+				<div class="drawer-content">
+					<Navbar
+						enableAccountButton
+						organizationPopup={props.organizationPopup}
+						returnButton={props.returnButton}
+						returnText={props.returnText}
+						enableDrawer={!props.hideDrawer}
+					/>
+					<main class={`flex-1 p-8 ${props.class ?? ""}`}>
+						<slot/>
+					</main>
+				</div>
+				<div hidden={props.hideDrawer} class="drawer-side pt-16 z-40">
+					<label for="drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+					<DrawerItems transition:persist/>
+				</div>
+			</div>
+			<Toaster
+				client:load
+				transition:persist
 			/>
-			<main class={`flex-1 ${props.class ?? ""} ${isMarkdown ? `${mdClassName} !container my-4` : ""}`}>
-				<slot/>
-			</main>
-			<Toaster client:load/>
 		</body>
 	</body>
 </html>

@@ -2,7 +2,7 @@ import { POLAR_WEBHOOK_SECRET } from "astro:env/server";
 import { organizations } from "@/db/schema";
 import { db } from "@/lib/db";
 import { Webhooks } from "@polar-sh/astro";
-import type { APIContext, APIRoute } from "astro";
+import type { APIRoute } from "astro";
 import { eq } from "drizzle-orm";
 
 const subscriptionChange = async (

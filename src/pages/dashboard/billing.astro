@@ -6,12 +6,9 @@ import { db } from "@/lib/db";
 import { polar } from "@/lib/polar";
 import { eq } from "drizzle-orm";
 
-const { orgId } = Astro.locals.auth();
-
-const res = await protectRoute(Astro, {
-	needsSubscription: false,
-});
+const res = await protectRoute(Astro);
 if (res) return res;
+const { orgId } = Astro.locals.auth();
 
 const org = await db
 	.select()
@@ -19,7 +16,7 @@ const org = await db
 	.where(eq(organizations.id, orgId as string))
 	.get();
 
-if (!org) return Astro.redirect("/dashboard");
+if (!org) return Astro.redirect("/select");
 
 const subscription = await polar.subscriptions
 	.get({
@@ -29,20 +26,13 @@ const subscription = await polar.subscriptions
 ---
 
 <Layout
-	title="Blog"
-	returnButton="/dashboard"
-	returnText="Back to dashboard"
-	class="container"
+	title="Billing"
 >
-	<h1
-		class="text-5xl md:text-7xl font-bold mb-2"
-	>
-		Billing
-	</h1>
+	<h1 class="font-bold">Billing</h1>
 	<div class="card glass">
 		<div class="card-body">
 			<span
-				class:list={["badge", org.subscriptionStatus === "active" ? "bagde-success" : "badge-soft"]}
+				class:list={["badge", org.subscriptionStatus === "active" ? "badge-success" : "badge-soft"]}
 			>
 				{org.subscriptionStatus === "active" ? "Active" : "Inactive"}
 			</span>

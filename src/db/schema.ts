@@ -46,3 +46,25 @@ export const blogPosts = sqliteTable("blog_posts", {
 
 export type SelectBlogPosts = typeof blogPosts.$inferSelect;
 export type InsertBlogPosts = typeof blogPosts.$inferInsert;
+
+export const projects = sqliteTable("projects", {
+	id: int("id").primaryKey().unique(),
+	title: text("title").notNull(),
+	description: text("description").notNull(),
+	startDate: int("start_date", { mode: "timestamp" })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
+	endDate: int("end_date", { mode: "timestamp" })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
+	draft: int("draft", { mode: "boolean" }).notNull().default(true),
+	organizationId: text("organization_id")
+		.notNull()
+		.references(() => organizations.id),
+	location: text("location"),
+	rules: text("rules"),
+	volunteerLimit: int("volunteer_limit").notNull().default(0),
+});
+
+export type SelectProjects = typeof projects.$inferSelect;
+export type InsertProjects = typeof projects.$inferInsert;

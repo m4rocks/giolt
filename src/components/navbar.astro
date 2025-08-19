@@ -1,7 +1,11 @@
 ---
 import LogoTransparent from "@/assets/logo-transparent.svg";
 import { OrganizationSwitcher, UserButton } from "@clerk/astro/components";
-import { ArrowLeftIcon, ReceiptTextIcon } from "@lucide/astro";
+import {
+	ArrowLeftIcon,
+	PanelLeftOpenIcon,
+	ReceiptTextIcon,
+} from "@lucide/astro";
 
 interface Props {
 	logo?: boolean;
@@ -12,6 +16,7 @@ interface Props {
 		external?: boolean;
 	}[];
 	organizationPopup?: boolean;
+	enableDrawer?: boolean;
 	returnButton?: string;
 	returnText?: string;
 	enableAccountButton?: boolean;
@@ -23,15 +28,19 @@ const {
 	buttons = [],
 	organizationPopup = false,
 	enableAccountButton = false,
+	enableDrawer = true,
 	returnButton = undefined,
 	returnText = "Back home",
 } = Astro.props;
 ---
 
 <div class="navbar"></div>
+{enableDrawer ?
+	<div class="h-10 lg:hidden"></div>
+: null}
 
 <nav
-	class="navbar fixed glass bg-base-100/50 shadow-sm z-50 px-4"
+	class="navbar top-0 left-0 right-0 fixed glass bg-base-100/50 shadow-sm z-50 px-4"
 >
 	<div class="flex-1 flex flex-row items-center gap-1">
 		{returnButton ?
@@ -78,7 +87,7 @@ const {
 						afterSelectOrganizationUrl="/dashboard"
 						afterLeaveOrganizationUrl="/select"
 						organizationProfileMode="navigation"
-						organizationProfileUrl="/dashboard#/organization-general"
+						organizationProfileUrl="/dashboard/general"
 					/>
 					:
 					<OrganizationSwitcher
@@ -89,7 +98,9 @@ const {
 						organizationProfileMode="modal"
 					/>
 				}
-				<UserButton>
+				<UserButton
+					afterSwitchSessionUrl="/dashboard"
+				>
 					<UserButton.MenuItems>
 						<UserButton.Link
 							label="Billing"
@@ -99,7 +110,21 @@ const {
 						</UserButton.Link>
 					</UserButton.MenuItems>
 				</UserButton>
-			</O>
+			</>
 		) : null}
 	</div>
 </nav>
+
+{enableDrawer ?
+	<div
+		class="fixed top-16 left-0 right-0 glass bg-base-100/50 shadow-sm lg:hidden z-40"
+	>
+		<label
+			for="drawer"
+			class="btn btn-ghost"
+		>
+			<PanelLeftOpenIcon/>
+			Open Drawer
+		</label>
+	</div>
+: null}

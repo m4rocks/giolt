@@ -7,13 +7,14 @@ import { eq } from "drizzle-orm";
 
 export const currentOrg = {
 	update: defineAction({
+		accept: "form",
 		input: z.object({
 			about: z.string().optional(),
 			mission: z.string().optional(),
 			location: z.string().optional(),
 			theme: z.enum(THEMES),
-			teamSectionEnabled: z.boolean(),
-			hideGioltBranding: z.boolean()
+			teamSectionEnabled: z.enum(["on"]).optional(),
+			hideGioltBranding: z.enum(["on"]).optional(),
 		}),
 		handler: async (input, ctx) => {
 			const { orgId, userId } = ctx.locals.auth();
@@ -40,8 +41,8 @@ export const currentOrg = {
 						about: input.about,
 						location: input.location,
 						theme: input.theme,
-						teamSectionEnabled: input.teamSectionEnabled,
-						hideGioltBranding: input.hideGioltBranding
+						teamSectionEnabled: input.teamSectionEnabled === "on",
+						hideGioltBranding: input.hideGioltBranding === "on",
 					})
 					.where(eq(organizations.id, orgId));
 			} catch (err) {

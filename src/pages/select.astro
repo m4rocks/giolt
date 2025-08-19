@@ -10,7 +10,11 @@ const res = await protectRoute(Astro, {
 if (res) return res;
 ---
 
-<Layout title="Select organization" class="flex flex-col justify-center items-center">
+<Layout
+	title="Select organization"
+	class="flex flex-col justify-center items-center"
+	hideDrawer
+>
 	<OrganizationList
 		hidePersonal
 		afterSelectOrganizationUrl="/dashboard"

@@ -8,15 +8,13 @@ if (res) return res;
 
 const result = Astro.getActionResult(actions.blog.create);
 if (result && !result.error) {
-	return Astro.redirect(`/blog/${result.data.id}`);
+	return Astro.redirect(`/dashboard/blog/${result.data.id}`);
 }
 ---
 
+
 <Layout
 	title="Blog"
-	returnButton="/dashboard#/blog"
-	returnText="Back to dashboard"
-	class="container"
 >
 	<h1
 		class="text-5xl md:text-7xl font-bold"

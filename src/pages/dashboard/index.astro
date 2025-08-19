@@ -1,0 +1,69 @@
+---
+import { organizations } from "@/db/schema";
+import Layout from "@/layouts/dashboard-layout.astro";
+import { protectRoute } from "@/lib/clerk";
+import { db } from "@/lib/db";
+import { getTenantUrl } from "@/lib/tenant";
+import { eq } from "drizzle-orm";
+import { GlobeIcon, SquareKanbanIcon, VoteIcon } from "lucide-react";
+
+const res = await protectRoute(Astro);
+if (res) return res;
+const { orgId } = Astro.locals.auth();
+
+const org = await db
+	.select()
+	.from(organizations)
+	.where(eq(organizations.id, orgId as string))
+	.get();
+
+if (!org) return Astro.redirect("/select");
+---
+
+<Layout
+	title={org.name}
+>
+	<div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+		<a
+			class="stats shadow bg-base-300 hover:brightness-110"
+			href="/dashboard/projects">
+			<div class="stat">
+				<div class="stat-title">Total Projects</div>
+				<div class="stat-value">0</div>
+				<div class="stat-desc">See all projects</div>
+			</div>
+		</a>
+
+		<div class="stats shadow bg-base-300">
+			<div class="stat">
+				<div class="stat-title">Unique volunteers</div>
+				<div class="stat-value">0</div>
+				<div class="stat-desc">Lots of people!</div>
+			</div>
+		</div>
+
+		<a
+			class="stats shadow bg-base-300 hover:brightness-110 col-span-2"
+			href="/dashboard/volunteer-code-of-conduct">
+			<div class="stat">
+				<div class="stat-title">Volunteer Code of Conduct</div>
+				<div class="stat-value">Coming soon</div>
+			</div>
+		</a>
+
+		<div class="flex col-span-2 lg:col-span-4 flex-col md:flex-row md:flex-wrap gap-2">
+			<a class="btn btn-soft" href={getTenantUrl(org.slug)} target="_blank">
+				<GlobeIcon />
+				Visit organization page
+			</a>
+			<a class="btn btn-soft" href="/dashboard#/projects">
+				<SquareKanbanIcon />
+				See projects
+			</a>
+			<a class="btn btn-soft" href="/dashboard#/polls">
+				<VoteIcon />
+				See polls
+			</a>
+		</div>
+	</div>
+</Layout>

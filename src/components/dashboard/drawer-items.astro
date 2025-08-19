@@ -1,0 +1,30 @@
+---
+import {
+	ArrowLeftRightIcon,
+	BuildingIcon,
+	HeartHandshakeIcon,
+	HouseIcon,
+	ReceiptTextIcon,
+	RssIcon,
+	SettingsIcon,
+	SquareKanbanIcon,
+	UsersIcon,
+	VoteIcon,
+} from "@lucide/astro";
+
+const path = Astro.url.pathname;
+---
+
+<ul class="menu min-h-full w-72 p-4 bg-base-200">
+	<li class="menu-title">Manage your organization</li>
+	<li><a href="/dashboard" class={path === "/dashboard" ? "menu-active" : ""}><HouseIcon class="size-4"/>Home</a></li>
+	<li><a href="/dashboard/projects" class={path.startsWith("/dashboard/projects") ? "menu-active" : ""}><SquareKanbanIcon class="size-4"/>Projects</a></li>
+	<li><a href="/dashboard/blog" class={path.startsWith("/dashboard/blog") ? "menu-active" : ""}><RssIcon class="size-4"/>Blog</a></li>
+	<li class="menu-disabled"><a><VoteIcon class="size-4"/>Polls</a></li>
+	<li class="menu-disabled"><a><HeartHandshakeIcon class="size-4"/>Volunteer Code of Conduct</a></li>
+	<li><a href="/dashboard/settings" class={path.startsWith("/dashboard/settings") ? "menu-active" : ""}><SettingsIcon class="size-4"/>Settings</a></li>
+	<li><a href="/dashboard/general" class={path === "/dashboard/general" ? "menu-active" : ""}><BuildingIcon class="size-4"/>Organization general</a></li>
+	<li><a href="/dashboard/general/organization-members" class={path.startsWith("/dashboard/general/organization-members") ? "menu-active" : ""}><UsersIcon class="size-4"/>Organization members</a></li>
+	<li><a href="/dashboard/billing" class={path.startsWith("/dashboard/billing") ? "menu-active" : ""}><ReceiptTextIcon class="size-4"/>Billing</a></li>
+	<li><a href="/select"><ArrowLeftRightIcon class="size-4"/>Switch organizations</a></li>
+</ul>

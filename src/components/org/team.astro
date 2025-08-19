@@ -15,7 +15,10 @@ if (enabled) {
 		.organizations.getOrganizationMembershipList({
 			organizationId: orgId,
 		})
-		.then((response) => response.data);
+		.then((response) => response.data)
+		.then((members) =>
+			members.sort((a, b) => a.role.localeCompare(b.role)),
+		);
 }
 ---
 

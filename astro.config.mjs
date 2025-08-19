@@ -53,8 +53,8 @@ export default defineConfig({
 			VERCEL_ENV: envField.enum({
 				values: ["development", "preview", "production"],
 				default: "development",
-				access: "public",
-				context: "client",
+				access: "secret",
+				context: "server",
 			}),
 			POLAR_ACCESS_TOKEN: envField.string({
 				access: "secret",

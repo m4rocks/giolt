@@ -4,7 +4,6 @@ import { organizations } from "@/db/schema";
 import Layout from "@/layouts/dashboard-layout.astro";
 import { protectRoute } from "@/lib/clerk";
 import { db } from "@/lib/db";
-import { clerkClient } from "@clerk/astro/server";
 import { and, eq, isNotNull } from "drizzle-orm";
 
 const { orgId } = Astro.locals.auth();

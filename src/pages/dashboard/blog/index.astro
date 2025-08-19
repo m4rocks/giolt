@@ -1,0 +1,54 @@
+---
+import { blogPosts } from "@/db/schema";
+import Layout from "@/layouts/dashboard-layout.astro";
+import { protectRoute } from "@/lib/clerk";
+import { db } from "@/lib/db";
+import { getTenantUrl } from "@/lib/tenant";
+import { eq } from "drizzle-orm";
+import { PlusIcon } from "lucide-react";
+
+const res = await protectRoute(Astro);
+if (res) return res;
+const { orgId } = Astro.locals.auth();
+
+const blog = await db
+	.select()
+	.from(blogPosts)
+	.where(eq(blogPosts.organizationId, orgId as string))
+	.all();
+---
+
+<Layout
+	title="Blog posts"
+>
+	<h1 class="font-bold mb-2">Blog</h1>
+	<a href="/dashboard/blog/new" class="btn btn-primary mb-2">
+		<PlusIcon />
+		Create post
+	</a>
+	<ul class="list bg-base-200 rounded-box">
+		{blog ? blog.map((blog) => (
+			<li class="list-row">
+				<div class="list-col-grow">
+					<p class="text-lg font-bold">
+						{blog.title}
+					</p>
+					<p class="text-base-content/75">
+						{blog.description}
+					</p>
+				</div>
+				<a
+					class="btn btn-primary"
+					href={`/dashboard/blog/${blog.id}`}>
+					Edit
+				</a>
+				<a
+					class="btn btn-outline"
+					href={`${getTenantUrl(orgId as string)}/blog/${blog.id}`}>
+					Preview
+				</a>
+			</li>
+		))
+		: null}
+	</ul>
+</Layout>

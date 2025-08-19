@@ -1,0 +1,116 @@
+---
+import { actions } from "astro:actions";
+import FormNotice from "@/components/form-notice.astro";
+import { organizations } from "@/db/schema";
+import Layout from "@/layouts/dashboard-layout.astro";
+import { protectRoute } from "@/lib/clerk";
+import { THEMES } from "@/lib/data";
+import { db } from "@/lib/db";
+import { eq } from "drizzle-orm";
+
+const res = await protectRoute(Astro);
+if (res) return res;
+const { orgId } = Astro.locals.auth();
+
+const org = await db
+	.select()
+	.from(organizations)
+	.where(eq(organizations.id, orgId as string))
+	.get();
+
+if (!org) return Astro.redirect("/select");
+---
+
+<FormNotice
+	action={actions.currentOrg.update}
+	successMessage="Organization updated successfully"
+	errorMessage="Failed to update organization"
+/>
+
+<Layout
+	title="Settings"
+>
+	<h1 class="font-bold">Settings</h1>
+	<form method="post" action={actions.currentOrg.update}>
+		<fieldset class="fieldset max-w-128">
+			<label for="" class="label">
+				Name and Logo
+			</label>
+			<a class="btn" href="/dashboard/general">
+				Go to General
+			</a>
+			<label for="" class="label mb-4">
+				You can edit organization name and logo in General tab
+			</label>
+
+			<label for="about" class="label">
+				About
+			</label>
+			<textarea
+				class="textarea w-full"
+				name="about"
+				placeholder="About your NGO"
+				value={org.about || undefined}
+			/>
+
+			<label for="mission" class="label">
+				Mission
+			</label>
+			<textarea
+				class="textarea w-full"
+				name="mission"
+				placeholder="Write about the mission of your NGO"
+				value={org.mission || undefined}
+			/>
+
+			<label for="location" class="label">
+				Location
+			</label>
+			<input
+				class="input w-full"
+				name="location"
+				placeholder="Location of your NGO"
+				value={org.location || undefined}
+			/>
+
+			<label for="theme" class="label">
+				Theme
+			</label>
+			<select
+				name="theme"
+				class="select w-full"
+			>
+				{THEMES.map((t) => (
+					<option selected={t === org.theme}>{t}</option>
+				))}
+			</select>
+
+			<label for="teamSectionEnabled" class="label">
+				<input
+					class="toggle"
+					name="teamSectionEnabled"
+					type="checkbox"
+					checked={org.teamSectionEnabled}
+				/>
+				Team Section enabled
+			</label>
+
+			<label for="hideGioltBranding" class="label">
+				<input
+					class="toggle"
+					name="hideGioltBranding"
+					type="checkbox"
+					checked={org.hideGioltBranding}
+				/>
+				Hide Giolt branding
+			</label>
+
+			<button
+				class="btn btn-primary w-max"
+				type="submit"
+			>
+				Update
+			</button>
+		</fieldset>
+	</form>
+</Layout>
