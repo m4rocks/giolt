@@ -59,31 +59,29 @@ const props = Astro.props;
 		<ClientRouter/>
 		<Analytics />
 	</head>
-	<body>
-		<body class="flex flex-col min-h-svh">
-			<div class="drawer lg:drawer-open">
-				<input id="drawer" type="checkbox" class="drawer-toggle" />
-				<div class="drawer-content">
-					<Navbar
-						enableAccountButton
-						organizationPopup={props.organizationPopup}
-						returnButton={props.returnButton}
-						returnText={props.returnText}
-						enableDrawer={!props.hideDrawer}
-					/>
-					<main class={`flex-1 p-8 ${props.class ?? ""}`}>
-						<slot/>
-					</main>
-				</div>
-				<div hidden={props.hideDrawer} class="drawer-side pt-16 z-40">
-					<label for="drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-					<DrawerItems transition:persist/>
-				</div>
+	<body class="flex flex-col min-h-svh">
+		<div class="drawer lg:drawer-open">
+			<input id="drawer" type="checkbox" class="drawer-toggle" />
+			<div class="drawer-content">
+				<Navbar
+					enableAccountButton
+					organizationPopup={props.organizationPopup}
+					returnButton={props.returnButton}
+					returnText={props.returnText}
+					enableDrawer={!props.hideDrawer}
+				/>
+				<main class={`flex-1 p-8 ${props.class ?? ""}`}>
+					<slot/>
+				</main>
 			</div>
-			<Toaster
-				client:load
-				transition:persist
-			/>
-		</body>
+			<div hidden={props.hideDrawer} class="drawer-side pt-16 z-40">
+				<label for="drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+				<DrawerItems transition:persist/>
+			</div>
+		</div>
+		<Toaster
+			client:load
+			transition:persist
+		/>
 	</body>
 </html>
