@@ -13,6 +13,7 @@ export const currentOrg = {
 			location: z.string().optional(),
 			theme: z.enum(THEMES),
 			teamSectionEnabled: z.boolean(),
+			hideGioltBranding: z.boolean()
 		}),
 		handler: async (input, ctx) => {
 			const { orgId, userId } = ctx.locals.auth();
@@ -40,6 +41,7 @@ export const currentOrg = {
 						location: input.location,
 						theme: input.theme,
 						teamSectionEnabled: input.teamSectionEnabled,
+						hideGioltBranding: input.hideGioltBranding
 					})
 					.where(eq(organizations.id, orgId));
 			} catch (err) {

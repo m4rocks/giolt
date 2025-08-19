@@ -20,6 +20,7 @@ export default function Details(props: DetailsProps) {
 		const location = formData.get("location") as string;
 		const theme = formData.get("theme") as (typeof THEMES)[number];
 		const teamSectionEnabled = formData.get("teamSectionEnabled") === "on";
+		const hideGioltBranding = formData.get("hideGioltBranding") === "on";
 
 		setLoading(true);
 
@@ -30,6 +31,7 @@ export default function Details(props: DetailsProps) {
 				location,
 				theme,
 				teamSectionEnabled,
+				hideGioltBranding
 			})
 			.then((res) => {
 				if (res.error) {
@@ -113,7 +115,18 @@ export default function Details(props: DetailsProps) {
 							disabled={loading}
 							defaultChecked={props.org.teamSectionEnabled}
 						/>
-						Team Section Enabled
+						Team Section enabled
+					</label>
+
+					<label htmlFor="hideGioltBranding" className="label">
+						<input
+							className="toggle"
+							name="hideGioltBranding"
+							type="checkbox"
+							disabled={loading}
+							defaultChecked={props.org.hideGioltBranding}
+						/>
+						Hide Giolt branding
 					</label>
 
 					<button

@@ -9,6 +9,7 @@ interface Props {
 	theme: string;
 	favicon?: string;
 	navbar?: boolean;
+	hideGioltBranding?: boolean;
 }
 
 // Function to determine favicon MIME type based on file extension
@@ -55,6 +56,9 @@ const faviconType = getFaviconType(Astro.props.favicon);
 		<main class="flex-1">
 			<slot/>
 		</main>
-		<Footer/>
+		<Footer
+			name={Astro.props.title}
+			hideGioltBranding={!!Astro.props.hideGioltBranding}
+		/>
 	</body>
 </html>
