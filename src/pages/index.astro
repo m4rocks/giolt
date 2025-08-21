@@ -14,7 +14,8 @@ import {
 	SquareKanbanIcon,
 	VoteIcon,
 } from "@lucide/astro";
-import { FaGithub as GitHubIcon } from "react-icons/fa";
+import { SiGoogleforms as GoogleFormsIcon } from "react-icons/si";
+import { FaGoogleDrive as GoogleDriveIcon, FaGithub as GitHubIcon } from "react-icons/fa";
 ---
 
 <Layout>
@@ -177,6 +178,122 @@ import { FaGithub as GitHubIcon } from "react-icons/fa";
 		class="*:fill-base-content w-full h-48 rotate-180"
 	/>
 
+	<div class="container py-16">
+		<h2 class="text-3xl md:text-5xl font-bold" id="how-it-works">
+			How it works
+		</h2>
+		<p class="text-base-content/75 mb-8">
+			Get your organization up and running on Giolt in a few simple steps.
+		</p>
+
+		<div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-stretch">
+			<div class="card bg-base-200 text-base-content">
+				<div class="card-body">
+					<PanelsTopLeftIcon class="size-6" />
+					<h3 class="card-title">1. Create your page</h3>
+					<p>Set up a public page for your NGO with themes, branding, and core info.</p>
+				</div>
+			</div>
+			<div class="card bg-base-200 text-base-content">
+				<div class="card-body">
+					<SquareKanbanIcon class="size-6" />
+					<h3 class="card-title">2. Publish projects</h3>
+					<p>Showcase initiatives, goals, and timelines to attract volunteers.</p>
+				</div>
+			</div>
+			<div class="card bg-base-200 text-base-content">
+				<div class="card-body">
+					<RssIcon class="size-6" />
+					<h3 class="card-title">3. Share updates</h3>
+					<p>Keep supporters informed with posts and announcements.</p>
+				</div>
+			</div>
+			<div class="card bg-base-200 text-base-content">
+				<div class="card-body">
+					<SmartphoneIcon class="size-6" />
+					<h3 class="card-title">4. Engage volunteers</h3>
+					<p>Coordinate with tools that help volunteers stay organized and informed.</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- <div class="mt-8">
+			<div class="rounded-box border border-base-200 glass p-6">
+				<div class="aspect-video w-full rounded-box bg-base-200 border border-base-200 flex items-center justify-center text-base-300/60">
+					Placeholder illustration (replace with onboarding graphic)
+				</div>
+			</div>
+		</div> -->
+	</div>
+
+	<!-- <Wave
+		class="*:fill-base-content w-full h-48"
+	/>
+
+	<div class="bg-base-content text-base-300">
+		<div class="container py-16">
+			<h2 class="text-3xl md:text-5xl font-bold" id="testimonials">
+				What organizations say
+			</h2>
+			<p class="text-base-300/75 mb-6">Early feedback from mission-driven teams.</p>
+
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+				<div class="card bg-base-200 text-base-content">
+					<div class="card-body">
+						<div class="flex items-center gap-3">
+							<div class="w-12 h-12 rounded-full bg-base-300" aria-hidden="true"></div>
+							<div>
+								<p class="font-semibold">Person Name</p>
+								<p class="text-sm text-base-content/60">NGO Role, Organization</p>
+							</div>
+						</div>
+						<p class="mt-4">
+							“Placeholder quote about how Giolt simplifies volunteer coordination and public updates.”
+						</p>
+					</div>
+				</div>
+				<div class="card bg-base-200 text-base-content">
+					<div class="card-body">
+						<div class="flex items-center gap-3">
+							<div class="w-12 h-12 rounded-full bg-base-300" aria-hidden="true"></div>
+							<div>
+								<p class="font-semibold">Person Name</p>
+								<p class="text-sm text-base-content/60">Project Lead, Organization</p>
+							</div>
+						</div>
+						<p class="mt-4">
+							“Placeholder quote highlighting the ease of publishing projects and mobilizing volunteers.”
+						</p>
+					</div>
+				</div>
+				<div class="card bg-base-200 text-base-content">
+					<div class="card-body">
+						<div class="flex items-center gap-3">
+							<div class="w-12 h-12 rounded-full bg-base-300" aria-hidden="true"></div>
+							<div>
+								<p class="font-semibold">Person Name</p>
+								<p class="text-sm text-base-content/60">Coordinator, Organization</p>
+							</div>
+						</div>
+						<p class="mt-4">
+							“Placeholder quote about clearer communication and time saved with Giolt.”
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="mt-8 rounded-box border border-base-200/20 bg-base-200/10 p-6">
+				<div class="aspect-[3/1] w-full rounded-box bg-base-200/30 border border-base-200 flex items-center justify-center text-base-300/60">
+					Banner illustration placeholder (replace with a testimonials graphic)
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<Wave
+		class="*:fill-base-content w-full h-48 rotate-180"
+	/> -->
+
 	<div
 		style={{
 			backgroundSize: "40px 40px",
@@ -291,7 +408,7 @@ import { FaGithub as GitHubIcon } from "react-icons/fa";
 					<p
 						class="text-base-content/75"
 					>
-						Billed per 2 organizations
+						Billed per organization
 					</p>
 					<button
 						disabled
@@ -304,6 +421,83 @@ import { FaGithub as GitHubIcon } from "react-icons/fa";
 					>
 						Start for free with a 30 day trial
 					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container my-16" id="faq">
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+			<div class="order-1 md:order-none">
+				<h2 class="text-3xl md:text-5xl font-bold">FAQ</h2>
+				<p class="text-base-content/75 mt-2 mb-4">
+					Answers to common questions about Giolt. Click a question to expand.
+				</p>
+				<p class="text-base-content/70">
+					If you don't find your question here, reach out via our contact page or follow updates for announcements and releases.
+				</p>
+			</div>
+
+			<div class="order-2">
+				<div class="card bg-base-200 text-base-content p-4">
+					<div class="join join-vertical">
+						<div class="collapse collapse-arrow join-item bg-base-200 border border-base-300">
+							<input type="radio" name="faq-accordion" checked="checked" />
+							<div class="collapse-title font-semibold">Who is Giolt for?</div>
+							<div class="collapse-content text-sm">
+								Giolt is built for NGOs, nonprofits, and volunteer-driven organizations of any size.
+							</div>
+						</div>
+
+						<div class="collapse collapse-arrow join-item bg-base-200 border border-base-300">
+							<input type="radio" name="faq-accordion" />
+							<div class="collapse-title font-semibold">Can I try Giolt for free?</div>
+							<div class="collapse-content text-sm">
+								We offer a free 30-day trial when subscriptions launch. Contact us for more information.
+							</div>
+						</div>
+
+						<div class="collapse collapse-arrow join-item bg-base-200 border border-base-300">
+							<input type="radio" name="faq-accordion" />
+							<div class="collapse-title font-semibold">Do you offer discounts?</div>
+							<div class="collapse-content text-sm">
+								We plan to provide discounts and grants for qualifying initiatives. Stay tuned.
+							</div>
+						</div>
+
+						<div class="collapse collapse-arrow join-item bg-base-200 border border-base-300">
+							<input type="radio" name="faq-accordion" />
+							<div class="collapse-title font-semibold">What about custom themes?</div>
+							<div class="collapse-content text-sm">
+								You’ll be able to choose from +30 themes and tailor your public presence.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container my-24">
+		<div class="card bg-primary text-primary-content">
+			<div class="card-body items-center text-center">
+				<h2 class="text-3xl md:text-5xl font-bold">Ready to empower your NGO?</h2>
+				<p class="text-primary-content/90">
+					Be among the first to build your presence, publish projects, and mobilize volunteers with Giolt.
+				</p>
+				<div class="card-actions mt-4">
+					<a
+						href="https://accounts.giolt.com/waitlist"
+						target="_blank"
+						class="btn"
+					>
+						<ClipboardListIcon/>
+						Join the waitlist
+					</a>
+					<a href="/updates" class="btn btn-outline">
+						<RssIcon/>
+						Read updates
+					</a>
 				</div>
 			</div>
 		</div>
