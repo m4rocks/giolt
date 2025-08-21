@@ -1,7 +1,9 @@
 ---
-import Blog from "@/components/org/pages/blog.astro";
+import BlogDetails from "@/components/org/blog-details.astro";
+import RelatedBlogPosts from "@/components/org/related-blog-posts.astro";
 import { blogPosts, organizations } from "@/db/schema";
 import Layout from "@/layouts/tenant-layout.astro";
+import { mdClassName } from "@/lib/content";
 import { db } from "@/lib/db";
 import { and, eq } from "drizzle-orm";
 
@@ -48,14 +50,37 @@ if (!post) {
 ---
 
 <Layout
-	title={org.name}
+	title={post.title}
+	orgName={org.name}
 	theme={org.theme}
 	navbar
-	favicon={org.logoUrl || undefined}
+	favicon={org.logoUrl}
 	hideGioltBranding={org.hideGioltBranding}
+	class="container"
 >
-	<Blog
+	<h1
+		class="text-5xl md:text-7xl font:bold"
+	>
+		{post.title}
+	</h1>
+	<p
+		class="text-base-content/75 mb-2"
+	>
+		{post.description}
+	</p>
+	<BlogDetails
 		orgId={org.id}
-		post={post}
+		readingTime={post.readingTime}
+		writerId={post.writerId}
+		date={post.date}
+	/>
+	<div
+		set:html={post.content}
+		class={`${mdClassName} my-4`}
+	></div>
+
+	<RelatedBlogPosts
+		orgId={org.id}
+		currentPostId={post.id}
 	/>
 </Layout>

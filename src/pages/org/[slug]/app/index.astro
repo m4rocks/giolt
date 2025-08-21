@@ -1,0 +1,42 @@
+---
+import { organizations, projects } from "@/db/schema";
+import Layout from "@/layouts/tenant-layout.astro";
+import { db } from "@/lib/db";
+import { getProjectAccessFromRequest } from "@/lib/tenant";
+import { eq } from "drizzle-orm";
+
+const { slug } = Astro.params;
+if (!slug) {
+	return Astro.redirect(import.meta.env.SITE);
+}
+const projectId = await getProjectAccessFromRequest(Astro);
+
+if (!projectId) {
+	return Astro.redirect("/app/no-access");
+}
+
+const row = await db
+	.select()
+	.from(projects)
+	.innerJoin(organizations, eq(projects.organizationId, organizations.id))
+	.where(eq(projects.id, projectId))
+	.limit(1)
+	.get();
+
+const org = row?.organizations ?? null;
+const project = row?.projects ?? null;
+
+if (!org || !project) {
+	return Astro.redirect(import.meta.env.SITE);
+}
+---
+
+<Layout
+	title={project.title}
+	orgName={org.name}
+	theme={org.theme}
+	favicon={org.logoUrl}
+	enableInstallable
+>
+
+</Layout>

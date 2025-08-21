@@ -9,6 +9,7 @@
 	"files": {
 		"ignoreUnknown": false,
 		"ignore": [
+			"src/lib/cookie.ts",
 			"**/node_modules/*",
 			"**/.astro/*",
 			"**/.wrangler/*",

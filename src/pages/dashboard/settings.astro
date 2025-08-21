@@ -43,6 +43,17 @@ if (!org) return Astro.redirect("/select");
 				You can edit organization name and logo in General tab
 			</label>
 
+			<label for="email" class="label">
+				Contact Email
+			</label>
+			<input
+				class="input w-full"
+				name="email"
+				type="email"
+				placeholder="The email address of your organization"
+				value={org.email || undefined}
+			/>
+
 			<label for="about" class="label">
 				About
 			</label>

@@ -8,6 +8,7 @@ export const organizations = sqliteTable("organizations", {
 	slug: text("slug").notNull(),
 	logoUrl: text("logo_url"),
 	mission: text("mission"),
+	email: text("email"),
 	about: text("about"),
 	contact: text("contact"),
 	location: text("location"),
@@ -51,6 +52,7 @@ export const projects = sqliteTable("projects", {
 	id: int("id").primaryKey().unique(),
 	title: text("title").notNull(),
 	description: text("description").notNull(),
+	code: text().notNull().default("(uuid())"),
 	startDate: int("start_date", { mode: "timestamp" })
 		.notNull()
 		.default(sql`(strftime('%s', 'now'))`),
@@ -63,7 +65,6 @@ export const projects = sqliteTable("projects", {
 		.references(() => organizations.id),
 	location: text("location"),
 	rules: text("rules"),
-	volunteerLimit: int("volunteer_limit").notNull().default(0),
 });
 
 export type SelectProjects = typeof projects.$inferSelect;

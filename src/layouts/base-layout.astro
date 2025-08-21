@@ -55,10 +55,8 @@ const isMarkdown = !!Astro.props.frontmatter;
 	</head>
 	<body class="flex flex-col min-h-svh">
 		<Navbar />
-		<main class:list={["flex-1", Astro.props.class]}>
-			<main class={`flex-1 mb-4 ${props.class} ${isMarkdown ? `${mdClassName} !container my-4` : ""}`}>
-				<slot/>
-			</main>
+		<main class:list={["flex-1 mb-4", props.class, isMarkdown ? `${mdClassName} !container my-4` : ""]}>
+			<slot/>
 		</main>
 		<Footer/>
 		<Analytics />

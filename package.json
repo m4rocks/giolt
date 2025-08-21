@@ -33,6 +33,7 @@
 		"@polar-sh/sdk": "^0.34.11",
 		"@tailwindcss/typography": "^0.5.16",
 		"@tailwindcss/vite": "^4.1.11",
+		"@types/web-app-manifest": "^1.0.9",
 		"@vercel/analytics": "^1.5.0",
 		"@vercel/functions": "^2.2.11",
 		"astro": "^5.12.9",

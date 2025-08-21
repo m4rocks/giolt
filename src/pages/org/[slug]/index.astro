@@ -1,5 +1,9 @@
 ---
-import Home from "@/components/org/pages/home.astro";
+import About from "@/components/org/about.astro";
+import BlogPosts from "@/components/org/blog-posts.astro";
+import Location from "@/components/org/location.astro";
+import Mission from "@/components/org/mission.astro";
+import Team from "@/components/org/team.astro";
 import { organizations } from "@/db/schema";
 import Layout from "@/layouts/tenant-layout.astro";
 import { db } from "@/lib/db";
@@ -28,12 +32,47 @@ if (!org) {
 ---
 
 <Layout
-	title={org.name}
+	orgName={org.name}
 	theme={org.theme}
-	favicon={org.logoUrl || undefined}
+	favicon={org.logoUrl}
 	hideGioltBranding={org.hideGioltBranding}
 >
-	<Home
-		organization={org}
-	/>
+	<div
+		class="bg-gradient-to-b from-accent/50 via-accent/10 mb-8"
+	>
+		<div class="flex flex-col items-start justify-end h-72 container">
+			<img
+				src={org.logoUrl || ""}
+				alt={org.name}
+				class="w-32 h-32 rounded-box"
+			/>
+			<h1
+				class="text-2xl font-bold"
+			>
+				{org.name}
+			</h1>
+			<Location
+				location={org.location}
+			/>
+		</div>
+	</div>
+
+	<div class="container space-y-8">
+			<BlogPosts
+				orgId={org.id}
+			/>
+
+			<About
+				about={org.about}
+			/>
+
+			<Mission
+				mission={org.mission}
+			/>
+
+			<Team
+				orgId={org.id}
+				enabled={org.teamSectionEnabled}
+			/>
+	</div>
 </Layout>

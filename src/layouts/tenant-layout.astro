@@ -2,12 +2,15 @@
 import "@/styles/tenant.css";
 import Footer from "@/components/org/footer.astro";
 import Navbar from "@/components/org/navbar.astro";
+import type { THEMES } from "@/lib/data";
 
 interface Props {
-	title: string;
+	title?: string;
+	orgName: string;
 	class?: string;
-	theme: string;
-	favicon?: string;
+	theme: (typeof THEMES)[number];
+	enableInstallable?: boolean;
+	favicon?: string | null;
 	navbar?: boolean;
 	hideGioltBranding?: boolean;
 }
@@ -35,7 +38,7 @@ function getFaviconType(faviconUrl?: string): string {
 }
 
 const faviconUrl = Astro.props.favicon || "/favicon.svg";
-const faviconType = getFaviconType(Astro.props.favicon);
+const faviconType = getFaviconType(Astro.props.favicon || undefined);
 ---
 
 <html lang="en" data-theme={Astro.props.theme}>
@@ -44,20 +47,28 @@ const faviconType = getFaviconType(Astro.props.favicon);
 		<link rel="icon" type={faviconType} href={faviconUrl} />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{Astro.props.title}</title>
+		{Astro.props.enableInstallable ?
+			<meta name="apple-mobile-web-app-capable" content="yes" />
+			<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+			<meta name="apple-mobile-web-app-title" content={Astro.props.orgName} />
+			<link rel="manifest" href="/app/manifest.json" />
+		: null}
+		<title>
+			{Astro.props.title ? `${Astro.props.title} - ${Astro.props.orgName}` : Astro.props.orgName}
+		</title>
 	</head>
 	<body class="flex flex-col min-h-svh">
 		{Astro.props.navbar ?
 			<Navbar
-				logoUrl={Astro.props.favicon}
-				name={Astro.props.title}
+				logoUrl={Astro.props.favicon || undefined}
+				name={Astro.props.orgName}
 			/>
 		: null}
-		<main class="flex-1">
+		<main class:list={["flex-1", Astro.props.class]}>
 			<slot/>
 		</main>
 		<Footer
-			name={Astro.props.title}
+			name={Astro.props.orgName}
 			hideGioltBranding={!!Astro.props.hideGioltBranding}
 		/>
 	</body>
