@@ -34,8 +34,8 @@ const result = Astro.getActionResult(Astro.props.action);
 			}
 		}
 
+		if (!document.getElementsByTagName("form")[0]) return;
 		document.getElementsByTagName("form")[0].addEventListener("submit", () => {
-			console.log("submitting form");
 			const id = toast.loading("Loading...");
 
 			document.addEventListener("astro:before-swap", () => {

@@ -2,6 +2,7 @@
 import type { SelectBlogPosts } from "@/db/schema";
 import { mdClassName } from "@/lib/content";
 import BlogDetails from "../blog-details.astro";
+import RelatedBlogPosts from "../related-blog-posts.astro";
 
 interface Props {
 	orgId: string;
@@ -30,6 +31,11 @@ const { post, orgId } = Astro.props;
 	/>
 	<div
 		set:html={post.content}
-		class={`${mdClassName} mt-4`}
+		class={`${mdClassName} my-4`}
 	></div>
+
+	<RelatedBlogPosts
+		orgId={orgId}
+		currentPostId={post.id}
+	/>
 </div>
