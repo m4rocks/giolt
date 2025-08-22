@@ -65,8 +65,10 @@ export const projects = sqliteTable("projects", {
 		.notNull()
 		.references(() => organizations.id),
 	location: text("location"),
+	siteAddress: text("site_address"),
 	rules: text("rules"),
 	travelDetails: text("travel_details"),
+	volunteerNumber: int("volunteer_number").notNull().default(sql`0`),
 });
 
 export type SelectProjects = typeof projects.$inferSelect;

@@ -3,7 +3,9 @@ import About from "@/components/org/about.astro";
 import DaysUntil from "@/components/org/app/days-until.astro";
 import InstallBanner from "@/components/org/app/install-banner.astro";
 import Rules from "@/components/org/app/rules.astro";
+import SiteAddress from "@/components/org/app/site-address.astro";
 import TravelDetails from "@/components/org/app/travel-details.astro";
+import VolunteerNumber from "@/components/org/app/volunteer-number.astro";
 import { Calendar } from "@/components/org/calendar";
 import Location from "@/components/org/location.astro";
 import Team from "@/components/org/team.astro";
@@ -53,19 +55,25 @@ if (!org || !project) {
 		>
 			<InstallBanner/>
 			<h1
-				class="text-3xl font-bold line-clamp-2"
+				class="text-3xl font-bold line-clamp-2 mt-4"
 			>
 				{project.title}
 			</h1>
-			<p class="text-sm text-base-content/75 flex flex-row items-center gap-1">
+			<p class="flex flex-row items-center gap-1">
 				<img
 					src={org.logoUrl}
 					class="size-4"
 				/>
-				{org.name}
+				Hosted by {org.name}
 			</p>
 			<Location
 				location={project.location}
+			/>
+			<SiteAddress
+				siteAddress={project.siteAddress}
+			/>
+			<VolunteerNumber
+				volunteerNumber={project.volunteerNumber}
 			/>
 			<DaysUntil
 				startDate={project.startDate}

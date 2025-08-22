@@ -1,0 +1,16 @@
+---
+import { HouseIcon } from "@lucide/astro";
+
+interface Props {
+	siteAddress: string | null;
+}
+
+const { siteAddress } = Astro.props;
+---
+
+{siteAddress ?
+	<p class="flex flex-row gap-1 items-center">
+		<HouseIcon class="size-4"/>
+		{siteAddress}
+	</p>
+: null}

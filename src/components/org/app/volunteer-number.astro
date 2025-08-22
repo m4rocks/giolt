@@ -1,0 +1,14 @@
+---
+import { UsersIcon } from "@lucide/astro";
+
+interface Props {
+	volunteerNumber: number;
+}
+
+const { volunteerNumber } = Astro.props;
+---
+
+<p class="flex flex-row gap-1 items-center">
+	<UsersIcon class="size-4"/>
+	{volunteerNumber} participants
+</p>
