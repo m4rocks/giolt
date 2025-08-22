@@ -31,7 +31,7 @@ const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 
 				const method = ctx.request.method.toUpperCase();
 				if (method === "GET" || method === "HEAD") {
-					return ctx.redirect(target.href, 308);
+					return ctx.redirect(target.href, 302);
 				}
 				return ctx.rewrite(target);
 			}
