@@ -20,7 +20,7 @@ const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 		if (sub && !RESERVED.has(sub)) {
 			const alreadyMapped = url.pathname.startsWith(`/org/${sub}`);
 			if (!alreadyMapped) {
-				if (EXCLUDED_PATHS.has(url.pathname)) {
+				if ([...EXCLUDED_PATHS].some((p) => url.pathname.startsWith(p))) {
 					return next();
 				}
 				const target = new URL(
@@ -29,6 +29,10 @@ const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 				);
 				console.log(target.href);
 
+				const method = ctx.request.method.toUpperCase();
+				if (method === "GET" || method === "HEAD") {
+					return ctx.redirect(target.href, 308);
+				}
 				return ctx.rewrite(target);
 			}
 		}
