@@ -18,7 +18,7 @@ if (!slug) {
 const projectId = await getProjectAccessFromRequest(Astro);
 
 if (!projectId) {
-	return Astro.redirect(`https://${getTenantUrl(slug)}/app/no-access`);
+	return Astro.redirect(`${getTenantUrl(slug)}/app/no-access`);
 }
 
 const row = await db
