@@ -52,7 +52,7 @@ export const projects = sqliteTable("projects", {
 	id: int("id").primaryKey().unique(),
 	title: text("title").notNull(),
 	description: text("description").notNull(),
-	code: text().notNull().default("(uuid())"),
+	code: text().notNull().default(sql`(lower(hex(randomblob(8))))`),
 	startDate: int("start_date", { mode: "timestamp" })
 		.notNull()
 		.default(sql`(strftime('%s', 'now'))`),
