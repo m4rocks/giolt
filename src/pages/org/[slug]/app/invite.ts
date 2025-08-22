@@ -9,8 +9,12 @@ export const GET: APIRoute = async (ctx) => {
 	const code = ctx.url.searchParams.get("code");
 	const slug = ctx.params.slug;
 
-	if (!code || !slug) {
+	if (!slug) {
 		return ctx.redirect("https://giolt.com");
+	}
+
+	if (!code) {
+		return ctx.redirect(getTenantUrl(slug));
 	}
 
 	const row = await db

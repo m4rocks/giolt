@@ -22,13 +22,13 @@ export default defineConfig({
 		sitemap(),
 	],
 	experimental: {
-		chromeDevtoolsWorkspace: true
+		chromeDevtoolsWorkspace: true,
 	},
 
 	site:
-	process.env.VERCEL_ENV === "production"
-	? "https://giolt.com"
-	: "http://localhost:3000",
+		process.env.VERCEL_ENV === "production"
+			? "https://giolt.com"
+			: "http://localhost:3000",
 
 	adapter: vercel({
 		webAnalytics: {

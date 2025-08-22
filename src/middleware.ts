@@ -3,16 +3,13 @@ import { defineMiddleware, sequence } from "astro:middleware";
 import { clerkMiddleware } from "@clerk/astro/server";
 
 const BASE_TENANT_HOST =
-	VERCEL_ENV === "production"
-		? "giolt.org"
-		: "localhost";
+	VERCEL_ENV === "production" ? "giolt.org" : "localhost";
 const RESERVED = new Set(["www"]);
 const EXCLUDED_PATHS = new Set(["/_image"]);
 
 const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 	const url = new URL(ctx.request.url);
 	const host = url.hostname;
-	console.log(url.href);
 
 	if (host.endsWith(`.${BASE_TENANT_HOST}`)) {
 		const sub = host.slice(0, -`.${BASE_TENANT_HOST}`.length);
@@ -20,7 +17,9 @@ const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 		if (sub && !RESERVED.has(sub)) {
 			const alreadyMapped = url.pathname.startsWith(`/org/${sub}`);
 			if (!alreadyMapped) {
-				if ([...EXCLUDED_PATHS].some((p) => url.pathname.startsWith(p))) {
+				if (
+					[...EXCLUDED_PATHS].some((p) => url.pathname.startsWith(p))
+				) {
 					return next();
 				}
 				const target = new URL(
@@ -38,7 +37,6 @@ const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 const conditionalClerkMiddleware = defineMiddleware(async (ctx, next) => {
 	const url = new URL(ctx.request.url);
 	const host = url.hostname;
-	console.log(url.href);
 
 	if (host.endsWith(`.${BASE_TENANT_HOST}`)) {
 		return next();
@@ -46,6 +44,6 @@ const conditionalClerkMiddleware = defineMiddleware(async (ctx, next) => {
 	const handler = clerkMiddleware();
 
 	return handler(ctx, next) as Promise<Response>;
-})
+});
 
 export const onRequest = sequence(conditionalClerkMiddleware, tenantMiddleware);

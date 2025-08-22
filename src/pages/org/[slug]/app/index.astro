@@ -1,15 +1,17 @@
 ---
-import Layout from "@/layouts/tenant-layout.astro";
+import About from "@/components/org/about.astro";
+import DaysUntil from "@/components/org/app/days-until.astro";
 import InstallBanner from "@/components/org/app/install-banner.astro";
+import Rules from "@/components/org/app/rules.astro";
+import TravelDetails from "@/components/org/app/travel-details.astro";
+import { Calendar } from "@/components/org/calendar";
+import Location from "@/components/org/location.astro";
+import Team from "@/components/org/team.astro";
 import { organizations, projects } from "@/db/schema";
+import Layout from "@/layouts/tenant-layout.astro";
 import { db } from "@/lib/db";
 import { getProjectAccessFromRequest } from "@/lib/tenant";
 import { eq } from "drizzle-orm";
-import Rules from "@/components/org/app/rules.astro";
-import Location from "@/components/org/location.astro";
-import { Calendar } from "@/components/org/calendar";
-import About from "@/components/org/about.astro";
-import Team from "@/components/org/team.astro";
 
 const { slug } = Astro.params;
 if (!slug) {
@@ -51,13 +53,10 @@ if (!org || !project) {
 		>
 			<InstallBanner/>
 			<h1
-				class="text-4xl font-bold"
+				class="text-3xl font-bold line-clamp-2"
 			>
-				Project
-			</h1>
-			<p class="text-xl">
 				{project.title}
-			</p>
+			</h1>
 			<p class="text-sm text-base-content/75 flex flex-row items-center gap-1">
 				<img
 					src={org.logoUrl}
@@ -68,7 +67,14 @@ if (!org || !project) {
 			<Location
 				location={project.location}
 			/>
+			<DaysUntil
+				startDate={project.startDate}
+				endDate={project.endDate}
+			/>
 			<div class="mt-16 space-y-8">
+				<TravelDetails
+					travelDetails={project.travelDetails}
+				/>
 				<Rules
 					rules={project.rules}
 				/>

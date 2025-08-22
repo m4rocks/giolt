@@ -1,0 +1,24 @@
+---
+import { CalendarIcon } from "@lucide/astro";
+export interface Props {
+	startDate: Date;
+	endDate: Date;
+}
+
+const { startDate, endDate } = Astro.props;
+const nowDate = new Date();
+const msPerDay = 1000 * 60 * 60 * 24;
+const daysUntilStart: number = Math.ceil(
+	(startDate.getTime() - nowDate.getTime()) / msPerDay,
+);
+const daysUntilEnd: number = Math.ceil(
+	(endDate.getTime() - nowDate.getTime()) / msPerDay,
+);
+---
+
+<p
+	class="flex flex-row gap-1 items-center"
+>
+	<CalendarIcon class="size-4"/>
+	{nowDate < startDate ? daysUntilStart : daysUntilEnd} days left
+</p>

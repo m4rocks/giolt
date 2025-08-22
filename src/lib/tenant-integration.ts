@@ -12,6 +12,6 @@ export const tenantRouteFix: AstroIntegration = {
 				pattern: "/app/[...all]",
 				entrypoint: "./src/pages/api/redirect.ts",
 			});
-		}
-	}
-}
+		},
+	},
+};

@@ -65,6 +65,7 @@ export const projects = sqliteTable("projects", {
 		.references(() => organizations.id),
 	location: text("location"),
 	rules: text("rules"),
+	travelDetails: text("travel_details"),
 });
 
 export type SelectProjects = typeof projects.$inferSelect;
