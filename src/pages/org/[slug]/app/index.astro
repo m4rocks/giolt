@@ -1,9 +1,15 @@
 ---
-import { organizations, projects } from "@/db/schema";
 import Layout from "@/layouts/tenant-layout.astro";
+import InstallBanner from "@/components/org/app/install-banner.astro";
+import { organizations, projects } from "@/db/schema";
 import { db } from "@/lib/db";
 import { getProjectAccessFromRequest } from "@/lib/tenant";
 import { eq } from "drizzle-orm";
+import Rules from "@/components/org/app/rules.astro";
+import Location from "@/components/org/location.astro";
+import { Calendar } from "@/components/org/calendar";
+import About from "@/components/org/about.astro";
+import Team from "@/components/org/team.astro";
 
 const { slug } = Astro.params;
 if (!slug) {
@@ -37,6 +43,49 @@ if (!org || !project) {
 	theme={org.theme}
 	favicon={org.logoUrl}
 	enableInstallable
+	class="container my-4"
 >
-
+	<div class="flex flex-col lg:flex-row gap-x-4 gap-y-16">
+		<div
+			class="flex-1"
+		>
+			<InstallBanner/>
+			<h1
+				class="text-4xl font-bold"
+			>
+				Project
+			</h1>
+			<p class="text-xl">
+				{project.title}
+			</p>
+			<p class="text-sm text-base-content/75 flex flex-row items-center gap-1">
+				<img
+					src={org.logoUrl}
+					class="size-4"
+				/>
+				{org.name}
+			</p>
+			<Location
+				location={project.location}
+			/>
+			<div class="mt-16 space-y-8">
+				<Rules
+					rules={project.rules}
+				/>
+				<About
+					about={project.description}
+				/>
+			</div>
+		</div>
+		<div class="space-y-4">
+			<Calendar
+				startDate={project.startDate}
+				endDate={project.endDate}
+			/>
+			<Team
+				orgId={org.id}
+				enabled
+			/>
+		</div>
+	</div>
 </Layout>

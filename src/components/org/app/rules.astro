@@ -1,0 +1,19 @@
+---
+interface Props {
+	rules: string | null;
+}
+
+const { rules } = Astro.props;
+---
+
+{rules ?
+	<div>
+		<h2 class="text-xl font-bold text-base-content/75">
+			Rules
+		</h2>
+		<div class="divider my-0"></div>
+		<p>
+			{rules}
+		</p>
+	</div>
+: null}

@@ -2,7 +2,7 @@
 import "@/styles/tenant.css";
 import Footer from "@/components/org/footer.astro";
 import Navbar from "@/components/org/navbar.astro";
-import type { THEMES } from "@/lib/data";
+import { type THEMES, THEME_COLORS } from "@/lib/data";
 
 interface Props {
 	title?: string;
@@ -47,6 +47,7 @@ const faviconType = getFaviconType(Astro.props.favicon || undefined);
 		<link rel="icon" type={faviconType} href={faviconUrl} />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content={THEME_COLORS[Astro.props.theme]} />
 		{Astro.props.enableInstallable ?
 			<meta name="apple-mobile-web-app-capable" content="yes" />
 			<meta name="apple-mobile-web-app-status-bar-style" content="black" />

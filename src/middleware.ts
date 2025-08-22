@@ -26,7 +26,6 @@ const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 					`/org/${sub}${url.pathname}${url.search}`,
 					url,
 				);
-				console.log(target.href);
 
 				return ctx.rewrite(target);
 			}

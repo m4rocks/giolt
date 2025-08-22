@@ -1,0 +1,16 @@
+---
+import { InfoIcon } from "@lucide/astro";
+
+const param = Astro.url.searchParams.get("utm_source");
+
+const installed = param === "homescreen";
+---
+
+{!installed ?
+	<div role="alert" class="alert">
+		<InfoIcon/>
+		<span>
+			You can install this page as a web app on your homescreen
+		</span>
+	</div>
+: null}

@@ -3,7 +3,7 @@ import { setCookie } from "@/lib/cookie";
 import { db } from "@/lib/db";
 import { getTenantUrl } from "@/lib/tenant";
 import type { APIRoute } from "astro";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export const GET: APIRoute = async (ctx) => {
 	const code = ctx.url.searchParams.get("code");
