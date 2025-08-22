@@ -7,12 +7,14 @@ import vercel from "@astrojs/vercel";
 import clerk from "@clerk/astro";
 import tailwindcss from "@tailwindcss/vite";
 import { clerkTheme } from "./src/lib/clerk-theme";
+import { tenantRouteFix } from "./src/lib/tenant-integration";
 
 // https://astro.build/config
 export default defineConfig({
 	output: "server",
 
 	integrations: [
+		tenantRouteFix,
 		clerk({
 			appearance: clerkTheme,
 		}),

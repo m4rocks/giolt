@@ -3,7 +3,7 @@ import Layout from "@/layouts/tenant-layout.astro";
 import InstallBanner from "@/components/org/app/install-banner.astro";
 import { organizations, projects } from "@/db/schema";
 import { db } from "@/lib/db";
-import { getProjectAccessFromRequest, getTenantUrl } from "@/lib/tenant";
+import { getProjectAccessFromRequest } from "@/lib/tenant";
 import { eq } from "drizzle-orm";
 import Rules from "@/components/org/app/rules.astro";
 import Location from "@/components/org/location.astro";

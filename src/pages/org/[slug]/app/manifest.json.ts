@@ -1,5 +1,5 @@
 import { organizations } from "@/db/schema";
-import { THEME_COLORS } from "@/lib/data";
+import { THEME_BASE_COLORS } from "@/lib/data";
 import { db } from "@/lib/db";
 import type { APIRoute } from "astro";
 import { eq } from "drizzle-orm";
@@ -24,8 +24,8 @@ export const GET: APIRoute = async (ctx) => {
 		name: `${org.name} App`,
 		scope: "/app",
 		start_url: "/app?utm_source=homescreen",
-		background_color: THEME_COLORS[org.theme],
-		theme_color: THEME_COLORS[org.theme],
+		background_color: THEME_BASE_COLORS[org.theme],
+		theme_color: THEME_BASE_COLORS[org.theme],
 		display: "standalone",
 		orientation: "portrait",
 		icons: org.logoUrl
