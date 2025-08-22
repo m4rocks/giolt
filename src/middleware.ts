@@ -12,6 +12,7 @@ const EXCLUDED_PATHS = new Set(["/_image"]);
 const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 	const url = new URL(ctx.request.url);
 	const host = url.hostname;
+	console.log(url.href);
 
 	if (host.endsWith(`.${BASE_TENANT_HOST}`)) {
 		const sub = host.slice(0, -`.${BASE_TENANT_HOST}`.length);
@@ -26,6 +27,7 @@ const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 					`/org/${sub}${url.pathname}${url.search}`,
 					url,
 				);
+				console.log(target.href);
 
 				return ctx.rewrite(target);
 			}
