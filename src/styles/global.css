@@ -100,5 +100,5 @@ a {
 }
 
 .ql-editor.ql-blank::before {
-	@apply text-base-content/75;
+	@apply text-base-content/75!;
 }

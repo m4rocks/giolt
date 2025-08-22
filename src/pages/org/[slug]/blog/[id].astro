@@ -1,7 +1,8 @@
 ---
 import BlogDetails from "@/components/org/blog-details.astro";
 import RelatedBlogPosts from "@/components/org/related-blog-posts.astro";
-import { blogPosts, organizations } from "@/db/schema";
+import RelatedProject from "@/components/org/related-project.astro";
+import { blogPosts, organizations, projects } from "@/db/schema";
 import Layout from "@/layouts/tenant-layout.astro";
 import { mdClassName } from "@/lib/content";
 import { db } from "@/lib/db";
@@ -32,9 +33,10 @@ if (!org) {
 	return Astro.redirect(import.meta.env.SITE);
 }
 
-const post = await db
+const row = await db
 	.select()
 	.from(blogPosts)
+	.innerJoin(projects, eq(projects.id, blogPosts.relatedProjectId))
 	.where(
 		and(
 			eq(blogPosts.id, Number.parseInt(id)),
@@ -43,6 +45,9 @@ const post = await db
 		),
 	)
 	.get();
+
+const post = row?.blog_posts;
+const project = row?.projects;
 
 if (!post) {
 	return Astro.redirect("/");
@@ -73,6 +78,9 @@ if (!post) {
 		readingTime={post.readingTime}
 		writerId={post.writerId}
 		date={post.date}
+	/>
+	<RelatedProject
+		project={project}
 	/>
 	<div
 		set:html={post.content}

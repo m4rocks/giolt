@@ -19,7 +19,6 @@
         "@tailwindcss/vite": "^4.1.11",
         "@types/web-app-manifest": "^1.0.9",
         "@vercel/analytics": "^1.5.0",
-        "@vercel/functions": "^2.2.11",
         "astro": "5.13.2",
         "concurrently": "^9.2.0",
         "daisyui": "^5.0.50",

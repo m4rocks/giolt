@@ -2,7 +2,7 @@
 import { actions } from "astro:actions";
 import Editor from "@/components/blog/editor";
 import FormNotice from "@/components/form-notice.astro";
-import { blogPosts } from "@/db/schema";
+import { blogPosts, projects } from "@/db/schema";
 import Layout from "@/layouts/dashboard-layout.astro";
 import { protectRoute } from "@/lib/clerk";
 import { db } from "@/lib/db";
@@ -30,6 +30,12 @@ const post = await db
 		),
 	)
 	.get();
+
+const projs = await db
+	.select()
+	.from(projects)
+	.where(eq(projects.organizationId, orgId as string))
+	.orderBy(projects.endDate);
 
 const teamMembers = await clerkClient(
 	Astro,
@@ -93,6 +99,24 @@ if (!post) {
 						selected={t.id === post.writerId}
 					>
 						{`${t.publicUserData?.firstName} ${t.publicUserData?.lastName}`}
+					</option>
+				))}
+			</select>
+
+			<label for="related_project_id" class="label">
+				Related project
+			</label>
+			<select
+				name="related_project_id"
+				class="select w-full max-w-128"
+			>
+				<option value="">None</option>
+				{projs.map((p) => (
+					<option
+						value={p.id}
+						selected={p.id === post.relatedProjectId}
+					>
+						{p.title}
 					</option>
 				))}
 			</select>

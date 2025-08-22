@@ -36,6 +36,7 @@ export const blogPosts = sqliteTable("blog_posts", {
 	content: text("content").notNull().default(""),
 	writerId: text("writer_id"),
 	readingTime: int("reading_time").notNull().default(0),
+	relatedProjectId: int("related_project_id").references(() => projects.id),
 	date: int("date", { mode: "timestamp" })
 		.notNull()
 		.default(sql`(strftime('%s', 'now'))`),

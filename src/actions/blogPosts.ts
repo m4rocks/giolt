@@ -56,6 +56,7 @@ export const blog = {
 			title: z.string(),
 			description: z.string(),
 			writer_id: z.string().optional(),
+			related_project_id: z.string().optional(),
 			date: z.string(),
 			draft: z.enum(["on"]).optional(),
 			content: z.string().optional(),
@@ -107,6 +108,9 @@ export const blog = {
 						content: input.content,
 						writerId: input.writer_id ?? null,
 						draft: input.draft === "on",
+						relatedProjectId:
+							Number.parseInt(input.related_project_id ?? "0") ||
+							undefined,
 						date,
 						readingTime,
 					})

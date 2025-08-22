@@ -56,6 +56,7 @@ const props = Astro.props;
 		<title>
 			{Astro.props.title ? `${Astro.props.title} - Giolt` : "Giolt - Where volunteers find everything, and organizations save time."}
 		</title>
+		<Posthog/>
 		<ClientRouter/>
 	</head>
 	<body class="flex flex-col min-h-svh">
@@ -82,6 +83,6 @@ const props = Astro.props;
 			client:load
 			transition:persist
 		/>
-		<Analytics />
+		<Analytics/>
 	</body>
 </html>

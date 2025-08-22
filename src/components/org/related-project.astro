@@ -1,0 +1,35 @@
+---
+import type { SelectProjects } from "@/db/schema";
+import { NewspaperIcon } from "@lucide/astro";
+
+export interface Props {
+	project?: SelectProjects;
+}
+
+const { project } = Astro.props;
+---
+
+{project ?
+	<div class="alert my-2">
+		<NewspaperIcon/>
+		<div>
+			<p>
+				Update about {project.title}
+			</p>
+			<p class="text-base-content/75">
+				{project.location}
+				&middot;  From
+				{project.startDate.toLocaleDateString("en-US", {
+					month: "short",
+					day: "numeric",
+					year: "numeric"
+				})} to
+				{project.endDate.toLocaleDateString("en-US", {
+					month: "short",
+					day: "numeric",
+					year: "numeric"
+				})}
+			</p>
+		</div>
+	</div>
+: null}
