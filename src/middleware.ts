@@ -27,7 +27,13 @@ const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 					`/org/${sub}${url.pathname}${url.search}`,
 					url,
 				);
-				return ctx.rewrite(target);
+				const res = await ctx.rewrite(target);
+
+				if (res.status.toString().startsWith("30")) {
+					return ctx.redirect(res.headers.get("Location") || "/");
+				} else {
+					return res;
+				}
 			}
 		}
 	}
