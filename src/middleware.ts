@@ -5,9 +5,7 @@ import { clerkMiddleware } from "@clerk/astro/server";
 const BASE_TENANT_HOST =
 	VERCEL_ENV === "production"
 		? "giolt.org"
-		: VERCEL_ENV === "preview"
-			? "next.giolt.org"
-			: "localhost";
+		: "localhost";
 const RESERVED = new Set(["www"]);
 const EXCLUDED_PATHS = new Set(["/_image"]);
 
@@ -28,6 +26,7 @@ const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 					`/org/${sub}${url.pathname}${url.search}`,
 					url,
 				);
+				console.log(target.href);
 
 				return ctx.rewrite(target);
 			}
