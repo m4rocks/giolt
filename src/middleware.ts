@@ -35,4 +35,17 @@ const tenantMiddleware = defineMiddleware(async (ctx, next) => {
 	return next();
 });
 
-export const onRequest = sequence(clerkMiddleware(), tenantMiddleware);
+const conditionalClerkMiddleware = defineMiddleware(async (ctx, next) => {
+	const url = new URL(ctx.request.url);
+	const host = url.hostname;
+	console.log(url.href);
+
+	if (host.endsWith(`.${BASE_TENANT_HOST}`)) {
+		return next();
+	}
+	const handler = clerkMiddleware();
+
+	return handler(ctx, next) as Promise<Response>;
+})
+
+export const onRequest = sequence(conditionalClerkMiddleware, tenantMiddleware);
