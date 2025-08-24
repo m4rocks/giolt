@@ -3,11 +3,12 @@ import { defineConfig, envField } from "astro/config";
 
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import vercel from "@astrojs/vercel";
 import clerk from "@clerk/astro";
 import tailwindcss from "@tailwindcss/vite";
 import { clerkTheme } from "./src/lib/clerk-theme";
 import { tenantRouteFix } from "./src/lib/tenant-integration";
+
+import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
@@ -26,15 +27,14 @@ export default defineConfig({
 	},
 
 	site:
-		process.env.VERCEL_ENV === "production"
-			? "https://giolt.com"
-			: "http://localhost:3000",
+	process.env.VERCEL_ENV === "production"
+	? "https://giolt.com"
+	: "http://localhost:3000",
 
-	adapter: vercel({
-		webAnalytics: {
+	adapter: cloudflare({
+		platformProxy: {
 			enabled: true,
-		},
-		isr: false,
+		}
 	}),
 	security: {
 		checkOrigin: false,
@@ -94,9 +94,6 @@ export default defineConfig({
 	},
 
 	vite: {
-		server: {
-			allowedHosts: ["saved-macaque-eagerly.ngrok-free.app"],
-		},
 		plugins: [tailwindcss()],
 	},
 });
