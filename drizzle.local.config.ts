@@ -1,19 +1,19 @@
 import { defineConfig } from "drizzle-kit";
-import { lsrSync } from "lsr";
+import fs from "node:fs";
 import path from "node:path";
 
 
 export function getLocalD1DB() {
 	try {
 		const basePath = path.resolve(".wrangler");
-		const dbFile = lsrSync(basePath)
-			.find((f) => f.name.endsWith(".sqlite"));
+		const dbFile = fs.readdirSync(basePath, { encoding: "utf-8", recursive: true })
+			.find((f) => f.endsWith(".sqlite"));
 
 		if (!dbFile) {
 			throw new Error(`.sqlite file not found in ${basePath}`);
 		}
 
-		const url = path.resolve(basePath, dbFile.path);
+		const url = path.resolve(basePath, dbFile);
 		console.log(`Database URL: ${url}`);
 		return url;
 	} catch (err) {
