@@ -1,0 +1,49 @@
+---
+import { projects } from "@/db/schema";
+import Layout from "@/layouts/dashboard-layout.astro";
+import { protectRoute } from "@/lib/clerk";
+import { getTenantUrl } from "@/lib/tenant";
+import { eq } from "drizzle-orm";
+import { PlusIcon } from "lucide-react";
+
+const res = await protectRoute(Astro);
+if (res) return res;
+const { orgId } = Astro.locals.auth();
+const db = Astro.locals.db;
+
+const projs = await db
+	.select()
+	.from(projects)
+	.where(eq(projects.organizationId, orgId as string))
+	.all();
+---
+
+<Layout
+	title="Projects"
+>
+	<h1 class="font-bold mb-2">Projects</h1>
+	<a href="/dashboard/projects/new" class="btn btn-primary mb-2">
+		<PlusIcon />
+		Create project
+	</a>
+	<ul class="list bg-base-200 rounded-box">
+		{projs ? projs.map((proj) => (
+			<li class="list-row">
+				<div class="list-col-grow">
+					<p class="text-lg font-bold">
+						{proj.title}
+					</p>
+					<p class="text-base-content/75">
+						{proj.description}
+					</p>
+				</div>
+				<a
+					class="btn btn-primary"
+					href={`/dashboard/projects/${proj.id}`}>
+					Edit
+				</a>
+			</li>
+		))
+		: null}
+	</ul>
+</Layout>

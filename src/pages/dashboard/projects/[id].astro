@@ -1,0 +1,173 @@
+---
+import { actions } from "astro:actions";
+import Editor from "@/components/blog/editor";
+import FormNotice from "@/components/form-notice.astro";
+import { blogPosts, projects } from "@/db/schema";
+import Layout from "@/layouts/dashboard-layout.astro";
+import { protectRoute } from "@/lib/clerk";
+import { getTenantUrl } from "@/lib/tenant";
+import { clerkClient } from "@clerk/astro/server";
+import { and, eq } from "drizzle-orm";
+
+const { orgId, orgSlug } = Astro.locals.auth();
+const db = Astro.locals.db;
+const { id } = Astro.params;
+
+const res = await protectRoute(Astro);
+if (res) return res;
+
+if (!id) {
+	return Astro.redirect("/dashboard/blog");
+}
+
+const post = await db
+	.select()
+	.from(blogPosts)
+	.where(
+		and(
+			eq(blogPosts.id, Number.parseInt(id)),
+			eq(blogPosts.organizationId, orgId as string),
+		),
+	)
+	.get();
+
+const projs = await db
+	.select()
+	.from(projects)
+	.where(eq(projects.organizationId, orgId as string))
+	.orderBy(projects.endDate);
+
+const teamMembers = await clerkClient(
+	Astro,
+).organizations.getOrganizationMembershipList({
+	organizationId: orgId as string,
+});
+
+if (!post) {
+	return Astro.redirect("/dashboard/blog");
+}
+---
+
+
+<Layout
+	title="Blog"
+>
+	<FormNotice
+		action={actions.blog.update}
+		successMessage="Blog updated successfully"
+		errorMessage="Failed to update blog"
+	/>
+	<form
+		method="POST"
+		action={actions.blog.update}
+	>
+		<fieldset class="fieldset">
+			<input name="id" value={id} type="hidden" />
+			<label for="title" class="label">
+				Title
+			</label>
+			<input
+				class="input w-full max-w-128"
+				name="title"
+				placeholder="Blog title"
+				value={post.title}
+				required
+			/>
+
+			<label for="description" class="label">
+				Description
+			</label>
+			<input
+				class="input w-full max-w-128"
+				name="description"
+				placeholder="Blog description"
+				value={post.description}
+				required
+			/>
+
+			<label for="writer_id" class="label">
+				Writer
+			</label>
+			<select
+				name="writer_id"
+				class="select w-full max-w-128"
+			>
+				<option value="">None</option>
+				{teamMembers.data.map((t) => (
+					<option
+						value={t.id}
+						selected={t.id === post.writerId}
+					>
+						{`${t.publicUserData?.firstName} ${t.publicUserData?.lastName}`}
+					</option>
+				))}
+			</select>
+
+			<label for="related_project_id" class="label">
+				Related project
+			</label>
+			<select
+				name="related_project_id"
+				class="select w-full max-w-128"
+			>
+				<option value="">None</option>
+				{projs.map((p) => (
+					<option
+						value={p.id}
+						selected={p.id === post.relatedProjectId}
+					>
+						{p.title}
+					</option>
+				))}
+			</select>
+
+			<label for="date" class="label">
+				Date
+			</label>
+			<input
+				class="input w-full max-w-128"
+				name="date"
+				placeholder="Date"
+				type="date"
+				value={new Date(post.date).toISOString().slice(0, 10)}
+				required
+			/>
+
+			<label for="draft" class="label">
+				<input
+					class="toggle"
+					name="draft"
+					type="checkbox"
+					checked={post.draft}
+				/>
+				Draft
+			</label>
+
+			<div
+				class="flex flex-row gap-2"
+			>
+				<button
+					class="btn btn-primary w-max"
+					type="submit"
+				>
+					Update
+				</button>
+				<a
+					class={"btn btn-soft w-max" + (post.draft ? " btn-disabled" : "")}
+					href={post.draft ? undefined : `${getTenantUrl(orgSlug as string)}/blog/${id}`}
+					target="_blank"
+					aria-disabled={post.draft}
+				>
+					Preview
+				</a>
+			</div>
+		</fieldset>
+
+		<div class="divider mb-0"></div>
+
+		<Editor
+			client:only
+			content={post.content}
+		/>
+	</form>
+</Layout>
