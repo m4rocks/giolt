@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import logo from "@/assets/logo.png";
 
 interface Props {
@@ -24,8 +23,8 @@ const { name, hideGioltBranding } = Astro.props;
 			<span>
 				Made with
 			</span>
-			<Image
-				src={logo}
+			<img
+				src={logo.src}
 				width={32}
 				height={32}
 				alt="Giolt Logo"
