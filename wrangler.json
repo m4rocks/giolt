@@ -1,8 +1,10 @@
 {
 	"$schema": "https://unpkg.com/wrangler@4.32.0/config-schema.json",
 	"name": "giolt",
+	"main": "./dist/_worker.js/index.js",
 	"compatibility_date": "2025-08-25",
 	"assets": {
+		"binding": "ASSETS",
 		"directory": "./dist"
 	},
 	"d1_databases": [{
