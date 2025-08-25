@@ -4,7 +4,8 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "astro dev",
-		"build": "astro check && astro build",
+		"build": "bun run migrate:remote && bun run build:local",
+		"build:local": "astro check && astro build",
 		"preview": "astro preview",
 		"studio": "drizzle-kit studio --config drizzle.local.config.ts",
 		"visualizer": "drizzle-lab visualizer -c drizzle.local.config.ts",
