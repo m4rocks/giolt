@@ -1,11 +1,11 @@
 import { POLAR_WEBHOOK_SECRET } from "astro:env/server";
 import { organizations } from "@/db/schema";
-import { db } from "@/lib/db";
 import { Webhooks } from "@polar-sh/astro";
-import type { APIRoute } from "astro";
+import type { APIContext, APIRoute } from "astro";
 import { eq } from "drizzle-orm";
 
 const subscriptionChange = async (
+	ctx: APIContext,
 	payload: {
 		data: {
 			id: string;
@@ -15,6 +15,8 @@ const subscriptionChange = async (
 	},
 	status: "active" | "inactive",
 ) => {
+	const db = ctx.locals.db;
+
 	await db
 		.update(organizations)
 		.set({
@@ -31,8 +33,8 @@ export const POST: APIRoute = async (ctx) => {
 	return Webhooks({
 		webhookSecret: POLAR_WEBHOOK_SECRET,
 		onSubscriptionActive: (payload) =>
-			subscriptionChange(payload, "active"),
+			subscriptionChange(ctx, payload, "active"),
 		onSubscriptionRevoked: (payload) =>
-			subscriptionChange(payload, "inactive"),
+			subscriptionChange(ctx, payload, "inactive"),
 	})(ctx);
 };

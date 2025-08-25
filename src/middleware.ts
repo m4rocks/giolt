@@ -1,9 +1,9 @@
-import { VERCEL_ENV } from "astro:env/server";
 import { defineMiddleware, sequence } from "astro:middleware";
 import { clerkMiddleware } from "@clerk/astro/server";
+import { getDb } from "./lib/db";
 
 const BASE_TENANT_HOST =
-	VERCEL_ENV === "production" ? "giolt.org" : "localhost";
+	import.meta.env.PROD ? "giolt.org" : "localhost";
 const RESERVED = new Set(["www"]);
 const EXCLUDED_PATHS = new Set(["/_image"]);
 
@@ -46,4 +46,9 @@ const conditionalClerkMiddleware = defineMiddleware(async (ctx, next) => {
 	return handler(ctx, next) as Promise<Response>;
 });
 
-export const onRequest = sequence(conditionalClerkMiddleware, tenantMiddleware);
+const databaseMiddleware = defineMiddleware((ctx, next) => {
+	ctx.locals.db = getDb(ctx);
+	return next()
+})
+
+export const onRequest = sequence(conditionalClerkMiddleware, databaseMiddleware, tenantMiddleware);

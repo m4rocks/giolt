@@ -1,18 +1,17 @@
-import { VERCEL_ENV } from "astro:env/server";
 import { projects } from "@/db/schema";
 import type { APIContext } from "astro";
 import { and, eq } from "drizzle-orm";
 import { getCookies } from "./cookie";
-import { db } from "./db";
 
 export const getTenantUrl = (slug: string) => {
-	return VERCEL_ENV === "production"
+	return import.meta.env.PROD
 		? `https://${slug}.giolt.org`
 		: `http://${slug}.localhost:3000`;
 };
 
 export const getProjectAccessFromRequest = async (ctx: APIContext) => {
 	const cookies = getCookies(ctx.request.headers);
+	const db = ctx.locals.db;
 	const projectId = cookies.giolt_project_id;
 	const projectCode = cookies.giolt_project_code;
 

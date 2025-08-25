@@ -1,6 +1,5 @@
 import { POLAR_MONTHLY_PRODUCT, POLAR_YEARLY_PRODUCT } from "astro:env/server";
 import { organizations } from "@/db/schema";
-import { db } from "@/lib/db";
 import { polar } from "@/lib/polar";
 import type { User } from "@clerk/astro/server";
 import type { APIRoute } from "astro";
@@ -8,6 +7,7 @@ import { and, eq } from "drizzle-orm";
 
 export const GET: APIRoute = async (ctx) => {
 	const { orgId, userId } = ctx.locals.auth();
+	const db = ctx.locals.db;
 	const type = ctx.url.searchParams.get("type") as
 		| "monthly"
 		| "yearly"

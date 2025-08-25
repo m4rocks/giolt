@@ -27,14 +27,15 @@ export default defineConfig({
 	},
 
 	site:
-	process.env.VERCEL_ENV === "production"
-	? "https://giolt.com"
-	: "http://localhost:3000",
+		process.env.VERCEL_ENV === "production"
+			? "https://giolt.com"
+			: "http://localhost:3000",
 
 	adapter: cloudflare({
 		platformProxy: {
 			enabled: true,
-		}
+			configPath: "./wrangler.json"
+		},
 	}),
 	security: {
 		checkOrigin: false,
@@ -58,12 +59,6 @@ export default defineConfig({
 				access: "secret",
 				context: "server",
 				optional: false,
-			}),
-			VERCEL_ENV: envField.enum({
-				values: ["development", "preview", "production"],
-				default: "development",
-				access: "secret",
-				context: "server",
 			}),
 			POLAR_ACCESS_TOKEN: envField.string({
 				access: "secret",
@@ -94,6 +89,9 @@ export default defineConfig({
 	},
 
 	vite: {
+		server: {
+			allowedHosts: ["saved-macaque-eagerly.ngrok-free.app"]
+		},
 		plugins: [tailwindcss()],
 	},
 });

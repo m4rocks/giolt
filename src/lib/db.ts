@@ -1,9 +1,7 @@
+import type { APIContext } from "astro";
 import { TURSO_AUTH_TOKEN, TURSO_DATABASE_URL } from "astro:env/server";
-import { drizzle } from "drizzle-orm/libsql";
+import { drizzle } from "drizzle-orm/d1";
 
-export const db = drizzle({
-	connection: {
-		url: TURSO_DATABASE_URL || "http://127.0.1:8080",
-		authToken: TURSO_AUTH_TOKEN || "",
-	},
-});
+export const getDb = (ctx: APIContext) => {
+	return drizzle(ctx.locals.runtime.env.DB);
+}

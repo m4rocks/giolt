@@ -5,12 +5,12 @@ import { organizations } from "@/db/schema";
 import Layout from "@/layouts/dashboard-layout.astro";
 import { protectRoute } from "@/lib/clerk";
 import { THEMES } from "@/lib/data";
-import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 
 const res = await protectRoute(Astro);
 if (res) return res;
 const { orgId } = Astro.locals.auth();
+const db = Astro.locals.db;
 
 const org = await db
 	.select()

@@ -1,6 +1,5 @@
 import { CLERK_WEBHOOK_SIGNING_SECRET } from "astro:env/server";
 import { organizations } from "@/db/schema";
-import { db } from "@/lib/db";
 import { polar } from "@/lib/polar";
 import { verifyWebhook } from "@clerk/astro/webhooks";
 import type {
@@ -8,7 +7,7 @@ import type {
 	OrganizationJSON,
 	UserJSON,
 } from "@clerk/backend";
-import type { APIRoute } from "astro";
+import type { APIContext, APIRoute } from "astro";
 import { eq } from "drizzle-orm";
 
 export const POST: APIRoute = async (ctx) => {
@@ -22,13 +21,13 @@ export const POST: APIRoute = async (ctx) => {
 				await createUser(evt.data);
 				break;
 			case "organization.created":
-				await createOrganization(evt.data);
+				await createOrganization(ctx, evt.data);
 				break;
 			case "organization.updated":
-				await updateOrganization(evt.data);
+				await updateOrganization(ctx, evt.data);
 				break;
 			case "organization.deleted":
-				await deleteOrganization(evt.data);
+				await deleteOrganization(ctx, evt.data);
 				break;
 		}
 
@@ -46,7 +45,9 @@ async function createUser(data: UserJSON) {
 	});
 }
 
-async function createOrganization(data: OrganizationJSON) {
+async function createOrganization(ctx: APIContext, data: OrganizationJSON) {
+	const db = ctx.locals.db;
+
 	await db.insert(organizations).values({
 		id: data.id,
 		logoUrl: data.image_url,
@@ -55,7 +56,9 @@ async function createOrganization(data: OrganizationJSON) {
 	});
 }
 
-async function updateOrganization(data: OrganizationJSON) {
+async function updateOrganization(ctx: APIContext, data: OrganizationJSON) {
+	const db = ctx.locals.db;
+
 	await db
 		.insert(organizations)
 		.values({
@@ -75,7 +78,9 @@ async function updateOrganization(data: OrganizationJSON) {
 		});
 }
 
-async function deleteOrganization(data: DeletedObjectJSON) {
+async function deleteOrganization(ctx: APIContext, data: DeletedObjectJSON) {
+	const db = ctx.locals.db;
+
 	const org = await db
 		.select()
 		.from(organizations)

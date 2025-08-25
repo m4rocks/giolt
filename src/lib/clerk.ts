@@ -1,7 +1,6 @@
 import { organizations } from "@/db/schema";
 import type { APIContext } from "astro";
 import { and, eq, isNotNull } from "drizzle-orm";
-import { db } from "./db";
 
 interface ProtectRouteProps {
 	needsAccount?: boolean;
@@ -20,6 +19,7 @@ export const protectRoute = async (
 	} = props ?? {};
 
 	const { userId, orgId, redirectToSignIn } = ctx.locals.auth();
+	const db = ctx.locals.db;
 
 	if (needsAccount && !userId) {
 		return redirectToSignIn();
