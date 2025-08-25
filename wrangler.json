@@ -3,7 +3,7 @@
 	"name": "giolt",
 	"main": "./dist/_worker.js/index.js",
 	"compatibility_date": "2025-08-25",
-	"compatibility_flags": ["nodejs_compat"],
+	"compatibility_flags": ["nodejs_compat", "nodejs_compat_populate_process_env"],
 	"assets": {
 		"binding": "ASSETS",
 		"directory": "./dist"
