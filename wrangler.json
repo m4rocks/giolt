@@ -9,7 +9,7 @@
 		"directory": "./dist"
 	},
 	"d1_databases": [{
-		"database_id": "giolt-db",
+		"database_id": "64a8e763-42e9-4146-83b9-ca48cb48aa70",
 		"binding": "DB",
 		"database_name": "giolt-db",
 		"migrations_dir": "./drizzle"
