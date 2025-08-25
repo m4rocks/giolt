@@ -2,6 +2,9 @@
 	"$schema": "https://unpkg.com/wrangler@4.32.0/config-schema.json",
 	"name": "giolt",
 	"compatibility_date": "2025-08-25",
+	"assets": {
+		"directory": "./dist"
+	},
 	"d1_databases": [{
 		"database_id": "giolt-db",
 		"binding": "DB",
