@@ -1,11 +1,11 @@
 import { organizations, projects } from "@/db/schema";
 import { setCookie } from "@/lib/cookie";
-import { db } from "@/lib/db";
 import { getTenantUrl } from "@/lib/tenant";
 import type { APIRoute } from "astro";
 import { eq } from "drizzle-orm";
 
 export const GET: APIRoute = async (ctx) => {
+	const db = ctx.locals.db;
 	const code = ctx.url.searchParams.get("code");
 	const slug = ctx.params.slug;
 

@@ -6,7 +6,6 @@ import Mission from "@/components/org/mission.astro";
 import Team from "@/components/org/team.astro";
 import { organizations } from "@/db/schema";
 import Layout from "@/layouts/tenant-layout.astro";
-import { db } from "@/lib/db";
 import { and, eq } from "drizzle-orm";
 
 const { slug } = Astro.params;
@@ -14,6 +13,8 @@ const { slug } = Astro.params;
 if (!slug) {
 	return Astro.redirect(import.meta.env.SITE);
 }
+
+const db = Astro.locals.db;
 
 const org = await db
 	.select()

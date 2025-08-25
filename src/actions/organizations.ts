@@ -2,7 +2,6 @@ import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro:schema";
 import { organizations } from "@/db/schema";
 import { THEMES } from "@/lib/data";
-import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 
 export const currentOrg = {
@@ -19,6 +18,7 @@ export const currentOrg = {
 		}),
 		handler: async (input, ctx) => {
 			const { orgId, userId } = ctx.locals.auth();
+			const db = ctx.locals.db;
 
 			if (!userId) {
 				throw new ActionError({

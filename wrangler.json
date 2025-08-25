@@ -5,6 +5,7 @@
 	"d1_databases": [{
 		"database_id": "giolt-db",
 		"binding": "DB",
-		"database_name": "giolt-db"
+		"database_name": "giolt-db",
+		"migrations_dir": "./drizzle"
 	}]
 }

@@ -1,11 +1,11 @@
 import { organizations } from "@/db/schema";
 import { THEME_BASE_COLORS } from "@/lib/data";
-import { db } from "@/lib/db";
 import type { APIRoute } from "astro";
 import { eq } from "drizzle-orm";
 import type { WebAppManifest } from "web-app-manifest";
 
 export const GET: APIRoute = async (ctx) => {
+	const db = ctx.locals.db;
 	if (!ctx.params.slug) {
 		return new Response("Invalid slug", { status: 400 });
 	}

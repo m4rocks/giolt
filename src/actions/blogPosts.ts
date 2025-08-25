@@ -2,7 +2,6 @@ import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro:schema";
 import { blogPosts } from "@/db/schema";
 import { calculateReadingTimeFromHTML } from "@/lib/content";
-import { db } from "@/lib/db";
 import { clerkClient } from "@clerk/astro/server";
 import type { APIContext } from "astro";
 import { and, eq } from "drizzle-orm";
@@ -16,6 +15,7 @@ export const blog = {
 		}),
 		handler: async (input, ctx) => {
 			const { orgId, userId } = ctx.locals.auth();
+			const db = ctx.locals.db;
 
 			if (!userId) {
 				throw new ActionError({
@@ -63,6 +63,7 @@ export const blog = {
 		}),
 		handler: async (input, ctx) => {
 			const { orgId, userId } = ctx.locals.auth();
+			const db = ctx.locals.db;
 
 			if (!userId) {
 				throw new ActionError({
