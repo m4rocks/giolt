@@ -7,7 +7,6 @@ import logoLight from "@/assets/logo-light.svg";
 import Footer from "@/components/footer.astro";
 import Navbar from "@/components/navbar.astro";
 import { mdClassName } from "@/lib/content";
-import Analytics from "@vercel/analytics/astro";
 
 const faviconDark = await getImage({
 	src: logoDark,
@@ -59,6 +58,5 @@ const isMarkdown = !!Astro.props.frontmatter;
 			<slot/>
 		</main>
 		<Footer/>
-		<Analytics/>
 	</body>
 </html>

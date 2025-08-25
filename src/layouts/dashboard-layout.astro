@@ -9,7 +9,6 @@ import logoLight from "@/assets/logo-light.svg";
 import DrawerItems from "@/components/dashboard/drawer-items.astro";
 import Navbar from "@/components/navbar.astro";
 import { Toaster } from "@/components/toaster";
-import Analytics from "@vercel/analytics/astro";
 
 const faviconDark = await getImage({
 	src: logoDark,
@@ -82,6 +81,5 @@ const props = Astro.props;
 			client:load
 			transition:persist
 		/>
-		<Analytics/>
 	</body>
 </html>
