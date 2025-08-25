@@ -22,8 +22,14 @@ if (!slug) {
 const projectId = await getProjectAccessFromRequest(Astro);
 
 if (!projectId) {
+	const code = Astro.url.searchParams.get("code");
+
+	if (code) {
+		return Astro.redirect(`/app/invite?code=${code}`)
+	}
 	return Astro.redirect("/app/no-access");
 }
+
 
 const row = await db
 	.select()
@@ -46,6 +52,7 @@ if (!org || !project) {
 	orgName={org.name}
 	theme={org.theme}
 	favicon={org.logoUrl}
+	projectCode={project.code}
 	enableInstallable
 	class="container my-4"
 >
@@ -93,6 +100,12 @@ if (!org || !project) {
 		</div>
 		<div class="space-y-4">
 			<Calendar
+				title={project.title}
+				description={project.description}
+				location={project.location}
+				orgSlug={org.slug}
+				orgName={org.name}
+				orgEmail={org.email}
 				startDate={project.startDate}
 				endDate={project.endDate}
 			/>

@@ -5,6 +5,7 @@ import { getProjectAccessFromRequest } from "@/lib/tenant";
 import { eq } from "drizzle-orm";
 
 const { slug } = Astro.params;
+console.log(slug);
 const db = Astro.locals.db;
 if (!slug) {
 	return Astro.redirect(import.meta.env.SITE);

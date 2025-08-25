@@ -1,11 +1,13 @@
 import { organizations } from "@/db/schema";
 import { THEME_BASE_COLORS } from "@/lib/data";
 import type { APIRoute } from "astro";
+import { inferRemoteSize } from "astro:assets";
 import { eq } from "drizzle-orm";
 import type { WebAppManifest } from "web-app-manifest";
 
 export const GET: APIRoute = async (ctx) => {
 	const db = ctx.locals.db;
+	const code = ctx.url.searchParams.get("code");
 	if (!ctx.params.slug) {
 		return new Response("Invalid slug", { status: 400 });
 	}
@@ -20,10 +22,12 @@ export const GET: APIRoute = async (ctx) => {
 		return new Response("Organization not found", { status: 404 });
 	}
 
+	const logoSize = await inferRemoteSize(org.logoUrl || "");
+
 	const manifest: WebAppManifest = {
 		name: `${org.name} App`,
 		scope: "/app",
-		start_url: "/app?utm_source=homescreen",
+		start_url: `/app?${code ? `code=${code},` : ""}utm_source=homescreen`,
 		background_color: THEME_BASE_COLORS[org.theme],
 		theme_color: THEME_BASE_COLORS[org.theme],
 		display: "standalone",
@@ -32,7 +36,7 @@ export const GET: APIRoute = async (ctx) => {
 			? [
 					{
 						src: org.logoUrl,
-						sizes: "460x460",
+						sizes: `${logoSize.width}x${logoSize.height}`,
 						type: "image/png",
 						purpose: "any",
 					},

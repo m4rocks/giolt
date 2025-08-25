@@ -36,6 +36,7 @@ export default defineConfig({
 			enabled: true,
 			configPath: "./wrangler.json"
 		},
+		imageService: "compile"
 	}),
 	security: {
 		checkOrigin: false,

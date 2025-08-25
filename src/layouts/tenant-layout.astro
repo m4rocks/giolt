@@ -10,6 +10,7 @@ interface Props {
 	class?: string;
 	theme: (typeof THEMES)[number];
 	enableInstallable?: boolean;
+	projectCode?: string;
 	favicon?: string | null;
 	navbar?: boolean;
 	hideGioltBranding?: boolean;
@@ -52,7 +53,8 @@ const faviconType = getFaviconType(Astro.props.favicon || undefined);
 			<meta name="apple-mobile-web-app-capable" content="yes" />
 			<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 			<meta name="apple-mobile-web-app-title" content={Astro.props.orgName} />
-			<link rel="manifest" href="/app/manifest.json" />
+			<meta name="mobile-web-app-capable" content="yes"/>
+			<link rel="manifest" href={`/app/manifest.json${Astro.props.projectCode ? `?code=${Astro.props.projectCode}` : ""}`} />
 		: null}
 		<title>
 			{Astro.props.title ? `${Astro.props.title} - ${Astro.props.orgName}` : Astro.props.orgName}
